@@ -2,6 +2,16 @@ public class Mob{
   private int moveSpeed;
   private Location position;
   private int health;
+  public Mob() {
+    moveSpeed = 10;
+    position = new Location(10,10);
+    health = 100;
+  }
+  public Mob(int speed, int health, int x, int y) {
+    moveSpeed = speed;
+    position = new Location(x,y);
+    this.health = health;
+  }
   public int getSpeed() {
     return moveSpeed;
   }
