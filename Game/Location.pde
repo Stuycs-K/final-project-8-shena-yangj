@@ -3,6 +3,10 @@ public class Location {
   private int xCoordinate;
   private int yCoordinate;
   
+  public Location(int x, int y) {
+    xCoordinate = x;
+    yCoordinate = y;
+  }
   public int distTo(Location x) {
     int xdist = Math.abs(x.getX() - xCoordinate);
     int ydist = Math.abs(x.getY() - yCoordinate);
