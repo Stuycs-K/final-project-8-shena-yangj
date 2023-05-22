@@ -17,7 +17,7 @@ public class Mob{
   public boolean move(int x, int y) { 
     return position.changeLocation(x,y); 
   }
-  public String getLocation() {
-    return "("+position.getX()+","+position.getY()+")";
+  public Location getLocation() {
+    return position;
   }
 }
