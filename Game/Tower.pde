@@ -3,6 +3,18 @@ public class Tower {
   private int power;
   private int range;
   private Location position;
+  public Tower(int x, int y) {
+    attackSpeed = 10;
+    power = 10;
+    range = 10;
+    position = new Location(x,y);
+  }
+  public Tower(int x, int y, int attackSpeed, int power, int range) {
+    this.attackSpeed = attackSpeed;
+    this.power = power;
+    this.range = range;
+    position = new Location(x,y);
+  }
   public Location getLocation() {
     return position;
   }
