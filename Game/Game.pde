@@ -88,6 +88,8 @@ boolean placeTower(int x, int y) {
       fill(255,0,0);
       square(x, y, tileSize);
       balance -= towerPrice;
+      towers.add(new Tower(x,y));
+      currentTowers++;
       //check for path somehow
       //draw somewhere a error msg like "not enough money"
       return true;
