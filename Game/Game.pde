@@ -1,3 +1,4 @@
+import java.util.*; 
 int time;
 int round;
 int totalHealth;
@@ -7,6 +8,7 @@ int balance;
 int tileSize;
 int mapWidth;
 int mapHeight;
+int towerPrice;
 ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
 void setup() {
@@ -15,7 +17,9 @@ void setup() {
   mapHeight = height;
   background(148, 114, 70);
   tileSize=100;
+  towerPrice = 50;
   generateMap();
+  balance = 50;
 }
 void generateMap() {
   for (int i = 0;i<mapWidth;i+=100) {
@@ -38,19 +42,18 @@ void generateMap() {
     }
   }
 }
-import java.util.*; 
 
 
 void changeBalance(int amount) {
+  balance += amount;
 }
-
+ 
 boolean placeTower(int x, int y) {
   return true;
-  //return true if (x,y) are valid and tower is placed
-  //else false
 }
 
 void tick() {
+  changeBalance(10);
 }
 void draw() {
 }
