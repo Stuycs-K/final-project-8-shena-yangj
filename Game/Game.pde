@@ -16,6 +16,7 @@ void setup() {
   background(148, 114, 70);
   tileSize=100;
   generateMap();
+  time=0;
 }
 void generateMap() {
   for (int i = 0;i<mapWidth;i+=100) {
@@ -51,6 +52,11 @@ boolean placeTower(int x, int y) {
 }
 
 void tick() {
+  time++;
 }
 void draw() {
+  if (tick() % 2==0
+  for (Mob mob : mobs) {
+    mob.display();
+  }
 }

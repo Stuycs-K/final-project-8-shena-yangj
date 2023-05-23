@@ -2,9 +2,12 @@ public class Mob{
   private int moveSpeed;
   private Location position;
   private int health;
+  private float x,y;
   public Mob() {
     moveSpeed = 10;
-    position = new Location(10,10);
+    x = 100;
+    y = 100;
+    position = new Location(100,100);
     health = 100;
   }
   public Mob(int speed, int health, int x, int y) {
@@ -29,5 +32,9 @@ public class Mob{
   }
   public Location getLocation() {
     return position;
+  }
+  public void display() {
+    fill(146,255,253);
+    circle(x,y,10);
   }
 }
