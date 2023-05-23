@@ -23,5 +23,8 @@ public class Location {
   public int getY() {
     return yCoordinate;
   }
+  public String toString() {
+    return "("+xCoordinate+","+yCoordinate+")";
+  }
   
 }
