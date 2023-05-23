@@ -1,1 +1,12 @@
-
+import java.util.*;
+private int time;
+private int round;
+private int health;
+private int maxTowers;
+private int currentTowers;
+private int balance;
+private int tielSize;
+private int mapWidth;
+private int mapHeight;
+private ArrayList<Tower> towers;
+private ArrayList<Mob> mobs;
