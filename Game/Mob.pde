@@ -10,10 +10,10 @@ public class Mob{
     position = new Location(100,100);
     health = 100;
   }
-  public Mob(int speed, int health, int x, int y) {
-    moveSpeed = speed;
+  public Mob(int x, int y) {
+    this.x = x;
+    this.y = y;
     position = new Location(x,y);
-    this.health = health;
   }
   public int getSpeed() {
     return moveSpeed;
@@ -27,8 +27,9 @@ public class Mob{
       return true;
     } else return false;
   }
-  public boolean move(int x, int y) { 
-    return position.changeLocation(x,y); 
+  public void move() { 
+    x+=moveSpeed;
+    y+=moveSpeed;
   }
   public Location getLocation() {
     return position;

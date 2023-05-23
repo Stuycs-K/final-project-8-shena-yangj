@@ -9,6 +9,7 @@ int mapWidth;
 int mapHeight;
 ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
+ArrayList<Location> path;
 void setup() {
   size(800, 800);
   mapWidth = width;
@@ -19,6 +20,7 @@ void setup() {
   time=0;
   mobs = new ArrayList<Mob>();
   towers = new ArrayList<Tower>();
+  path = new ArrayList<Location>();
 }
 void generateMap() {
   for (int i = 0;i<mapWidth;i+=100) {
@@ -33,6 +35,7 @@ void generateMap() {
     for (int j = 0;j<mapHeight;j+=tileSize) {
       if (j==tileSize*2 && i<mapHeight/2) {
         square(i,j,tileSize);
+        path.add(new Location(i,j));
       } else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
         square(i,j,tileSize);
       } else if (i>=tileSize*4 && j==tileSize*5) {
@@ -54,13 +57,14 @@ boolean placeTower(int x, int y) {
 }
 
 void tick() {
-  time++;
 }
 void draw() {
-  if (time % 2==0) {//make a mob every 2 seconds
-    mobs.add(new Mob());
+  int seconds = second();
+  if (seconds % 2==0) {//make a mob every 2 seconds
+    mobs.add(new Mob(50+seconds*10,50));
   }
   for (Mob mob : mobs) {
+    //mob.move();
     mob.display();
   }
 }
