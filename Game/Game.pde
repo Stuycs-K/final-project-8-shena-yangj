@@ -17,6 +17,8 @@ void setup() {
   tileSize=100;
   generateMap();
   time=0;
+  mobs = new ArrayList<Mob>();
+  towers = new ArrayList<Tower>();
 }
 void generateMap() {
   for (int i = 0;i<mapWidth;i+=100) {
@@ -55,7 +57,9 @@ void tick() {
   time++;
 }
 void draw() {
-  if (tick() % 2==0
+  if (time % 2==0) {//make a mob every 2 seconds
+    mobs.add(new Mob());
+  }
   for (Mob mob : mobs) {
     mob.display();
   }

@@ -35,6 +35,6 @@ public class Mob{
   }
   public void display() {
     fill(146,255,253);
-    circle(x,y,10);
+    circle(x,y,20);
   }
 }
