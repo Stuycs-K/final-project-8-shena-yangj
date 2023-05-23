@@ -38,8 +38,10 @@ void generateMap() {
         path.add(new Location(i,j));
       } else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
         square(i,j,tileSize);
+        path.add(new Location(i,j));
       } else if (i>=tileSize*4 && j==tileSize*5) {
         square(i,j,tileSize);
+        path.add(new Location(i,j));
       }
     }
   }
