@@ -47,9 +47,33 @@ void generateMap() {
 void changeBalance(int amount) {
   balance += amount;
 }
- 
+
+//testing placeTower
+void mousePressed() {
+  placeTower(mouseX, mouseY);
+}
 boolean placeTower(int x, int y) {
-  return true;
+  if (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight) {
+    if (balance >= towerPrice) {
+      x = (x / tileSize) * tileSize;
+      y = (y / tileSize) * tileSize;
+      fill(255,0,0);
+      square(x, y, tileSize);
+      balance -= towerPrice;
+      //check for path somehow
+      //draw somewhere a error msg like "not enough money"
+      return true;
+    }
+    else {
+      String display = "Not Enough Money";
+      text(display, 40, 100);
+      //figure out a way to make text not stay forever
+    }
+  }
+  return false;
+  //return true if (x,y) are valid and tower is placed
+  //also check if have enough money
+  //else false
 }
 
 void tick() {
