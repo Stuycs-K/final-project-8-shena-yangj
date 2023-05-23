@@ -10,9 +10,9 @@ int mapHeight;
 ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
 void setup() {
-  mapWidth = 800;
-  mapHeight = 800;
   size(800, 800);
+  mapWidth = width;
+  mapHeight = height;
   background(148, 114, 70);
   tileSize=100;
   generateMap();
