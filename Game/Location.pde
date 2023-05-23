@@ -4,8 +4,8 @@ public class Location {
   private int yCoordinate;
   
   public Location(int x, int y) {
-    xCoordinate = (x / tileSize) * tileSize;
-    yCoordinate = (y / tileSize) * tileSize;
+    xCoordinate = ((x / tileSize) * tileSize);
+    yCoordinate = ((y / tileSize) * tileSize);
   }
   public int distTo(Location x) {
     int xdist = Math.abs(x.getX() - xCoordinate);
