@@ -12,14 +12,19 @@ int towerPrice;
 ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
 void setup() {
-  size(800, 800);
-  mapWidth = width;
+  size(1000, 800);
+  tileSize=100;
+  mapWidth = width-tileSize*2;
   mapHeight = height;
   background(148, 114, 70);
-  tileSize=100;
   towerPrice = 50;
   generateMap();
   balance = 50;
+  menu();
+}
+void menu() {
+  fill(146,152,255);
+  rect(mapWidth,0,mapWidth,mapHeight);
 }
 void generateMap() {
   for (int i = 0;i<mapWidth;i+=100) {
