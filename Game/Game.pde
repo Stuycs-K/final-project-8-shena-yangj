@@ -8,6 +8,7 @@ int tileSize;
 int mapWidth;
 int mapHeight;
 int towerPrice;
+Tower selectedTower;
 boolean selected;
 
 ArrayList<Tower> towers;
@@ -50,6 +51,7 @@ void mouseClicked() {
     rect(mapWidth + 21, 10, tileSize + 60, tileSize);
     fill(255,0,0);
     text(towerPrice, mapWidth + 23, 30);
+    selectedTower = new Tower(0, 0);
     selected = true;
   }
     
@@ -97,7 +99,8 @@ boolean placeTower(int x, int y) {
       fill(255,0,0);
       square(x, y, tileSize);
       balance -= towerPrice;
-      towers.add(new Tower(x,y));
+      selectedTower.setPosition(x, y);
+      towers.add(selectedTower);
       //check for path somehow
       //draw somewhere a error msg like "not enough money"
       return true;
@@ -105,7 +108,7 @@ boolean placeTower(int x, int y) {
     else {
       String display = "Not Enough Money";
       fill(255,0,0);
-      text(display, mapWidth + 25, mapHeight - 100);
+      text(display, mapWidth + 23, mapHeight - 100);
       //figure out a way to make text not stay forever
     }
   }
