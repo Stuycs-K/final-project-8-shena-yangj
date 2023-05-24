@@ -8,6 +8,7 @@ int tileSize;
 int mapWidth;
 int mapHeight;
 int towerPrice;
+//arraylist of towerPrices?
 Tower selectedTower;
 boolean selected;
 
@@ -35,10 +36,12 @@ void menu() {
   stroke(0);
   fill(146,152,255);
   rect(mapWidth + 1,0,mapWidth,mapHeight);
-  fill(144,10,255);
-  rect(mapWidth + 21, 10, 100 + 60, 100);
-  fill(255,0,0);
-  text(towerPrice, mapWidth + 23, 30);
+  for (int i = 0; i < 4; i++) {
+    fill(144,10,255);
+    rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
+    fill(255,0,0);
+    text(towerPrice, mapWidth + 23, 30 + (100 * i));
+  }
   text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
   text("Mob count: " + mobs.size(), mapWidth + 21, mapHeight - 50);
   text("Balance: " + balance, mapWidth + 21, mapHeight - 80);
