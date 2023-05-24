@@ -26,6 +26,7 @@ void setup() {
   generateMap();
   balance = 50;
   menu();
+  mobs.add(new Mob());
 }
 void menu() {
   fill(146,152,255);
@@ -94,15 +95,20 @@ void tick() {
 }
 void draw() {
   int seconds = second();
+  print(seconds);
   //if (seconds==2) {
-  if (seconds % 2==0) {//make a mob every 2 seconds
-    mobs.add(new Mob(50,250));
-  }
+  //if (seconds % 2==0) {//make a mob every 2 seconds
+  //  mobs.add(new Mob(50,250));
+  //}
   for (Mob mob : mobs) {
     //println("x: "+mob.getLocation().getX()+" y: "+mob.getLocation().getY());
-    if (seconds%2==0) { //move every 2 seconds
-      mob.move(path,mapWidth,mapHeight);
+    if (seconds%10==0) { //move every 2 seconds
+      int x = mob.getLocation().getX();
+      int y = mob.getLocation().getY();
+      mob.getLocation().changeLocation(x+5,y);
+      mob.display();
+
+      //mob.move(path,mapWidth,mapHeight);
     }
-    mob.display();
   }
 }

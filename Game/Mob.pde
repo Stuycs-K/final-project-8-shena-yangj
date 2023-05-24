@@ -24,10 +24,16 @@ public class Mob{
       return true;
     } else return false;
   }
+  //path following
   public void move(ArrayList<Location> path,int mapWidth, int mapHeight) { 
     int place = 0;
     int pathslength = path.size()-1;
     boolean endOfPath = false;
+    int x = position.getX();
+    int y = position.getY(); 
+    position.changeLocation(x+5,y);
+    print(position);
+    //print(position);
     while (!endOfPath) {
       println(position);
       if (path.get(place).getX()<mapWidth || path.get(place).getY()<mapHeight) { //in map
@@ -37,8 +43,9 @@ public class Mob{
         }
         
       }
-      if (place+1>=pathslength) endOfPath = false;
     }
+      if (place+1>=pathslength) endOfPath = false;
+    //}
     //for (int i = 0;i<path.size()-1;i++) {
     //  private int x = position.getX();
     //  private int y = position.getY();
