@@ -25,43 +25,27 @@ public class Mob{
     } else return false;
   }
   //path following
-  public void move(ArrayList<Location> path,int mapWidth, int mapHeight) { 
-    int place = 0;
+  public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int place) { 
+    //int place = 0;
     int pathslength = path.size()-1;
     boolean endOfPath = false;
-    int x = position.getX();
-    int y = position.getY(); 
-    position.changeLocation(x+5,y);
-    print(position);
-    //print(position);
-    while (!endOfPath) {
+    //while (!endOfPath) {
+      print(place);
       println(position);
-      if (path.get(place).getX()<mapWidth || path.get(place).getY()<mapHeight) { //in map
+      if (place+1>=pathslength) endOfPath = true;
+      if (!endOfPath && (path.get(place).getX()<mapWidth || path.get(place).getY()<mapHeight)) { //in map
         if (path.get(place).getY()==path.get(place+1).getY()) {
-          position.changeLocation(position.getX()+moveSpeed,position.getY());
+          position.changeLocation(moveSpeed,0);
           //display();
+        } else if (path.get(place+1).getX()==path.get(place).getY()) { //same vertically
+        position.changeLocation(0,moveSpeed);
         }
-        
       }
-    }
-      if (place+1>=pathslength) endOfPath = false;
-    //}
-    //for (int i = 0;i<path.size()-1;i++) {
-    //  private int x = position.getX();
-    //  private int y = position.getY();
-    //  if (path.get(i+1).getY()==path.get(i).getY()) { //same horizontally
-    //    position.changeLocation(x+moveSpeed,y);
-    //    //print("HERE");
-    //  } else if (path.get(i+1).getX()==path.get(i).getY()) { //same vertically
-    //    position.changeLocation(x,y+moveSpeed);
-    //  }
-    //}
   }
   public Location getLocation() {
     return position;
   }
   public void display() {
-    println("x: "+position.getX()+" y: "+position.getY());
     fill(146,255,253);
     circle(position.getX(),position.getY(),20);
   }

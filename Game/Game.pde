@@ -92,23 +92,31 @@ boolean placeTower(int x, int y) {
 
 void tick() {
   changeBalance(10);
+  
 }
 void draw() {
-  int seconds = second();
-  print(seconds);
   //if (seconds==2) {
   //if (seconds % 2==0) {//make a mob every 2 seconds
-  //  mobs.add(new Mob(50,250));
+    //mobs.add(new Mob(50,250));
   //}
-  for (Mob mob : mobs) {
-    //println("x: "+mob.getLocation().getX()+" y: "+mob.getLocation().getY());
-    if (seconds%10==0) { //move every 2 seconds
-      int x = mob.getLocation().getX();
-      int y = mob.getLocation().getY();
-      mob.getLocation().changeLocation(x+5,y);
-      mob.display();
+  //int i = 0;
 
-      //mob.move(path,mapWidth,mapHeight);
+  if ((time % 30)== 2) {
+    for (int i = 0;i<mobs.size();i++) {
+      println(mobs.size());
+      mobs.get(i).move(path,mapWidth,mapHeight,i);
+      
+      generateMap();
+      mobs.get(i).display();
     }
   }
+  time++;
+  //for (Mob mob : mobs) {
+  //  //println("x: "+mob.getLocation().getX()+" y: "+mob.getLocation().getY());
+  //  //if (seconds%10==0) { //move every 2 seconds
+  //    mob.move(path,mapWidth,mapHeight,i);
+  //    mob.display();
+  //  //}
+  //  i++;
+  //}
 }
