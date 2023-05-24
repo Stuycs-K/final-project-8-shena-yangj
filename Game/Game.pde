@@ -24,7 +24,6 @@ void setup() {
   towers = new ArrayList<Tower>();
   path = new ArrayList<Location>();
   generateMap();
-  print(path);
   balance = 50;
   menu();
 }
@@ -46,15 +45,12 @@ void generateMap() {
       if (j==tileSize*2 && i<mapHeight/2) {
         square(i,j,tileSize);
         path.add(new Location(i,j));
-        print("added");
       } else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
         square(i,j,tileSize);
         path.add(new Location(i,j));
-        print("added");
       } else if (i>=tileSize*4 && j==tileSize*5) {
         square(i,j,tileSize);
         path.add(new Location(i,j));
-        print("added");
       }
     }
   }
@@ -98,11 +94,15 @@ void tick() {
 }
 void draw() {
   int seconds = second();
+  //if (seconds==2) {
   if (seconds % 2==0) {//make a mob every 2 seconds
-    mobs.add(new Mob(50+seconds*10,50));
+    mobs.add(new Mob(50,250));
   }
   for (Mob mob : mobs) {
-    //mob.move();
+    //println("x: "+mob.getLocation().getX()+" y: "+mob.getLocation().getY());
+    if (seconds%2==0) { //move every 2 seconds
+      mob.move(path,mapWidth,mapHeight);
+    }
     mob.display();
   }
 }
