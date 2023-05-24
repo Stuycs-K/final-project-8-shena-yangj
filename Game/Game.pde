@@ -3,7 +3,6 @@ int time;
 int round;
 int totalHealth;
 int maxTowers;
-int currentTowers;
 int balance;
 int tileSize;
 int mapWidth;
@@ -22,13 +21,13 @@ void setup() {
   towerPrice = 50;
   generateMap();
   balance = 50;
-  menu();
   selected = false;
   totalHealth = 100;
   maxTowers = 10;
-  currentTowers = 0;
   towers = new ArrayList<Tower>();
   mobs = new ArrayList<Mob>();
+  //
+  menu();
 }
 void menu() {
   stroke(0);
@@ -40,6 +39,10 @@ void menu() {
     stroke(200);
     rect(mapWidth + 20, 10, tileSize + 60, tileSize);
   }
+  textSize(25);
+  text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 20, mapHeight - 20);
+  text("Mob count: " + mobs.size(), mapWidth + 20, mapHeight - 50);
+  text("Balance: " + balance, mapWidth + 20, mapHeight - 80);
 }
 void mouseClicked() {
   fill(144,10,255);
@@ -80,7 +83,7 @@ void changeBalance(int amount) {
 
 //testing placeTower
 void mousePressed() {
-  if (mouseX <= mapWidth && selected) {
+  if (mouseX <= mapWidth && selected && towers.size() < maxTowers) {
     placeTower(mouseX, mouseY);
     selected = false;
     menu();
@@ -95,7 +98,6 @@ boolean placeTower(int x, int y) {
       square(x, y, tileSize);
       balance -= towerPrice;
       towers.add(new Tower(x,y));
-      currentTowers++;
       //check for path somehow
       //draw somewhere a error msg like "not enough money"
       return true;
@@ -114,6 +116,7 @@ boolean placeTower(int x, int y) {
 
 void tick() {
   changeBalance(10);
+  menu();
 }
 void draw() {
 }
