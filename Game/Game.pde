@@ -23,6 +23,12 @@ void setup() {
   generateMap();
   balance = 50;
   menu();
+  selected = false;
+  totalHealth = 100;
+  maxTowers = 10;
+  currentTowers = 0;
+  towers = new ArrayList<Tower>();
+  mobs = new ArrayList<Mob>();
 }
 void menu() {
   stroke(0);
