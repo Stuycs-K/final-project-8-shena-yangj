@@ -31,4 +31,7 @@ public class Tower {
     position.changeLocation(x, y);
     return position;
   }
+  public void setPosition(int x, int y) {
+    position = new Location(x, y);
+  }
 }
