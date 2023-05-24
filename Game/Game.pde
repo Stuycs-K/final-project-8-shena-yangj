@@ -16,7 +16,7 @@ ArrayList<Mob> mobs;
 void setup() {
   size(1001, 800);
   tileSize=100;
-  mapWidth = width-tileSize*2;
+  mapWidth = width-200;
   mapHeight = height;
   background(148, 114, 70);
   towerPrice = 50;
@@ -36,7 +36,7 @@ void menu() {
   fill(146,152,255);
   rect(mapWidth + 1,0,mapWidth,mapHeight);
   fill(144,10,255);
-  rect(mapWidth + 21, 10, tileSize + 60, tileSize);
+  rect(mapWidth + 21, 10, 100 + 60, 100);
   fill(255,0,0);
   text(towerPrice, mapWidth + 23, 30);
   text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
@@ -45,10 +45,10 @@ void menu() {
 }
 void mouseClicked() {
   fill(144,10,255);
-  if (mouseX >= mapWidth + 20 && mouseX <= (mapWidth + tileSize + 80) && mouseY >= 10 && mouseY <= 10 + tileSize) {
+  if (mouseX >= mapWidth + 20 && mouseX <= (mapWidth + 100 + 80) && mouseY >= 10 && mouseY <= 10 + 100) {
     stroke(200);
     fill(144,10,255);
-    rect(mapWidth + 21, 10, tileSize + 60, tileSize);
+    rect(mapWidth + 21, 10, 100 + 60, 100);
     fill(255,0,0);
     text(towerPrice, mapWidth + 23, 30);
     selectedTower = new Tower(0, 0);
@@ -57,11 +57,11 @@ void mouseClicked() {
     
 }
 void generateMap() {
-  for (int i = 0;i<mapWidth;i+=100) {
+  for (int i = 0;i<mapWidth;i+=tileSize) {
     strokeWeight(3);
     line(i,0,i,mapHeight);
   }
-  for (int i = 0;i<mapHeight;i+=100) {
+  for (int i = 0;i<mapHeight;i+=tileSize) {
     line(0,i,mapWidth,i);
   }
   fill(60, 201, 70);
