@@ -13,7 +13,7 @@ boolean selected;
 ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
 void setup() {
-  size(1000, 800);
+  size(1001, 800);
   tileSize=100;
   mapWidth = width-tileSize*2;
   mapHeight = height;
@@ -30,26 +30,26 @@ void setup() {
   menu();
 }
 void menu() {
+  textSize(25);
   stroke(0);
   fill(146,152,255);
-  rect(mapWidth,0,mapWidth,mapHeight);
+  rect(mapWidth + 1,0,mapWidth,mapHeight);
   fill(144,10,255);
-  rect(mapWidth + 20, 10, tileSize + 60, tileSize);
-  if (mouseX >= mapWidth + 20 && mouseX <= (mapWidth + tileSize + 80) && mouseY >= 10 && mouseY <= 10 + tileSize) {
-    stroke(200);
-    rect(mapWidth + 20, 10, tileSize + 60, tileSize);
-  }
-  textSize(25);
-  text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 20, mapHeight - 20);
-  text("Mob count: " + mobs.size(), mapWidth + 20, mapHeight - 50);
-  text("Balance: " + balance, mapWidth + 20, mapHeight - 80);
+  rect(mapWidth + 21, 10, tileSize + 60, tileSize);
+  fill(255,0,0);
+  text(towerPrice, mapWidth + 23, 30);
+  text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
+  text("Mob count: " + mobs.size(), mapWidth + 21, mapHeight - 50);
+  text("Balance: " + balance, mapWidth + 21, mapHeight - 80);
 }
 void mouseClicked() {
   fill(144,10,255);
   if (mouseX >= mapWidth + 20 && mouseX <= (mapWidth + tileSize + 80) && mouseY >= 10 && mouseY <= 10 + tileSize) {
     stroke(200);
-    fill(100,20,200);
-    rect(mapWidth + 20, 10, tileSize + 60, tileSize);
+    fill(144,10,255);
+    rect(mapWidth + 21, 10, tileSize + 60, tileSize);
+    fill(255,0,0);
+    text(towerPrice, mapWidth + 23, 30);
     selected = true;
   }
     
@@ -104,7 +104,8 @@ boolean placeTower(int x, int y) {
     }
     else {
       String display = "Not Enough Money";
-      text(display, 40, 100);
+      fill(255,0,0);
+      text(display, mapWidth + 25, mapHeight - 100);
       //figure out a way to make text not stay forever
     }
   }
