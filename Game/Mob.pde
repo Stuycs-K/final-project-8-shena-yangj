@@ -25,18 +25,17 @@ public class Mob{
     } else return false;
   }
   //path following
-  public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int place) { 
+  public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int place) {
+    println("place: "+place);
     //int place = 0;
     int pathslength = path.size()-1;
     boolean endOfPath = false;
     //while (!endOfPath) {
-      print(place);
       println(position);
       if (place+1>=pathslength) endOfPath = true;
       if (!endOfPath && (path.get(place).getX()<mapWidth || path.get(place).getY()<mapHeight)) { //in map
         if (path.get(place).getY()==path.get(place+1).getY()) {
           position.changeLocation(moveSpeed,0);
-          //display();
         } else if (path.get(place+1).getX()==path.get(place).getY()) { //same vertically
         position.changeLocation(0,moveSpeed);
         }

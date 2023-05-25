@@ -9,6 +9,7 @@ int tileSize;
 int mapWidth;
 int mapHeight;
 int towerPrice;
+int pIndex;
 ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
 ArrayList<Location> path;
@@ -27,6 +28,7 @@ void setup() {
   balance = 50;
   menu();
   mobs.add(new Mob());
+  pIndex=0;
 }
 void menu() {
   fill(146,152,255);
@@ -100,23 +102,20 @@ void draw() {
     //mobs.add(new Mob(50,250));
   //}
   //int i = 0;
-
   if ((time % 30)== 2) {
     for (int i = 0;i<mobs.size();i++) {
-      println(mobs.size());
-      mobs.get(i).move(path,mapWidth,mapHeight,i);
-      
+      println("mobs size: "+mobs.size());
+      println("Pindex: "+pIndex);
+      mobs.get(i).move(path,mapWidth,mapHeight,pIndex);
+      //change place if moved onto next tile
+      if (mobs.get(i).getLocation().getX()>path.get(pIndex).getX()+tileSize || mobs.get(i).getLocation().getY()>path.get(pIndex).getY()+tileSize) {
+        print("HI");
+        pIndex++;
+      }
       generateMap();
       mobs.get(i).display();
+      
     }
   }
   time++;
-  //for (Mob mob : mobs) {
-  //  //println("x: "+mob.getLocation().getX()+" y: "+mob.getLocation().getY());
-  //  //if (seconds%10==0) { //move every 2 seconds
-  //    mob.move(path,mapWidth,mapHeight,i);
-  //    mob.display();
-  //  //}
-  //  i++;
-  //}
 }
