@@ -23,7 +23,7 @@ void setup() {
   time=0;
   mobs = new ArrayList<Mob>();
   towers = new ArrayList<Tower>();
-  path = new ArrayList<Location>();
+  //path = new ArrayList<Location>();
   generateMap();
   balance = 50;
   menu();
@@ -35,6 +35,7 @@ void menu() {
   rect(mapWidth,0,mapWidth,mapHeight);
 }
 void generateMap() {
+  path = new ArrayList<Location>();
   for (int i = 0;i<mapWidth;i+=100) {
     strokeWeight(3);
     line(i,0,i,mapHeight);
@@ -104,16 +105,21 @@ void draw() {
   //int i = 0;
   if ((time % 30)== 2) {
     for (int i = 0;i<mobs.size();i++) {
+      if (mobs.get(i).getLocation().getX() >= mapWidth || mobs.get(i).getLocation().getY()>=mapHeight) {
+        print("YOU LOSE");
+        text("YOU LOSE",mapWidth+tileSize/2,mapHeight+tileSize/2);
+        delay(3000);
+        exit(); //have this to give option to restart
+      }
       println("mobs size: "+mobs.size());
       println("Pindex: "+pIndex);
-      mobs.get(i).move(path,mapWidth,mapHeight,pIndex,tileSize);
+      mobs.get(i).move(path,mapWidth,mapHeight,pIndex,tileSize, path.size()-1);
       //change place if moved onto next tile
       if (mobs.get(i).getLocation().getX()>path.get(pIndex).getX()+tileSize || mobs.get(i).getLocation().getY()>path.get(pIndex).getY()+tileSize) {
         pIndex++;
       }
       generateMap();
       mobs.get(i).display();
-      
     }
   }
   time++;
