@@ -39,9 +39,10 @@ public class Mob{
     } else return false;
   }
   //path following and mob movement
-  public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int place, int tileSize, int pathListLength) {
+  public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int tileSize, int pathListLength) {
     boolean endOfPath = false;
     println(position);
+    int place = pIndex(path);
     if (place>=pathListLength) endOfPath = true;
     if (!endOfPath && (position.getX()<mapWidth || position.getY()<mapHeight)) { //in map & not last path tile
       if (path.get(place).getY()==path.get(place+1).getY()) {
@@ -72,5 +73,24 @@ public class Mob{
   public void display() {
     fill(c);
     circle(position.getX(),position.getY(),20);
+  }
+  public int pIndex(ArrayList<Location> paths) { //find where mob is in the path
+    int pIndex = 0;
+    for (int i = 0;i<paths.size();i++) {
+      //moving to the right originally
+      if (paths.get(i).getX()+tileSize>=position.getX() && position.getX()>paths.get(i).getX()) {
+        if (moveHorizontally) { //moving vertically
+          //print("HERE");
+          pIndex = i;
+          //moveHorizontally = false;
+        }
+      } else if (paths.get(i).getY()+tileSize>=position.getY() && position.getY()>paths.get(i).getY()) {
+        if (!moveHorizontally) {
+          pIndex = i;
+          //moveHorizontally = true;
+        }
+      }
+    }
+    return pIndex;
   }
 }
