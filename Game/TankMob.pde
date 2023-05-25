@@ -13,6 +13,7 @@ public class TankMob extends Mob {
   }
   public int changeArmor(int change) {
     armor -= change;
+    return armor;
   }
   public void setArmor(int armor) {
     this.armor = armor;
