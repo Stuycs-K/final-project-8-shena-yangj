@@ -109,10 +109,9 @@ void draw() {
         print("YOU LOSE");
         text("YOU LOSE",mapWidth+tileSize/2,mapHeight+tileSize/2);
         delay(3000);
-        exit(); //have this to give option to restart
+        exit(); //change this to give option to restart
       }
       println("mobs size: "+mobs.size());
-      println("Pindex: "+pIndex);
       mobs.get(i).move(path,mapWidth,mapHeight,pIndex,tileSize, path.size()-1);
       //change place if moved onto next tile
       if (mobs.get(i).getLocation().getX()>path.get(pIndex).getX()+tileSize || mobs.get(i).getLocation().getY()>path.get(pIndex).getY()+tileSize) {
