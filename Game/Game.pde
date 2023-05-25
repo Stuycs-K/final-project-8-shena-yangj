@@ -109,7 +109,6 @@ void draw() {
       mobs.get(i).move(path,mapWidth,mapHeight,pIndex);
       //change place if moved onto next tile
       if (mobs.get(i).getLocation().getX()>path.get(pIndex).getX()+tileSize || mobs.get(i).getLocation().getY()>path.get(pIndex).getY()+tileSize) {
-        print("HI");
         pIndex++;
       }
       generateMap();

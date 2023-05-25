@@ -36,7 +36,7 @@ public class Mob{
       if (!endOfPath && (path.get(place).getX()<mapWidth || path.get(place).getY()<mapHeight)) { //in map
         if (path.get(place).getY()==path.get(place+1).getY()) {
           position.changeLocation(moveSpeed,0);
-        } else if (path.get(place+1).getX()==path.get(place).getY()) { //same vertically
+        } else if (path.get(place+1).getX()==path.get(place).getX()) { //same vertically
         position.changeLocation(0,moveSpeed);
         }
       }
