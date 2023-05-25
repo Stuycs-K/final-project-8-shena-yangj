@@ -3,18 +3,20 @@ public class Mob{
   private Location position;
   private int health;
   private boolean moveHorizontally;
+  private color c;
   public Mob() {
     moveSpeed = 10;
     position = new Location(50,250);
     health = 100;
     moveHorizontally = false;
+    c = color(random(255), random(255), random(255));
   }
   public Mob(int x, int y) {
     moveSpeed = 10;
     health = 100;
     position = new Location(x,y);
     moveHorizontally = false;
-    moveVertically = false;
+    c = color(random(255), random(255), random(255));
   }
   public int getSpeed() {
     return moveSpeed;
@@ -31,7 +33,6 @@ public class Mob{
   //path following and mob movement
   public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int place, int tileSize, int pathListLength) {
     boolean endOfPath = false;
-    println(place);
     println(position);
     if (place>=pathListLength) endOfPath = true;
     if (!endOfPath && (position.getX()<mapWidth || position.getY()<mapHeight)) { //in map & not last path tile
@@ -61,7 +62,7 @@ public class Mob{
     return position;
   }
   public void display() {
-    fill(146,255,253);
+    fill(c);
     circle(position.getX(),position.getY(),20);
   }
 }

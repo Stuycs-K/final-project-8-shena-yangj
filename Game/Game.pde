@@ -98,26 +98,25 @@ void tick() {
   
 }
 void draw() {
-  //if (seconds==2) {
-  //if (seconds % 2==0) {//make a mob every 2 seconds
-    //mobs.add(new Mob(50,250));
-  //}
-  //int i = 0;
+  if (time % 240==0) {//make a mob every few seconds
+    mobs.add(new Mob(50,250));
+  }
   if ((time % 30)== 2) {
+    generateMap();
     for (int i = 0;i<mobs.size();i++) {
       if (mobs.get(i).getLocation().getX() >= mapWidth || mobs.get(i).getLocation().getY()>=mapHeight) {
         print("YOU LOSE");
-        text("YOU LOSE",mapWidth+tileSize/2,mapHeight+tileSize/2);
         delay(3000);
         exit(); //change this to give option to restart
       }
       println("mobs size: "+mobs.size());
+      print("i: "+i);
       mobs.get(i).move(path,mapWidth,mapHeight,pIndex,tileSize, path.size()-1);
       //change place if moved onto next tile
       if (mobs.get(i).getLocation().getX()>path.get(pIndex).getX()+tileSize || mobs.get(i).getLocation().getY()>path.get(pIndex).getY()+tileSize) {
         pIndex++;
       }
-      generateMap();
+      //generateMap();
       mobs.get(i).display();
     }
   }
