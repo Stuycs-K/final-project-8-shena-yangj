@@ -4,13 +4,22 @@ public class Location {
   private int yCoordinate;
   
   public Location(int x, int y) {
-    xCoordinate = x;
-    yCoordinate = y;
+    xCoordinate = ((x / tileSize) * tileSize);
+    yCoordinate = ((y / tileSize) * tileSize);
+  }
+  public Location(int x, int y, boolean isMob) {
+    if (isMob) {
+      xCoordinate = x;
+      yCoordinate = y;
+    } else {
+      xCoordinate = ((x / tileSize) * tileSize);
+      yCoordinate = ((y / tileSize) * tileSize);
+    }
   }
   public int distTo(Location x) {
     int xdist = Math.abs(x.getX() - xCoordinate);
     int ydist = Math.abs(x.getY() - yCoordinate);
-    return xdist + ydist;
+    return (int)Math.sqrt(Math.pow(xdist, 2) +  Math.pow(ydist,2));
   }
   public boolean changeLocation(int x, int y) {
     xCoordinate += x;

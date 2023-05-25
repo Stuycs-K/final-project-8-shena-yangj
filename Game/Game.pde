@@ -3,20 +3,22 @@ int time;
 int round;
 int totalHealth;
 int maxTowers;
-int currentTowers;
 int balance;
 int tileSize;
 int mapWidth;
 int mapHeight;
 int towerPrice;
 int pIndex;
+//arraylist of towerPrices?
+Tower selectedTower;
+boolean selected;
 ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
 ArrayList<Location> path;
 void setup() {
   size(1000, 800);
   tileSize=100;
-  mapWidth = width-tileSize*2;
+  mapWidth = width-200;
   mapHeight = height;
   background(148, 114, 70);
   towerPrice = 50;
@@ -26,21 +28,51 @@ void setup() {
   //path = new ArrayList<Location>();
   generateMap();
   balance = 50;
+  selected = false;
+  totalHealth = 100;
+  maxTowers = 10;
+  towers = new ArrayList<Tower>();
+  mobs = new ArrayList<Mob>();
+  //
   menu();
   mobs.add(new Mob());
   pIndex=0;
 }
 void menu() {
+  textSize(25);
+  stroke(0);
   fill(146,152,255);
-  rect(mapWidth,0,mapWidth,mapHeight);
+  rect(mapWidth + 1,0,mapWidth,mapHeight);
+  for (int i = 0; i < 4; i++) {
+    fill(144,10,255);
+    rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
+    fill(255,0,0);
+    text(towerPrice, mapWidth + 23, 30 + (100 * i));
+  }
+  text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
+  text("Mob count: " + mobs.size(), mapWidth + 21, mapHeight - 50);
+  text("Balance: " + balance, mapWidth + 21, mapHeight - 80);
+}
+void mouseClicked() {
+  fill(144,10,255);
+  if (mouseX >= mapWidth + 20 && mouseX <= (mapWidth + 100 + 80) && mouseY >= 10 && mouseY <= 10 + 100) {
+    stroke(200);
+    fill(144,10,255);
+    rect(mapWidth + 21, 10, 100 + 60, 100);
+    fill(255,0,0);
+    text(towerPrice, mapWidth + 23, 30);
+    selectedTower = new Tower(0, 0);
+    selected = true;
+  }
+    
 }
 void generateMap() {
   path = new ArrayList<Location>();
-  for (int i = 0;i<mapWidth;i+=100) {
+  for (int i = 0;i<mapWidth;i+=tileSize) {
     strokeWeight(3);
     line(i,0,i,mapHeight);
   }
-  for (int i = 0;i<mapHeight;i+=100) {
+  for (int i = 0;i<mapHeight;i+=tileSize) {
     line(0,i,mapWidth,i);
   }
   fill(60, 201, 70);
@@ -67,7 +99,11 @@ void changeBalance(int amount) {
 
 //testing placeTower
 void mousePressed() {
-  placeTower(mouseX, mouseY);
+  if (mouseX <= mapWidth && selected && towers.size() < maxTowers) {
+    placeTower(mouseX, mouseY);
+    selected = false;
+    menu();
+  }
 }
 boolean placeTower(int x, int y) {
   if (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight) {
@@ -77,13 +113,16 @@ boolean placeTower(int x, int y) {
       fill(255,0,0);
       square(x, y, tileSize);
       balance -= towerPrice;
+      selectedTower.setPosition(x, y);
+      towers.add(selectedTower);
       //check for path somehow
       //draw somewhere a error msg like "not enough money"
       return true;
     }
     else {
       String display = "Not Enough Money";
-      text(display, 40, 100);
+      fill(255,0,0);
+      text(display, mapWidth + 23, mapHeight - 100);
       //figure out a way to make text not stay forever
     }
   }
@@ -95,7 +134,7 @@ boolean placeTower(int x, int y) {
 
 void tick() {
   changeBalance(10);
-  
+  menu();
 }
 void draw() {
   if (time % 240==0) {//make a mob every few seconds

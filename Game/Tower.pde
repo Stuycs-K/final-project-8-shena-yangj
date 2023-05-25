@@ -27,4 +27,11 @@ public class Tower {
   private boolean inRange(Location p) {
     return (p.distTo(position)<=range);
   }
+  public Location changePosition(int x, int y) {
+    position.changeLocation(x, y);
+    return position;
+  }
+  public void setPosition(int x, int y) {
+    position = new Location(x, y);
+  }
 }

@@ -6,7 +6,7 @@ public class Mob{
   private color c;
   public Mob() {
     moveSpeed = 10;
-    position = new Location(50,250);
+    position = new Location(50,250,true);
     health = 100;
     moveHorizontally = false;
     c = color(random(255), random(255), random(255));
@@ -14,10 +14,18 @@ public class Mob{
   public Mob(int x, int y) {
     moveSpeed = 10;
     health = 100;
-    position = new Location(x,y);
+    position = new Location(x,y,true);
     moveHorizontally = false;
     c = color(random(255), random(255), random(255));
   }
+  public Mob(int speed, int health, int x, int y) {
+    moveSpeed = speed;
+    this.health = health;
+    position = new Location(x, y,true);
+    moveHorizontally = false;
+    c = color(random(255), random(255), random(255));
+  }
+    
   public int getSpeed() {
     return moveSpeed;
   }
