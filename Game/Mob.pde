@@ -25,21 +25,23 @@ public class Mob{
     } else return false;
   }
   //path following
-  public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int place) {
-    println("place: "+place);
+  public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int place, int tileSize) {
     //int place = 0;
     int pathslength = path.size()-1;
-    boolean endOfPath = false;
-    //while (!endOfPath) {
-      println(position);
-      if (place+1>=pathslength) endOfPath = true;
-      if (!endOfPath && (path.get(place).getX()<mapWidth || path.get(place).getY()<mapHeight)) { //in map
-        if (path.get(place).getY()==path.get(place+1).getY()) {
+    //boolean endOfPath = false;
+    println(position);
+    //if (place+1>=pathslength) endOfPath = true;
+    if (position.getX()<mapWidth || position.getY()<mapHeight) { //in map
+      if (path.get(place).getY()==path.get(place+1).getY()) {
+        if (position.getY()==path.get(place).getY()+tileSize/2) {
           position.changeLocation(moveSpeed,0);
-        } else if (path.get(place+1).getX()==path.get(place).getX()) { //same vertically
-        position.changeLocation(0,moveSpeed);
-        }
+        } else position.changeLocation(0,moveSpeed);
+      } else if (path.get(place+1).getX()==path.get(place).getX()) { //same vertically
+        if (position.getX()==path.get(place).getX()+tileSize/2) {
+          position.changeLocation(0,moveSpeed);
+        } else position.changeLocation(moveSpeed,0);
       }
+    }
   }
   public Location getLocation() {
     return position;

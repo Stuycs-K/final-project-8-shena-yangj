@@ -106,7 +106,7 @@ void draw() {
     for (int i = 0;i<mobs.size();i++) {
       println("mobs size: "+mobs.size());
       println("Pindex: "+pIndex);
-      mobs.get(i).move(path,mapWidth,mapHeight,pIndex);
+      mobs.get(i).move(path,mapWidth,mapHeight,pIndex,tileSize);
       //change place if moved onto next tile
       if (mobs.get(i).getLocation().getX()>path.get(pIndex).getX()+tileSize || mobs.get(i).getLocation().getY()>path.get(pIndex).getY()+tileSize) {
         pIndex++;
