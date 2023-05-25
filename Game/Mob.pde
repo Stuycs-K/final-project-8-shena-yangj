@@ -42,7 +42,7 @@ public class Mob{
   public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int tileSize, int pathListLength) {
     boolean endOfPath = false;
     println(position);
-    int place = pIndex(path);
+    int place = pIndex(path); //which tile in the path its on
     if (place>=pathListLength) endOfPath = true;
     if (!endOfPath && (position.getX()<mapWidth || position.getY()<mapHeight)) { //in map & not last path tile
       if (path.get(place).getY()==path.get(place+1).getY()) {
@@ -54,6 +54,7 @@ public class Mob{
           moveHorizontally = false;
         }
       } else if (path.get(place+1).getX()==path.get(place).getX()) { //same vertically
+        //print("HELLO");
         if (position.getX()==path.get(place).getX()+tileSize/2) {
           position.changeLocation(0,moveSpeed);
           moveHorizontally = false;
@@ -79,16 +80,19 @@ public class Mob{
     for (int i = 0;i<paths.size();i++) {
       //moving to the right originally
       if (paths.get(i).getX()+tileSize>=position.getX() && position.getX()>paths.get(i).getX()) {
+        //x's are the same
         if (moveHorizontally) { //moving vertically
-          //print("HERE");
+          print("HERE");
           pIndex = i;
           //moveHorizontally = false;
         }
       } else if (paths.get(i).getY()+tileSize>=position.getY() && position.getY()>paths.get(i).getY()) {
         if (!moveHorizontally) {
+          print("HELLO");
           pIndex = i;
           //moveHorizontally = true;
-        }
+        } 
+        println("pIndex: "+pIndex);
       }
     }
     return pIndex;
