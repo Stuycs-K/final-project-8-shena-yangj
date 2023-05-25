@@ -9,8 +9,10 @@ int tileSize;
 int mapWidth;
 int mapHeight;
 int towerPrice;
+int pIndex;
 ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
+ArrayList<Location> path;
 void setup() {
   size(1000, 800);
   tileSize=100;
@@ -18,15 +20,22 @@ void setup() {
   mapHeight = height;
   background(148, 114, 70);
   towerPrice = 50;
+  time=0;
+  mobs = new ArrayList<Mob>();
+  towers = new ArrayList<Tower>();
+  //path = new ArrayList<Location>();
   generateMap();
   balance = 50;
   menu();
+  mobs.add(new Mob());
+  pIndex=0;
 }
 void menu() {
   fill(146,152,255);
   rect(mapWidth,0,mapWidth,mapHeight);
 }
 void generateMap() {
+  path = new ArrayList<Location>();
   for (int i = 0;i<mapWidth;i+=100) {
     strokeWeight(3);
     line(i,0,i,mapHeight);
@@ -39,10 +48,13 @@ void generateMap() {
     for (int j = 0;j<mapHeight;j+=tileSize) {
       if (j==tileSize*2 && i<mapHeight/2) {
         square(i,j,tileSize);
+        path.add(new Location(i,j));
       } else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
         square(i,j,tileSize);
+        path.add(new Location(i,j));
       } else if (i>=tileSize*4 && j==tileSize*5) {
         square(i,j,tileSize);
+        path.add(new Location(i,j));
       }
     }
   }
@@ -83,6 +95,30 @@ boolean placeTower(int x, int y) {
 
 void tick() {
   changeBalance(10);
+  
 }
 void draw() {
+  if (time % 240==0) {//make a mob every few seconds
+    mobs.add(new Mob(50,250));
+  }
+  if ((time % 30)== 2) {
+    generateMap();
+    for (int i = 0;i<mobs.size();i++) {
+      if (mobs.get(i).getLocation().getX() >= mapWidth || mobs.get(i).getLocation().getY()>=mapHeight) {
+        print("YOU LOSE");
+        delay(3000);
+        exit(); //change this to give option to restart
+      }
+      println("mobs size: "+mobs.size());
+      print("i: "+i);
+      mobs.get(i).move(path,mapWidth,mapHeight,pIndex,tileSize, path.size()-1);
+      //change place if moved onto next tile
+      if (mobs.get(i).getLocation().getX()>path.get(pIndex).getX()+tileSize || mobs.get(i).getLocation().getY()>path.get(pIndex).getY()+tileSize) {
+        pIndex++;
+      }
+      //generateMap();
+      mobs.get(i).display();
+    }
+  }
+  time++;
 }
