@@ -8,14 +8,13 @@ int tileSize;
 int mapWidth;
 int mapHeight;
 int towerPrice;
-int pIndex;
 int selectNum;
 //arraylist of towerPrices?
 Tower selectedTower;
 boolean selected;
 ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
-ArrayList<Location> path;
+ArrayList<Location> paths;
 void setup() {
   size(1000, 800);
   tileSize=100;
@@ -37,7 +36,6 @@ void setup() {
   //
   menu();
   mobs.add(new Mob());
-  pIndex=0;
   selectNum = -1;
 }
 void menu() {
@@ -87,8 +85,8 @@ void mouseClicked() {
     
 }
 void generateMap() {
+  paths = new ArrayList<Location>();
   stroke(0);
-  path = new ArrayList<Location>();
   for (int i = 0;i<mapWidth;i+=tileSize) {
     strokeWeight(3);
     line(i,0,i,mapHeight);
@@ -101,13 +99,13 @@ void generateMap() {
     for (int j = 0;j<mapHeight;j+=tileSize) {
       if (j==tileSize*2 && i<mapHeight/2) {
         square(i,j,tileSize);
-        path.add(new Location(i,j));
+        paths.add(new Location(i,j));
       } else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
         square(i,j,tileSize);
-        path.add(new Location(i,j));
+        paths.add(new Location(i,j));
       } else if (i>=tileSize*4 && j==tileSize*5) {
         square(i,j,tileSize);
-        path.add(new Location(i,j));
+        paths.add(new Location(i,j));
       }
     }
   }
@@ -164,17 +162,12 @@ void draw() {
     for (int i = 0;i<mobs.size();i++) {
       if (mobs.get(i).getLocation().getX() >= mapWidth || mobs.get(i).getLocation().getY()>=mapHeight) {
         print("YOU LOSE");
-        delay(3000);
+        delay(2000);
         exit(); //change this to give option to restart
       }
       println("mobs size: "+mobs.size());
       print("i: "+i);
-      mobs.get(i).move(path,mapWidth,mapHeight,pIndex,tileSize, path.size()-1);
-      //change place if moved onto next tile
-      if (mobs.get(i).getLocation().getX()>path.get(pIndex).getX()+tileSize || mobs.get(i).getLocation().getY()>path.get(pIndex).getY()+tileSize) {
-        pIndex++;
-      }
-      //generateMap();
+      mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size()-1);
       mobs.get(i).display();
     }
   }
