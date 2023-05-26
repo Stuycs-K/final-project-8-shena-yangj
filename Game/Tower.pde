@@ -36,6 +36,12 @@ public class Tower {
   public void setPosition(int x, int y) {
     position = new Location(x, y);
   }
+  public int getAttack() {
+    return attackDelay;
+  }
+  public int getPower() {
+    return power:
+  }
   public String toString() {
     return (position + "AD: " + attackDelay + "P: " + power + "R: " + range);
   }

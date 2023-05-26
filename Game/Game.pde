@@ -58,6 +58,8 @@ void menu() {
     rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
     fill(255,0,0);
     text(prices.get(i), mapWidth + 23, 30 + (100 * i));
+    text(selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
+    text(selects.get(i).getPower(), mapWidth + 23, 70 + (100 * i));
   }
   if (selectNum >= 0) {
     stroke(200);
@@ -65,6 +67,8 @@ void menu() {
     rect(mapWidth + 21, 10 + (100 * selectNum), 100 + 60, 100);
     fill(255,0,0);
     text(prices.get(selectNum), mapWidth + 23, 30 + (100 * selectNum));
+    text(selects.get(selectNum).getAttack(), mapWidth + 23, 50 + (100 * i));
+    text(selects.get(selectNum).getPower(), mapWidth + 23, 70 + (100 * i));
     stroke(0);
   }
   text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
@@ -81,6 +85,8 @@ void mouseClicked() {
         rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
         fill(255,0,0);
         text(prices.get(i), mapWidth + 23, 30 + (100 * i));
+        text(selects.get(selectNum).getAttack(), mapWidth + 23, 50 + (100 * i));
+        text(selects.get(selectNum).getPower(), mapWidth + 23, 70 + (100 * i));
         selectedTower = selects.get(i);
         selected = true;
         selectNum = i;
