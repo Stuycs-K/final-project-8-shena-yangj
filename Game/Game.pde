@@ -80,7 +80,7 @@ void menu() {
   textSize(15);
   strokeWeight(5);
   stroke(255,87,51);
-  line(endZone.getX()+tileSize+5,endZone.getY(),endZone.getX()+tileSize+5,endZone.getY()+tileSize);
+  line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
   strokeWeight(3);
   stroke(0);
 }
@@ -134,7 +134,7 @@ void generateMap() {
       }
     }
   }
-  endZone = new Location(paths.get(paths.size()-1).getX(),paths.get(paths.size()-1).getY());
+  endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
 }
 
 
@@ -199,7 +199,9 @@ void draw() {
   if ((time % 30)== 2) {
     generateMap();
     for (int i = 0;i<mobs.size();i++) {
-      if (mobs.get(i).getLocation().getX() >= mapWidth || mobs.get(i).getLocation().getY()>=mapHeight) {
+      if (mobs.get(i).getLocation().getX()+ mobs.get(i).getRadius()>= endZone.getX()) {
+        mobs.remove(i);
+        
         //print("YOU LOSE");
         delay(2000);
         exit(); //change this to give option to restart

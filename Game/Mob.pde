@@ -1,5 +1,6 @@
 public class Mob{
   private int moveSpeed;
+  private int radius;
   private Location position;
   private int health;
   private boolean moveHorizontally;
@@ -9,10 +10,12 @@ public class Mob{
     position = new Location(50,250,true);
     health = 100;
     moveHorizontally = false;
+    radius = 20;
     c = color(random(255), random(255), random(255));
   }
   public Mob(int x, int y) {
     moveSpeed = 10;
+    radius = 20;
     health = 100;
     position = new Location(x,y,true);
     moveHorizontally = false;
@@ -21,6 +24,7 @@ public class Mob{
   public Mob(int speed, int health, int x, int y) {
     moveSpeed = speed;
     this.health = health;
+    radius = 20;
     position = new Location(x, y,true);
     moveHorizontally = false;
     c = color(random(255), random(255), random(255));
@@ -28,6 +32,9 @@ public class Mob{
     
   public int getSpeed() {
     return moveSpeed;
+  }
+  public int getRadius() {
+    return radius;
   }
   public int getHealth() {
     return health;
@@ -71,7 +78,7 @@ public class Mob{
   }
   public void display() {
     fill(c);
-    circle(position.getX(),position.getY(),20);
+    circle(position.getX(),position.getY(),radius);
     fill(255-red(c),255-green(c),255-blue(c));
     textSize(10);
     text(health,position.getX()-8,position.getY()+2);
