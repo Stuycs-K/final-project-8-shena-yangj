@@ -41,7 +41,7 @@ public class Mob{
   //path following and mob movement
   public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int tileSize, int pathListLength) {
     boolean endOfPath = false;
-    println(position);
+    //println(position);
     int place = pIndex(path); //which tile in the path its on
     if (place>=pathListLength) endOfPath = true;
     if (!endOfPath && (position.getX()<mapWidth || position.getY()<mapHeight)) { //in map & not last path tile

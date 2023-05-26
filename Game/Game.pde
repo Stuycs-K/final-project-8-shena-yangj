@@ -7,11 +7,13 @@ int balance;
 int tileSize;
 int mapWidth;
 int mapHeight;
-int towerPrice;
 int selectNum;
+int reward;
+ArrayList<Integer> prices;
 //arraylist of towerPrices?
 Tower selectedTower;
 boolean selected;
+ArrayList<Tower> selects;
 ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
 ArrayList<Location> paths;
@@ -21,8 +23,8 @@ void setup() {
   mapWidth = width-200;
   mapHeight = height;
   background(148, 114, 70);
-  towerPrice = 50;
   time=0;
+  round = 100;
   mobs = new ArrayList<Mob>();
   towers = new ArrayList<Tower>();
   //path = new ArrayList<Location>();
@@ -31,15 +33,24 @@ void setup() {
   selected = false;
   totalHealth = 100;
   maxTowers = 10;
-  towers = new ArrayList<Tower>();
-  mobs = new ArrayList<Mob>();
+  prices = new ArrayList<Integer> ();
+  for (int i = 0; i < 4; i++) {
+    prices.add((i * 25) + 50);
+  }
   //
-  menu();
   mobs.add(new Mob());
   selectNum = -1;
+  reward = 10;
+  selects = new ArrayList<Tower> ();
+  for (int i = 0; i < 4; i++) {
+    int r = (int)(Math.random() * (prices.get(i) / 2));
+    selects.add(new Tower(0,0,r, (prices.get(i) / r), 1));
+    println(selects.get(i));
+  }
+  menu();
 }
 void menu() {
-  textSize(25);
+  textSize(15);
   stroke(0);
   fill(146,152,255);
   rect(mapWidth + 1,0,mapWidth,mapHeight);
@@ -47,19 +58,26 @@ void menu() {
     fill(144,10,255);
     rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
     fill(255,0,0);
-    text(towerPrice, mapWidth + 23, 30 + (100 * i));
+    text("Price: " + prices.get(i), mapWidth + 23, 30 + (100 * i));
+    text("AttackDelay: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
+    text("Power: " + selects.get(i).getPower(), mapWidth + 23, 70 + (100 * i));
   }
   if (selectNum >= 0) {
     stroke(200);
     fill(144,10,255);
     rect(mapWidth + 21, 10 + (100 * selectNum), 100 + 60, 100);
     fill(255,0,0);
-    text(towerPrice, mapWidth + 23, 30 + (100 * selectNum));
+    text("Price: " + prices.get(selectNum), mapWidth + 23, 30 + (100 * selectNum));
+    text("AttackDelay: " + selects.get(selectNum).getAttack(), mapWidth + 23, 50 + (100 * selectNum));
+    text("Power: " + selects.get(selectNum).getPower(), mapWidth + 23, 70 + (100 * selectNum));
     stroke(0);
   }
+  textSize(25);
   text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
   text("Mob count: " + mobs.size(), mapWidth + 21, mapHeight - 50);
   text("Balance: " + balance, mapWidth + 21, mapHeight - 80);
+  text("Round Timer: " + round, mapWidth + 10, mapHeight - 110);
+  textSize(15);
 }
 void mouseClicked() {
   fill(144,10,255);
@@ -70,8 +88,10 @@ void mouseClicked() {
         fill(144,10,255);
         rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
         fill(255,0,0);
-        text(towerPrice, mapWidth + 23, 30 + (100 * i));
-        selectedTower = new Tower(0, 0);
+        text("Price: " + prices.get(i), mapWidth + 23, 30 + (100 * i));
+        text("AttackDelay: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
+        text("Power: " + selects.get(i).getPower(), mapWidth + 23, 70 + (100 * i));
+        selectedTower = selects.get(i);
         selected = true;
         selectNum = i;
       }
@@ -118,12 +138,12 @@ void changeBalance(int amount) {
 
 boolean placeTower(int x, int y) {
   if (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight) {
-    if (balance >= towerPrice) {
+    if (balance >= prices.get(selectNum)) {
       x = (x / tileSize) * tileSize;
       y = (y / tileSize) * tileSize;
       fill(255,0,0);
       square(x, y, tileSize);
-      balance -= towerPrice;
+      balance -= prices.get(selectNum);
       selectedTower.setPosition(x, y);
       towers.add(selectedTower);
       menu();
@@ -148,27 +168,43 @@ boolean placeTower(int x, int y) {
 }
 
 void tick() {
-  menu();
+  if (time % 60 == 0) {
+    round--;
+  }
   if (time % 120 == 0) {
     changeBalance(10);
   }
 }
 void draw() {
+  menu();
   if (time % 240==0) {//make a mob every few seconds
     mobs.add(new Mob(50,250));
+  }
+  for (int i = 0; i < mobs.size(); i++) {
+    if (mobs.get(i).getHealth() <= 0) {
+      mobs.remove(mobs.get(i));
+      i--;
+      balance += reward;
+      //reward should depend on future difficulty modes
+    }
   }
   if ((time % 30)== 2) {
     generateMap();
     for (int i = 0;i<mobs.size();i++) {
       if (mobs.get(i).getLocation().getX() >= mapWidth || mobs.get(i).getLocation().getY()>=mapHeight) {
-        print("YOU LOSE");
+        //print("YOU LOSE");
         delay(2000);
         exit(); //change this to give option to restart
       }
-      println("mobs size: "+mobs.size());
-      print("i: "+i);
+      //println("mobs size: "+mobs.size());
+      //print("i: "+i);
       mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size()-1);
       mobs.get(i).display();
+    }
+  }
+  for (Tower a : towers) {
+    for (Mob b : mobs) {
+      a.attack(b, time);
     }
   }
   time++;
