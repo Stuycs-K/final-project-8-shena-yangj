@@ -32,11 +32,10 @@ public class Mob{
   public int getHealth() {
     return health;
   }
-  public boolean doDamage(int change) { //return false if health < 0
+  public void doDamage(int change) { //return false if health < 0
     if (health>0) {
       health-=change;
-      return true;
-    } else return false;
+    }
   }
   //path following and mob movement
   public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int tileSize, int pathListLength) {

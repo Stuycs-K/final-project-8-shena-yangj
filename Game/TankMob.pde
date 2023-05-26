@@ -18,4 +18,11 @@ public class TankMob extends Mob {
   public void setArmor(int armor) {
     this.armor = armor;
   }
+  public void doDamage(int change) {
+    double percent = armor / 100.0;
+    if (super.health > 0) {
+      super.health -= (change * percent);
+    }
+  }
+    //shld do armor mob to test
 }
