@@ -175,37 +175,45 @@ void tick() {
   }
 }
 void draw() {
-  menu();
-  if (time % 240==0) {//make a mob every few seconds
-    mobs.add(new Mob(50,250));
-  }
-  for (int i = 0; i < mobs.size(); i++) {
-    if (mobs.get(i).getHealth() <= 0) {
-      mobs.remove(mobs.get(i));
-      i--;
-      balance += reward;
-      score++;
-      //eventually make diff score depending on mob killed
-      //reward should depend on future difficulty modes
+  if (round > 0) {
+     menu();
+    if (time % 240==0) {//make a mob every few seconds
+      mobs.add(new Mob(50,250));
     }
-  }
-  if ((time % 30)== 2) {
-    generateMap();
-    for (int i = 0;i<mobs.size();i++) {
-      if (mobs.get(i).getLocation().getX() >= mapWidth || mobs.get(i).getLocation().getY()>=mapHeight) {
-        //print("YOU LOSE");
-        delay(2000);
-        exit(); //change this to give option to restart
+    for (int i = 0; i < mobs.size(); i++) {
+      if (mobs.get(i).getHealth() <= 0) {
+        mobs.remove(mobs.get(i));
+        i--;
+        balance += reward;
+        score++;
+        //eventually make diff score depending on mob killed
+        //reward should depend on future difficulty modes
       }
-      mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size()-1);
-      mobs.get(i).display();
     }
-  }
-  for (Tower a : towers) {
-    for (Mob b : mobs) {
-      a.attack(b, time);
+    if ((time % 30)== 2) {
+      generateMap();
+      for (int i = 0;i<mobs.size();i++) {
+        if (mobs.get(i).getLocation().getX() >= mapWidth || mobs.get(i).getLocation().getY()>=mapHeight) {
+          //print("YOU LOSE");
+          delay(2000);
+          exit(); //change this to give option to restart
+        }
+        mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size()-1);
+        mobs.get(i).display();
+      }
     }
+    for (Tower a : towers) {
+      for (Mob b : mobs) {
+        a.attack(b, time);
+      }
+    }
+    time++;
+    tick();
   }
-  time++;
-  tick();
+  else {
+    //print("YOU WIN");
+    tick();
+    delay(2000);
+    exit(); //restart option future
+  }
 }
