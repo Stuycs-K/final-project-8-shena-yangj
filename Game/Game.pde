@@ -10,6 +10,7 @@ int mapHeight;
 int selectNum;
 int reward;
 int score;
+Location endZone;
 ArrayList<Integer> prices;
 Tower selectedTower;
 boolean selected;
@@ -77,6 +78,11 @@ void menu() {
   text("Round Timer: " + round, mapWidth + 10, mapHeight - 140);
   text("Score: " + score, mapWidth + 21, mapHeight - 110);
   textSize(15);
+  strokeWeight(5);
+  stroke(255,87,51);
+  line(endZone.getX()+tileSize+5,endZone.getY(),endZone.getX()+tileSize+5,endZone.getY()+tileSize);
+  strokeWeight(3);
+  stroke(0);
 }
 void mouseClicked() {
   fill(144,10,255);
@@ -128,6 +134,7 @@ void generateMap() {
       }
     }
   }
+  endZone = new Location(paths.get(paths.size()-1).getX(),paths.get(paths.size()-1).getY());
 }
 
 
