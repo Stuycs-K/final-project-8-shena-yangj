@@ -72,6 +72,9 @@ public class Mob{
   public void display() {
     fill(c);
     circle(position.getX(),position.getY(),20);
+    fill(255-red(c),255-green(c),255-blue(c));
+    textSize(10);
+    text(health,position.getX()-8,position.getY()+2);
   }
   public int pIndex(ArrayList<Location> paths) { //find where mob is in the path
     int pIndex = 0;

@@ -11,7 +11,6 @@ int selectNum;
 int reward;
 int score;
 ArrayList<Integer> prices;
-//arraylist of towerPrices?
 Tower selectedTower;
 boolean selected;
 ArrayList<Tower> selects;
@@ -28,7 +27,6 @@ void setup() {
   round = 100;
   mobs = new ArrayList<Mob>();
   towers = new ArrayList<Tower>();
-  //path = new ArrayList<Location>();
   generateMap();
   balance = 50;
   selected = false;
@@ -38,13 +36,11 @@ void setup() {
   for (int i = 0; i < 4; i++) {
     prices.add((i * 25) + 50);
   }
-  //
-  mobs.add(new Mob());
   selectNum = -1;
   reward = 10;
   selects = new ArrayList<Tower> ();
   for (int i = 0; i < 4; i++) {
-    int r = (int)(Math.random() * (prices.get(i) / 2));
+    int r = (int)(Math.random() * (prices.get(i) / 2))+1;
     selects.add(new Tower(0,0,r, (prices.get(i) / r), 1));
     println(selects.get(i));
   }
@@ -201,8 +197,6 @@ void draw() {
         delay(2000);
         exit(); //change this to give option to restart
       }
-      //println("mobs size: "+mobs.size());
-      //print("i: "+i);
       mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size()-1);
       mobs.get(i).display();
     }
