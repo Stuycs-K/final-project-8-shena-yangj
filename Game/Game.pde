@@ -7,13 +7,13 @@ int balance;
 int tileSize;
 int mapWidth;
 int mapHeight;
-int towerPrice;
 int selectNum;
 int reward;
 ArrayList<Integer> prices;
 //arraylist of towerPrices?
 Tower selectedTower;
 boolean selected;
+ArrayList<Tower> selects;
 ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
 ArrayList<Location> paths;
@@ -23,7 +23,6 @@ void setup() {
   mapWidth = width-200;
   mapHeight = height;
   background(148, 114, 70);
-  towerPrice = 50;
   time=0;
   mobs = new ArrayList<Mob>();
   towers = new ArrayList<Tower>();
@@ -42,6 +41,12 @@ void setup() {
   mobs.add(new Mob());
   selectNum = -1;
   reward = 10;
+  selects = new ArrayList<Tower> ();
+  for (int i = 0; i < 4; i++) {
+    int r = (int)(Math.random() * (prices.get(i) / 2));
+    selects.add(new Tower(0,0,r, (prices.get(i) / r), 1));
+    println(selects.get(i));
+  }
 }
 void menu() {
   textSize(25);
@@ -76,7 +81,7 @@ void mouseClicked() {
         rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
         fill(255,0,0);
         text(prices.get(i), mapWidth + 23, 30 + (100 * i));
-        selectedTower = new Tower(0, 0);
+        selectedTower = selects.get(i);
         selected = true;
         selectNum = i;
       }
