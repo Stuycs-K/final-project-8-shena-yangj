@@ -6,26 +6,28 @@ public class Tower {
   public Tower(int x, int y) {
     attackSpeed = 10;
     power = 10;
-    range = 10;
+    range = tileSize + (2 * tileSize);
     position = new Location(x,y);
   }
   public Tower(int x, int y, int attackSpeed, int power, int range) {
     this.attackSpeed = attackSpeed;
     this.power = power;
-    this.range = range;
+    this.range = (range * tileSize) + tileSize;
     position = new Location(x,y);
   }
   public Location getLocation() {
     return position;
   }
-  private boolean attack(Mob m) {
-    if (inRange(m.getLocation())) {
-      m.doDamage(power);
-      return true;
-    } else return false;
+  private void attack(Mob m, int time) {
+    if (time % attackSpeed == 0) {
+      if (inRange(m.getLocation())) {
+        m.doDamage(power);
+      }
+    }
   }
   private boolean inRange(Location p) {
-    return (p.distTo(position)<=range);
+    Location temp = new Location((position.getX() + 50), (position.getY() + 50), true);
+    return (p.distTo(temp)<=range);
   }
   public Location changePosition(int x, int y) {
     position.changeLocation(x, y);

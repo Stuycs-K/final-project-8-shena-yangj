@@ -148,27 +148,41 @@ boolean placeTower(int x, int y) {
 }
 
 void tick() {
-  menu();
   if (time % 120 == 0) {
     changeBalance(10);
   }
 }
 void draw() {
+  menu();
   if (time % 240==0) {//make a mob every few seconds
     mobs.add(new Mob(50,250));
+  }
+  //if (mobs.size() > 0) {
+  // println(mobs.get(0).getHealth());
+  //}
+  for (int i = 0; i < mobs.size(); i++) {
+    if (mobs.get(i).getHealth() <= 0) {
+      mobs.remove(mobs.get(i));
+      i--;
+    }
   }
   if ((time % 30)== 2) {
     generateMap();
     for (int i = 0;i<mobs.size();i++) {
       if (mobs.get(i).getLocation().getX() >= mapWidth || mobs.get(i).getLocation().getY()>=mapHeight) {
-        print("YOU LOSE");
+        //print("YOU LOSE");
         delay(2000);
         exit(); //change this to give option to restart
       }
-      println("mobs size: "+mobs.size());
-      print("i: "+i);
+      //println("mobs size: "+mobs.size());
+      //print("i: "+i);
       mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size()-1);
       mobs.get(i).display();
+    }
+  }
+  for (Tower a : towers) {
+    for (Mob b : mobs) {
+      a.attack(b, time);
     }
   }
   time++;
