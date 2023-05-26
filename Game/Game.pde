@@ -9,6 +9,7 @@ int mapWidth;
 int mapHeight;
 int selectNum;
 int reward;
+int score;
 ArrayList<Integer> prices;
 //arraylist of towerPrices?
 Tower selectedTower;
@@ -47,6 +48,7 @@ void setup() {
     selects.add(new Tower(0,0,r, (prices.get(i) / r), 1));
     println(selects.get(i));
   }
+  score = 0;
   menu();
 }
 void menu() {
@@ -76,7 +78,8 @@ void menu() {
   text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
   text("Mob count: " + mobs.size(), mapWidth + 21, mapHeight - 50);
   text("Balance: " + balance, mapWidth + 21, mapHeight - 80);
-  text("Round Timer: " + round, mapWidth + 10, mapHeight - 110);
+  text("Round Timer: " + round, mapWidth + 10, mapHeight - 140);
+  text("Score: " + score, mapWidth + 21, mapHeight - 110);
   textSize(15);
 }
 void mouseClicked() {
@@ -185,6 +188,8 @@ void draw() {
       mobs.remove(mobs.get(i));
       i--;
       balance += reward;
+      score++;
+      //eventually make diff score depending on mob killed
       //reward should depend on future difficulty modes
     }
   }
