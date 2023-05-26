@@ -54,7 +54,6 @@ public class Mob{
           moveHorizontally = false;
         }
       } else if (path.get(place+1).getX()==path.get(place).getX()) { //same vertically
-        //print("HELLO");
         if (position.getX()==path.get(place).getX()+tileSize/2) {
           position.changeLocation(0,moveSpeed);
           moveHorizontally = false;
@@ -82,17 +81,12 @@ public class Mob{
       if (paths.get(i).getX()+tileSize>=position.getX() && position.getX()>paths.get(i).getX()) {
         //x's are the same
         if (moveHorizontally) { //moving vertically
-          print("HERE");
-          pIndex = i;
-          //moveHorizontally = false;
+          return i;
         }
       } else if (paths.get(i).getY()+tileSize>=position.getY() && position.getY()>paths.get(i).getY()) {
         if (!moveHorizontally) {
-          print("HELLO");
-          pIndex = i;
-          //moveHorizontally = true;
+          return i;
         } 
-        println("pIndex: "+pIndex);
       }
     }
     return pIndex;

@@ -143,17 +143,12 @@ void draw() {
     for (int i = 0;i<mobs.size();i++) {
       if (mobs.get(i).getLocation().getX() >= mapWidth || mobs.get(i).getLocation().getY()>=mapHeight) {
         print("YOU LOSE");
-        delay(3000);
+        delay(2000);
         exit(); //change this to give option to restart
       }
       println("mobs size: "+mobs.size());
       print("i: "+i);
       mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size()-1);
-      //change place if moved onto next tile
-      //if (mobs.get(i).getLocation().getX()>paths.get(pIndex).getX()+tileSize || mobs.get(i).getLocation().getY()>paths.get(pIndex).getY()+tileSize) {
-      //  pIndex++;
-      //}
-      //generateMap();
       mobs.get(i).display();
     }
   }
