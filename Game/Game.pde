@@ -9,6 +9,8 @@ int mapWidth;
 int mapHeight;
 int towerPrice;
 int selectNum;
+int reward;
+ArrayList<Integer> prices;
 //arraylist of towerPrices?
 Tower selectedTower;
 boolean selected;
@@ -31,12 +33,15 @@ void setup() {
   selected = false;
   totalHealth = 100;
   maxTowers = 10;
-  towers = new ArrayList<Tower>();
-  mobs = new ArrayList<Mob>();
+  prices = new ArrayList<Integer> ();
+  for (int i = 0; i < 4; i++) {
+    prices.add((i * 25) + 50);
+  }
   //
   menu();
   mobs.add(new Mob());
   selectNum = -1;
+  reward = 10;
 }
 void menu() {
   textSize(25);
@@ -47,14 +52,14 @@ void menu() {
     fill(144,10,255);
     rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
     fill(255,0,0);
-    text(towerPrice, mapWidth + 23, 30 + (100 * i));
+    text(prices.get(i), mapWidth + 23, 30 + (100 * i));
   }
   if (selectNum >= 0) {
     stroke(200);
     fill(144,10,255);
     rect(mapWidth + 21, 10 + (100 * selectNum), 100 + 60, 100);
     fill(255,0,0);
-    text(towerPrice, mapWidth + 23, 30 + (100 * selectNum));
+    text(prices.get(selectNum), mapWidth + 23, 30 + (100 * selectNum));
     stroke(0);
   }
   text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
@@ -70,7 +75,7 @@ void mouseClicked() {
         fill(144,10,255);
         rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
         fill(255,0,0);
-        text(towerPrice, mapWidth + 23, 30 + (100 * i));
+        text(prices.get(i), mapWidth + 23, 30 + (100 * i));
         selectedTower = new Tower(0, 0);
         selected = true;
         selectNum = i;
@@ -118,12 +123,12 @@ void changeBalance(int amount) {
 
 boolean placeTower(int x, int y) {
   if (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight) {
-    if (balance >= towerPrice) {
+    if (balance >= prices.get(selectNum)) {
       x = (x / tileSize) * tileSize;
       y = (y / tileSize) * tileSize;
       fill(255,0,0);
       square(x, y, tileSize);
-      balance -= towerPrice;
+      balance -= prices.get(selectNum);
       selectedTower.setPosition(x, y);
       towers.add(selectedTower);
       menu();
@@ -157,13 +162,12 @@ void draw() {
   if (time % 240==0) {//make a mob every few seconds
     mobs.add(new Mob(50,250));
   }
-  //if (mobs.size() > 0) {
-  // println(mobs.get(0).getHealth());
-  //}
   for (int i = 0; i < mobs.size(); i++) {
     if (mobs.get(i).getHealth() <= 0) {
       mobs.remove(mobs.get(i));
       i--;
+      balance += reward;
+      //reward should depend on future difficulty modes
     }
   }
   if ((time % 30)== 2) {
