@@ -40,7 +40,7 @@ public class Tower {
     return attackDelay;
   }
   public int getPower() {
-    return power:
+    return power;
   }
   public String toString() {
     return (position + "AD: " + attackDelay + "P: " + power + "R: " + range);

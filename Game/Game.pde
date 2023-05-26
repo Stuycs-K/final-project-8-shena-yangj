@@ -24,6 +24,7 @@ void setup() {
   mapHeight = height;
   background(148, 114, 70);
   time=0;
+  round = 100;
   mobs = new ArrayList<Mob>();
   towers = new ArrayList<Tower>();
   //path = new ArrayList<Location>();
@@ -37,7 +38,6 @@ void setup() {
     prices.add((i * 25) + 50);
   }
   //
-  menu();
   mobs.add(new Mob());
   selectNum = -1;
   reward = 10;
@@ -47,9 +47,10 @@ void setup() {
     selects.add(new Tower(0,0,r, (prices.get(i) / r), 1));
     println(selects.get(i));
   }
+  menu();
 }
 void menu() {
-  textSize(25);
+  textSize(15);
   stroke(0);
   fill(146,152,255);
   rect(mapWidth + 1,0,mapWidth,mapHeight);
@@ -57,23 +58,26 @@ void menu() {
     fill(144,10,255);
     rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
     fill(255,0,0);
-    text(prices.get(i), mapWidth + 23, 30 + (100 * i));
-    text(selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
-    text(selects.get(i).getPower(), mapWidth + 23, 70 + (100 * i));
+    text("Price: " + prices.get(i), mapWidth + 23, 30 + (100 * i));
+    text("AttackDelay: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
+    text("Power: " + selects.get(i).getPower(), mapWidth + 23, 70 + (100 * i));
   }
   if (selectNum >= 0) {
     stroke(200);
     fill(144,10,255);
     rect(mapWidth + 21, 10 + (100 * selectNum), 100 + 60, 100);
     fill(255,0,0);
-    text(prices.get(selectNum), mapWidth + 23, 30 + (100 * selectNum));
-    text(selects.get(selectNum).getAttack(), mapWidth + 23, 50 + (100 * i));
-    text(selects.get(selectNum).getPower(), mapWidth + 23, 70 + (100 * i));
+    text("Price: " + prices.get(selectNum), mapWidth + 23, 30 + (100 * selectNum));
+    text("AttackDelay: " + selects.get(selectNum).getAttack(), mapWidth + 23, 50 + (100 * selectNum));
+    text("Power: " + selects.get(selectNum).getPower(), mapWidth + 23, 70 + (100 * selectNum));
     stroke(0);
   }
+  textSize(25);
   text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
   text("Mob count: " + mobs.size(), mapWidth + 21, mapHeight - 50);
   text("Balance: " + balance, mapWidth + 21, mapHeight - 80);
+  text("Round Timer: " + round, mapWidth + 10, mapHeight - 110);
+  textSize(15);
 }
 void mouseClicked() {
   fill(144,10,255);
@@ -84,9 +88,9 @@ void mouseClicked() {
         fill(144,10,255);
         rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
         fill(255,0,0);
-        text(prices.get(i), mapWidth + 23, 30 + (100 * i));
-        text(selects.get(selectNum).getAttack(), mapWidth + 23, 50 + (100 * i));
-        text(selects.get(selectNum).getPower(), mapWidth + 23, 70 + (100 * i));
+        text("Price: " + prices.get(i), mapWidth + 23, 30 + (100 * i));
+        text("AttackDelay: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
+        text("Power: " + selects.get(i).getPower(), mapWidth + 23, 70 + (100 * i));
         selectedTower = selects.get(i);
         selected = true;
         selectNum = i;
@@ -164,6 +168,9 @@ boolean placeTower(int x, int y) {
 }
 
 void tick() {
+  if (time % 60 == 0) {
+    round--;
+  }
   if (time % 120 == 0) {
     changeBalance(10);
   }
