@@ -78,8 +78,8 @@ void menu() {
   text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
   text("Mob count: " + mobs.size(), mapWidth + 21, mapHeight - 50);
   text("Balance: " + balance, mapWidth + 21, mapHeight - 80);
-  text("Round Timer: " + round, mapWidth + 10, mapHeight - 120);
-  text("Total Health: "+totalHealth, mapWidth+10,mapHeight-140);
+  text("Round Timer: " + round, mapWidth + 10, mapHeight - 140);
+  text("Total Health: "+totalHealth, mapWidth+10,mapHeight-160);
   text("Score: " + score, mapWidth + 21, mapHeight - 110);
   textSize(15);
   strokeWeight(5);
