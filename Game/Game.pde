@@ -209,7 +209,7 @@ void tick() {
   }
 }
 void draw() {
-  menu();
+menu();
   if (time % 240==0) {//make a mob every few seconds
   //if (time==0) {
     mobs.add(new Mob(50,250));
