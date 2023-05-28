@@ -5,6 +5,7 @@ public class Mob{
   private int health;
   private boolean moveHorizontally;
   private color c;
+  private int attackPower;
   public Mob() {
     moveSpeed = 10;
     position = new Location(50,250,true);
@@ -12,6 +13,7 @@ public class Mob{
     moveHorizontally = false;
     radius = 20;
     c = color(random(255), random(255), random(255));
+    attackPower = 10;
   }
   public Mob(int x, int y) {
     moveSpeed = 10;
@@ -20,6 +22,7 @@ public class Mob{
     position = new Location(x,y,true);
     moveHorizontally = false;
     c = color(random(255), random(255), random(255));
+    attackPower = 10;
   }
   public Mob(int speed, int health, int x, int y) {
     moveSpeed = speed;
@@ -28,6 +31,7 @@ public class Mob{
     position = new Location(x, y,true);
     moveHorizontally = false;
     c = color(random(255), random(255), random(255));
+    attackPower = 10;
   }
     
   public int getSpeed() {
@@ -38,6 +42,9 @@ public class Mob{
   }
   public int getHealth() {
     return health;
+  }
+  public int getAttackPower() {
+    return attackPower;
   }
   public void doDamage(int change) { //return false if health < 0
     if (health>0) {

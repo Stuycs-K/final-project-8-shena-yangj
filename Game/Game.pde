@@ -78,7 +78,8 @@ void menu() {
   text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
   text("Mob count: " + mobs.size(), mapWidth + 21, mapHeight - 50);
   text("Balance: " + balance, mapWidth + 21, mapHeight - 80);
-  text("Round Timer: " + round, mapWidth + 10, mapHeight - 140);
+  text("Round Timer: " + round, mapWidth + 10, mapHeight - 120);
+  text("Total Health: "+totalHealth, mapWidth+10,mapHeight-140);
   text("Score: " + score, mapWidth + 21, mapHeight - 110);
   textSize(15);
   strokeWeight(5);
@@ -209,8 +210,8 @@ void tick() {
 }
 void draw() {
   menu();
-  //if (time % 240==0) {//make a mob every few seconds
-  if (time==0) {
+  if (time % 240==0) {//make a mob every few seconds
+  //if (time==0) {
     mobs.add(new Mob(50,250));
   }
   for (int i = 0; i < mobs.size(); i++) {
@@ -229,16 +230,22 @@ void draw() {
       if (mobs.get(i).getLocation().getX()>= endZone.getX()) {
         mobs.remove(i);
         //+ mobs.get(i).getRadius()
-        print("YOU LOSE");
-        delay(2000);
+        totalHealth-=mobs.get(i).getAttackPower();
+        println("totalHealth: "+totalHealth);
+        continue; //continue w/ next mob since otherwise will run rest of method too
+      }
+      if (totalHealth<=0) {
         gameOver = true;
-        break; //since otherwise will run rest of method too
-        //exit(); //change this to give option to restart
+        break;
       }
       mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size());
       mobs.get(i).display();
     }
-    if (gameOver) exit();
+    if (gameOver) {
+      print("YOU LOSE");
+      delay(2000);
+      exit();
+    }
   }
   for (Tower a : towers) {
     for (Mob b : mobs) {
