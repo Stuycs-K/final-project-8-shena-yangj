@@ -229,6 +229,10 @@ menu();
     for (int i = 0;i<mobs.size();i++) {
       if (mobs.get(i).getLocation().getX()>= endZone.getX()) {
         mobs.remove(i);
+        if (i < mobs.size()) {
+          mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size());
+          mobs.get(i).display();
+        }
         //+ mobs.get(i).getRadius()
         totalHealth-=mobs.get(i).getAttackPower();
         println("totalHealth: "+totalHealth);

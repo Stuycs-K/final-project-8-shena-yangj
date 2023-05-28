@@ -7,7 +7,7 @@ public class Mob{
   private color c;
   private int attackPower;
   public Mob() {
-    moveSpeed = 10;
+    moveSpeed = 10;//temp, original 10
     position = new Location(50,250,true);
     health = 100;
     moveHorizontally = false;
