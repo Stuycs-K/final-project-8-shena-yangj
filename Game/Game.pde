@@ -28,7 +28,8 @@ void setup() {
   round = 100;
   mobs = new ArrayList<Mob>();
   towers = new ArrayList<Tower>();
-  generateMap();
+  paths = new ArrayList<Location>();
+  initialGenerateMap();
   balance = 50;
   selected = false;
   totalHealth = 100;
@@ -80,7 +81,8 @@ void menu() {
   textSize(15);
   strokeWeight(5);
   stroke(255,87,51);
-  line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
+  //endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
+  //line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
   strokeWeight(3);
   stroke(0);
 }
@@ -110,6 +112,29 @@ void mouseClicked() {
     
 }
 void generateMap() {
+  //paths = new ArrayList<Location>();
+  stroke(0);
+  for (int i = 0;i<mapWidth;i+=tileSize) {
+    strokeWeight(3);
+    line(i,0,i,mapHeight);
+  }
+  for (int i = 0;i<mapHeight;i+=tileSize) {
+    line(0,i,mapWidth,i);
+  }
+  fill(60, 201, 70);
+  for (int i = 0;i<mapWidth;i+=tileSize) {
+    for (int j = 0;j<mapHeight;j+=tileSize) {
+      if (j==tileSize*2 && i<mapHeight/2) {
+        square(i,j,tileSize);
+      } else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
+        square(i,j,tileSize);
+      } else if (i>=tileSize*4 && j==tileSize*5) {
+        square(i,j,tileSize);
+      }
+    }
+  }
+}
+void initialGenerateMap() {
   paths = new ArrayList<Location>();
   stroke(0);
   for (int i = 0;i<mapWidth;i+=tileSize) {
@@ -134,7 +159,6 @@ void generateMap() {
       }
     }
   }
-  endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
 }
 
 
@@ -183,7 +207,8 @@ void tick() {
 }
 void draw() {
   menu();
-  if (time % 240==0) {//make a mob every few seconds
+  //if (time % 240==0) {//make a mob every few seconds
+  if (time==0) {
     mobs.add(new Mob(50,250));
   }
   for (int i = 0; i < mobs.size(); i++) {
@@ -198,15 +223,15 @@ void draw() {
   }
   if ((time % 30)== 2) {
     generateMap();
-    for (int i = 0;i<mobs.size();i++) {
-      if (mobs.get(i).getLocation().getX()+ mobs.get(i).getRadius()>= endZone.getX()) {
+    for (int i = 0;i<mobs.size();i++) {/*
+      if (mobs.get(i).getLocation().getX()>= endZone.getX()) {
         mobs.remove(i);
-        
+        //+ mobs.get(i).getRadius()
         //print("YOU LOSE");
         delay(2000);
         exit(); //change this to give option to restart
-      }
-      mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size()-1);
+      }*/
+      mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size());
       mobs.get(i).display();
     }
   }

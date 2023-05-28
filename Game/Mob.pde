@@ -48,8 +48,12 @@ public class Mob{
   public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int tileSize, int pathListLength) {
     boolean endOfPath = false;
     //println(position);
-    int place = pIndex(path); //which tile in the path its on
-    if (place>=pathListLength) endOfPath = true;
+    int place = pIndex(path, pathListLength); //which tile in the path its on
+    println("place: "+place);
+    if (place>=pathListLength-1) {
+      endOfPath = true;
+      //print("End of path is true | place: "+place);
+    }
     if (!endOfPath && (position.getX()<mapWidth || position.getY()<mapHeight)) { //in map & not last path tile
       if (path.get(place).getY()==path.get(place+1).getY()) {
         if (position.getY()==path.get(place).getY()+tileSize/2) {
@@ -69,6 +73,7 @@ public class Mob{
         }
       }
     } else if (endOfPath) {
+      print("HERE");
       if (moveHorizontally) position.changeLocation(moveSpeed,0);
       else position.changeLocation(0,moveSpeed); //was moving vertically before
     }
@@ -83,19 +88,22 @@ public class Mob{
     textSize(10);
     text(health,position.getX()-8,position.getY()+2);
   }
-  public int pIndex(ArrayList<Location> paths) { //find where mob is in the path
+  public int pIndex(ArrayList<Location> paths, int pathLength) { //find where mob is in the path
     int pIndex = 0;
-    for (int i = 0;i<paths.size();i++) {
+    for (int i = 0;i<pathLength;i++) {
+      print("I: "+i);
       //moving to the right originally
       if (paths.get(i).getX()+tileSize>=position.getX() && position.getX()>paths.get(i).getX()) {
         //x's are the same
-        if (moveHorizontally) { //moving vertically
+        //if (moveHorizontally) { //moving vertically
           return i;
-        }
+        //}
       } else if (paths.get(i).getY()+tileSize>=position.getY() && position.getY()>paths.get(i).getY()) {
         if (!moveHorizontally) {
+          print("HERE");
+          print("i: "+i);
           return i;
-        } 
+        } else pIndex++;
       }
     }
     return pIndex;
