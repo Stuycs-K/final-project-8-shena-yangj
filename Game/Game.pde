@@ -10,6 +10,7 @@ int mapHeight;
 int selectNum;
 int reward;
 int score;
+boolean gameOver;
 Location endZone;
 ArrayList<Integer> prices;
 Tower selectedTower;
@@ -26,6 +27,7 @@ void setup() {
   background(148, 114, 70);
   time=0;
   round = 100;
+  gameOver = false;
   mobs = new ArrayList<Mob>();
   towers = new ArrayList<Tower>();
   paths = new ArrayList<Location>();
@@ -81,8 +83,8 @@ void menu() {
   textSize(15);
   strokeWeight(5);
   stroke(255,87,51);
-  //endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
-  //line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
+  endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
+  line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
   strokeWeight(3);
   stroke(0);
 }
@@ -223,17 +225,20 @@ void draw() {
   }
   if ((time % 30)== 2) {
     generateMap();
-    for (int i = 0;i<mobs.size();i++) {/*
+    for (int i = 0;i<mobs.size();i++) {
       if (mobs.get(i).getLocation().getX()>= endZone.getX()) {
         mobs.remove(i);
         //+ mobs.get(i).getRadius()
-        //print("YOU LOSE");
+        print("YOU LOSE");
         delay(2000);
-        exit(); //change this to give option to restart
-      }*/
+        gameOver = true;
+        break; //since otherwise will run rest of method too
+        //exit(); //change this to give option to restart
+      }
       mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size());
       mobs.get(i).display();
     }
+    if (gameOver) exit();
   }
   for (Tower a : towers) {
     for (Mob b : mobs) {
