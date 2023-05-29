@@ -92,7 +92,8 @@ public class Mob{
       println(path.get(6));
       println("place" + place);
       println("P: " + position);
-      if (temp.isEqual(path.get(place + 1)) || position.getX() + (tileSize /2) >= path.get(place).getX() + (tileSize /2) && position.getX() + (tileSize /2 ) < path.get(place).getX() + tileSize) {
+      println(path.size());
+      if (position.getY() % (tileSize / 2) == 0 && (temp.isEqual(path.get(place + 1)) || position.getX() + (tileSize /2) >= path.get(place).getX() + (tileSize /2) && position.getX() + (tileSize /2 ) < path.get(place).getX() + tileSize)) {
         position.changeLocation(moveSpeed, 0);
         moveHorizontally = true;
       }

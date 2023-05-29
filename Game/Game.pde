@@ -157,11 +157,11 @@ void initialGenerateMap() {
       if (j==tileSize*2 && i<mapHeight/2) {
         square(i,j,tileSize);
         paths.add(new Location(i,j));
-      } else if (i==tileSize * 3 ) {
-        for (int w = 200; w >= 0;w -= tileSize) {
+      } else if (i==tileSize * 3 && paths.size() <= 4) {
+        for (int w = 100; w >= 0;w -= tileSize) {
           square(i,w,tileSize);
-          paths.add(new Location(i, w));
         }
+        
       } else if (i>=tileSize * 4 && j==0) {
         square(i,j,tileSize);
         paths.add(new Location(i,j));
@@ -175,6 +175,8 @@ void initialGenerateMap() {
       //}
     }
   }
+  paths.add(4, new Location(tileSize * 3, 100));
+  paths.add(5, new Location(tileSize * 3, 0));
 }
 
 
@@ -242,13 +244,14 @@ void draw() {
     generateMap();
     for (int i = 0;i<mobs.size();i++) {
       if (mobs.get(i).getLocation().getX()>= endZone.getX()) {
+        
+        totalHealth-=mobs.get(i).getAttackPower();
         mobs.remove(i);
         if (i < mobs.size()) {
           mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size());
           mobs.get(i).display();
         }
         //+ mobs.get(i).getRadius()
-        totalHealth-=mobs.get(i).getAttackPower();
         println("totalHealth: "+totalHealth);
         continue; //continue w/ next mob since otherwise will run rest of method too
       }
