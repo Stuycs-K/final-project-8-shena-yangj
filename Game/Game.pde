@@ -128,16 +128,16 @@ void generateMap() {
     for (int j = 0;j<mapHeight;j+=tileSize) {
       if (j==tileSize*2 && i<mapHeight/2) {
         square(i,j,tileSize);
-      } else if (i==tileSize * 3 && (j >= 0 && j <= tileSize * 2)) {
-        square(i,j,tileSize);
-      } else if (i>=tileSize * 4 && j==0) {
-        square(i,j,tileSize);
-      }
-      //} else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
+      //} else if (i==tileSize * 3 && (j >= 0 && j <= tileSize * 2)) {
       //  square(i,j,tileSize);
-      //} else if (i>=tileSize*4 && j==tileSize*5) {
+      //} else if (i>=tileSize * 4 && j==0) {
       //  square(i,j,tileSize);
       //}
+      } else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
+        square(i,j,tileSize);
+      } else if (i>=tileSize*4 && j==tileSize*5) {
+        square(i,j,tileSize);
+      }
     }
   }
 }
@@ -157,26 +157,26 @@ void initialGenerateMap() {
       if (j==tileSize*2 && i<mapHeight/2) {
         square(i,j,tileSize);
         paths.add(new Location(i,j));
-      } else if (i==tileSize * 3 && paths.size() <= 4) {
-        for (int w = 100; w >= 0;w -= tileSize) {
-          square(i,w,tileSize);
-        }
+      //} else if (i==tileSize * 3 && paths.size() <= 4) {
+      //  for (int w = 100; w >= 0;w -= tileSize) {
+      //    square(i,w,tileSize);
+      //  }
         
-      } else if (i>=tileSize * 4 && j==0) {
-        square(i,j,tileSize);
-        paths.add(new Location(i,j));
-      }
-      //} else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
-      //  square(i,j,tileSize);
-      //  paths.add(new Location(i,j));
-      //} else if (i>=tileSize*4 && j==tileSize*5) {
+      //} else if (i>=tileSize * 4 && j==0) {
       //  square(i,j,tileSize);
       //  paths.add(new Location(i,j));
       //}
+      } else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
+        square(i,j,tileSize);
+        paths.add(new Location(i,j));
+      } else if (i>=tileSize*4 && j==tileSize*5) {
+        square(i,j,tileSize);
+        paths.add(new Location(i,j));
+      }
     }
   }
-  paths.add(4, new Location(tileSize * 3, 100));
-  paths.add(5, new Location(tileSize * 3, 0));
+  //paths.add(4, new Location(tileSize * 3, 100));
+  //paths.add(5, new Location(tileSize * 3, 0));
 }
 
 
