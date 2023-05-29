@@ -45,7 +45,7 @@ void setup() {
   for (int i = 0; i < 4; i++) {
     int r = (int)(Math.random() * (prices.get(i) / 2))+1;
     selects.add(new Tower(0,0,r, (prices.get(i) / r), 1));
-    println(selects.get(i));
+    //println(selects.get(i));
   }
   score = 0;
   initialGenerateMap();menu();
@@ -157,9 +157,11 @@ void initialGenerateMap() {
       if (j==tileSize*2 && i<mapHeight/2) {
         square(i,j,tileSize);
         paths.add(new Location(i,j));
-      } else if (i==tileSize * 3 && (j >= 0 && j < tileSize * 2)) {
-        square(i,j,tileSize);
-        paths.add(new Location(i, j));
+      } else if (i==tileSize * 3 && paths.size() <= 4) {
+        for (int w = 100; w >= 0;w -= tileSize) {
+          square(i,w,tileSize);
+        }
+        
       } else if (i>=tileSize * 4 && j==0) {
         square(i,j,tileSize);
         paths.add(new Location(i,j));
@@ -173,6 +175,8 @@ void initialGenerateMap() {
       //}
     }
   }
+  paths.add(4, new Location(tileSize * 3, 100));
+  paths.add(5, new Location(tileSize * 3, 0));
 }
 
 
@@ -221,8 +225,8 @@ void tick() {
 }
 void draw() {
   menu();
-  //if (time % 240==0) {//make a mob every few seconds
-  if (time==0) {
+  if (time % 240==0) {//make a mob every few seconds
+  //if (time==0) {
     mobs.add(new Mob(50,250));
   }
   
@@ -240,17 +244,18 @@ void draw() {
     generateMap();
     for (int i = 0;i<mobs.size();i++) {
       if (mobs.get(i).getLocation().getX()>= endZone.getX()) {
+        
+        totalHealth-=mobs.get(i).getAttackPower();
         mobs.remove(i);
         if (i < mobs.size()) {
           mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size());
           mobs.get(i).display();
         }
         //+ mobs.get(i).getRadius()
-        totalHealth-=mobs.get(i).getAttackPower();
         println("totalHealth: "+totalHealth);
         continue; //continue w/ next mob since otherwise will run rest of method too
       }
-      if (totalHealth<=0) {
+      if (totalHealth<=0 || round <= 0) {
         gameOver = true;
         break;
       }
@@ -258,9 +263,16 @@ void draw() {
       mobs.get(i).display();
     }
     if (gameOver) {
-      print("YOU LOSE");
-      delay(2000);
-      exit();
+      if (totalHealth <= 0) {
+        print("YOU LOSE");
+        delay(2000);
+        exit();
+      }
+      if (round <= 0) {
+        print("YOU WIN");
+        delay(2000);
+        exit();
+      }
     }
   }
   for (Tower a : towers) {
