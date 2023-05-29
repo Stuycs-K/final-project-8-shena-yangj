@@ -225,8 +225,8 @@ void tick() {
 }
 void draw() {
   menu();
-  //if (time % 240==0) {//make a mob every few seconds
-  if (time==0) {
+  if (time % 240==0) {//make a mob every few seconds
+  //if (time==0) {
     mobs.add(new Mob(50,250));
   }
   
@@ -263,9 +263,16 @@ void draw() {
       mobs.get(i).display();
     }
     if (gameOver) {
-      print("YOU LOSE");
-      delay(2000);
-      exit();
+      if (totalHealth <= 0) {
+        print("YOU LOSE");
+        delay(2000);
+        exit();
+      }
+      if (round <= 0) {
+        print("YOU WIN");
+        delay(2000);
+        exit();
+      }
     }
   }
   for (Tower a : towers) {

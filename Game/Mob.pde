@@ -82,17 +82,6 @@ public class Mob{
       Location temp = new Location(position.getX() + (tileSize /2), position.getY());
       Location temp2 = new Location(position.getX(), position.getY() + (tileSize / 2) + 1);
       Location temp3 = new Location(position.getX(), position.getY() - (tileSize /2 ) - 1);
-      //println(temp);
-      //println(temp2);
-      //println(place);
-      //println(path.get(place));
-      //println(path.get(place + 1));
-      println(temp);
-      println(path.get(5));
-      println(path.get(6));
-      println("place" + place);
-      println("P: " + position);
-      println(path.size());
       if ((position.getY() % (tileSize / 2) == 0 && position.getY() % 100 != 0) && (temp.isEqual(path.get(place + 1)) || position.getX() + (tileSize /2) >= path.get(place).getX() + (tileSize /2) && position.getX() + (tileSize /2 ) < path.get(place).getX() + tileSize)) {
         position.changeLocation(moveSpeed, 0);
         moveHorizontally = true;
@@ -106,7 +95,6 @@ public class Mob{
         moveHorizontally = false;
       }
     } else if (endOfPath) {
-      //print("HERE");
       if (moveHorizontally) position.changeLocation(moveSpeed,0);
       else position.changeLocation(0,moveSpeed); //was moving vertically before
     }
@@ -142,9 +130,6 @@ public class Mob{
   //}
   
   Location test = new Location(position.getX(), position.getY());
-  //println("P: " + paths.get(1));
-  //println("B: " + test);
-  //println(paths.size());
   for (int i = 0; i < paths.size(); i++) {
     if (paths.get(i).isEqual(test)) {
       return i;
