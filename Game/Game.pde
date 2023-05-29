@@ -255,7 +255,7 @@ void draw() {
         println("totalHealth: "+totalHealth);
         continue; //continue w/ next mob since otherwise will run rest of method too
       }
-      if (totalHealth<=0) {
+      if (totalHealth<=0 || round <= 0) {
         gameOver = true;
         break;
       }
