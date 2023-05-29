@@ -79,22 +79,28 @@ public class Mob{
       //    moveHorizontally = true;
       //  }
       //}
-      Location temp = new Location(position.getX() + moveSpeed, position.getY());
-      Location temp2 = new Location(position.getX(), position.getY() + moveSpeed);
+      Location temp = new Location(position.getX() + (tileSize /2), position.getY());
+      Location temp2 = new Location(position.getX(), position.getY() + (tileSize / 2) + 1);
+      Location temp3 = new Location(position.getX(), position.getY() - (tileSize /2 ) - 1);
       //println(temp);
       //println(temp2);
       //println(place);
       //println(path.get(place));
       //println(path.get(place + 1));
-      if (temp.isEqual(path.get(place)) || temp.isEqual(path.get(place + 1))) {
+      println(temp);
+      println(path.get(5));
+      println(path.get(6));
+      println("place" + place);
+      println("P: " + position);
+      if (temp.isEqual(path.get(place + 1)) || position.getX() + (tileSize /2) >= path.get(place).getX() + (tileSize /2) && position.getX() + (tileSize /2 ) < path.get(place).getX() + tileSize) {
         position.changeLocation(moveSpeed, 0);
         moveHorizontally = true;
       }
-      else if (temp2.isEqual(path.get(place)) || temp2.isEqual(path.get(place + 1))) {
+      else if (temp2.isEqual(path.get(place + 1)) || position.getY() + (tileSize /2) < path.get(place).getY() && position.getY() + (tileSize /2 ) >= path.get(place).getY() + (tileSize /2)) {
         position.changeLocation(0, moveSpeed);
         moveHorizontally = false;
       }
-      else {
+      else if (temp3.isEqual(path.get(place + 1)) || position.getY() - (tileSize /2) > path.get(place).getY()&& position.getY() - (tileSize /2 ) <= path.get(place).getY() + (tileSize /2)) {
         position.changeLocation(0, moveSpeed * -1);
         moveHorizontally = false;
       }

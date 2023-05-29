@@ -45,7 +45,7 @@ void setup() {
   for (int i = 0; i < 4; i++) {
     int r = (int)(Math.random() * (prices.get(i) / 2))+1;
     selects.add(new Tower(0,0,r, (prices.get(i) / r), 1));
-    println(selects.get(i));
+    //println(selects.get(i));
   }
   score = 0;
   initialGenerateMap();menu();
@@ -157,9 +157,11 @@ void initialGenerateMap() {
       if (j==tileSize*2 && i<mapHeight/2) {
         square(i,j,tileSize);
         paths.add(new Location(i,j));
-      } else if (i==tileSize * 3 && (j >= 0 && j < tileSize * 2)) {
-        square(i,j,tileSize);
-        paths.add(new Location(i, j));
+      } else if (i==tileSize * 3 ) {
+        for (int w = 200; w >= 0;w -= tileSize) {
+          square(i,w,tileSize);
+          paths.add(new Location(i, w));
+        }
       } else if (i>=tileSize * 4 && j==0) {
         square(i,j,tileSize);
         paths.add(new Location(i,j));
