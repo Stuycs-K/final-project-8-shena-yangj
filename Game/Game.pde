@@ -31,7 +31,6 @@ void setup() {
   mobs = new ArrayList<Mob>();
   towers = new ArrayList<Tower>();
   paths = new ArrayList<Location>();
-  initialGenerateMap();
   balance = 50;
   selected = false;
   totalHealth = 100;
@@ -49,7 +48,7 @@ void setup() {
     println(selects.get(i));
   }
   score = 0;
-  menu();
+  initialGenerateMap();menu();
 }
 void menu() {
   textSize(15);
@@ -129,11 +128,16 @@ void generateMap() {
     for (int j = 0;j<mapHeight;j+=tileSize) {
       if (j==tileSize*2 && i<mapHeight/2) {
         square(i,j,tileSize);
-      } else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
+      } else if (i==tileSize * 3 && (j >= 0 && j <= tileSize * 2)) {
         square(i,j,tileSize);
-      } else if (i>=tileSize*4 && j==tileSize*5) {
+      } else if (i>=tileSize * 4 && j==0) {
         square(i,j,tileSize);
       }
+      //} else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
+      //  square(i,j,tileSize);
+      //} else if (i>=tileSize*4 && j==tileSize*5) {
+      //  square(i,j,tileSize);
+      //}
     }
   }
 }
@@ -153,13 +157,20 @@ void initialGenerateMap() {
       if (j==tileSize*2 && i<mapHeight/2) {
         square(i,j,tileSize);
         paths.add(new Location(i,j));
-      } else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
+      } else if (i==tileSize * 3 && (j >= 0 && j < tileSize * 2)) {
         square(i,j,tileSize);
-        paths.add(new Location(i,j));
-      } else if (i>=tileSize*4 && j==tileSize*5) {
+        paths.add(new Location(i, j));
+      } else if (i>=tileSize * 4 && j==0) {
         square(i,j,tileSize);
         paths.add(new Location(i,j));
       }
+      //} else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
+      //  square(i,j,tileSize);
+      //  paths.add(new Location(i,j));
+      //} else if (i>=tileSize*4 && j==tileSize*5) {
+      //  square(i,j,tileSize);
+      //  paths.add(new Location(i,j));
+      //}
     }
   }
 }
@@ -209,11 +220,12 @@ void tick() {
   }
 }
 void draw() {
-menu();
-  if (time % 240==0) {//make a mob every few seconds
-  //if (time==0) {
+  menu();
+  //if (time % 240==0) {//make a mob every few seconds
+  if (time==0) {
     mobs.add(new Mob(50,250));
   }
+  
   for (int i = 0; i < mobs.size(); i++) {
     if (mobs.get(i).getHealth() <= 0) {
       mobs.remove(mobs.get(i));

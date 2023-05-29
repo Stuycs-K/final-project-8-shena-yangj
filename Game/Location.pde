@@ -35,5 +35,8 @@ public class Location {
   public String toString() {
     return "("+xCoordinate+","+yCoordinate+")";
   }
+  public boolean isEqual(Location other) {
+    return (other.getX() == xCoordinate && other.getY() == yCoordinate);
+  }
   
 }

@@ -56,28 +56,47 @@ public class Mob{
     boolean endOfPath = false;
     //println(position);
     int place = pIndex(path, pathListLength); //which tile in the path its on
-    println("place: "+place);
+    //println("place: "+place);
     if (place>=pathListLength-1) {
       endOfPath = true;
       //print("End of path is true | place: "+place);
     }
     if (!endOfPath && (position.getX()<mapWidth || position.getY()<mapHeight)) { //in map & not last path tile
-      if (path.get(place).getY()==path.get(place+1).getY()) {
-        if (position.getY()==path.get(place).getY()+tileSize/2) {
-          position.changeLocation(moveSpeed,0);
-          moveHorizontally = true;
-        } else {
-          position.changeLocation(0,moveSpeed);
-          moveHorizontally = false;
-        }
-      } else if (path.get(place+1).getX()==path.get(place).getX()) { //same vertically
-        if (position.getX()==path.get(place).getX()+tileSize/2) {
-          position.changeLocation(0,moveSpeed);
-          moveHorizontally = false;
-        } else {
-          position.changeLocation(moveSpeed,0);
-          moveHorizontally = true;
-        }
+      //if (path.get(place).getY()==path.get(place+1).getY()) {
+      //  if (position.getY()==path.get(place).getY()+tileSize/2) {
+      //    position.changeLocation(moveSpeed,0);
+      //    moveHorizontally = true;
+      //  } else {
+      //    position.changeLocation(0,moveSpeed);
+      //    moveHorizontally = false;
+      //  }
+      //} else if (path.get(place+1).getX()==path.get(place).getX()) { //same vertically
+      //  if (position.getX()==path.get(place).getX()+tileSize/2) {
+      //    position.changeLocation(0,moveSpeed);
+      //    moveHorizontally = false;
+      //  } else {
+      //    position.changeLocation(moveSpeed,0);
+      //    moveHorizontally = true;
+      //  }
+      //}
+      Location temp = new Location(position.getX() + moveSpeed, position.getY());
+      Location temp2 = new Location(position.getX(), position.getY() + moveSpeed);
+      //println(temp);
+      //println(temp2);
+      //println(place);
+      //println(path.get(place));
+      //println(path.get(place + 1));
+      if (temp.isEqual(path.get(place)) || temp.isEqual(path.get(place + 1))) {
+        position.changeLocation(moveSpeed, 0);
+        moveHorizontally = true;
+      }
+      else if (temp2.isEqual(path.get(place)) || temp2.isEqual(path.get(place + 1))) {
+        position.changeLocation(0, moveSpeed);
+        moveHorizontally = false;
+      }
+      else {
+        position.changeLocation(0, moveSpeed * -1);
+        moveHorizontally = false;
       }
     } else if (endOfPath) {
       //print("HERE");
@@ -85,6 +104,7 @@ public class Mob{
       else position.changeLocation(0,moveSpeed); //was moving vertically before
     }
   }
+  
   public Location getLocation() {
     return position;
   }
@@ -96,21 +116,33 @@ public class Mob{
     text(health,position.getX()-8,position.getY()+2);
   }
   public int pIndex(ArrayList<Location> paths, int pathLength) { //find where mob is in the path
-    int pIndex = 0;
-    for (int i = 0;i<pathLength;i++) {
-      print("I: "+i);
-      //moving to the right originally
-      if (paths.get(i).getX()+tileSize>=position.getX() && position.getX()>paths.get(i).getX()) {
-        //x's are the same
-        if (moveHorizontally) { //moving vertically
-          return i;
-        }
-      } else if (paths.get(i).getY()+tileSize>=position.getY() && position.getY()>paths.get(i).getY()) {
-        if (!moveHorizontally) {
-          return i;
-        } else pIndex++;
-      }
+  //  int pIndex = 0;
+  //  for (int i = 0;i<pathLength;i++) {
+  //    //print("I: "+i);
+  //    //moving to the right originally
+  //    if (paths.get(i).getX()+tileSize>=position.getX() && position.getX()>paths.get(i).getX()) {
+  //      //x's are the same
+  //      if (moveHorizontally) { //moving vertically
+  //        return i;
+  //      }
+  //    } else if (paths.get(i).getY()+tileSize>=position.getY() && position.getY()>paths.get(i).getY()) {
+  //      if (!moveHorizontally) {
+  //        return i;
+  //      } else pIndex++;
+  //    }
+  //  }
+  //  return pIndex;
+  //}
+  
+  Location test = new Location(position.getX(), position.getY());
+  //println("P: " + paths.get(1));
+  //println("B: " + test);
+  //println(paths.size());
+  for (int i = 0; i < paths.size(); i++) {
+    if (paths.get(i).isEqual(test)) {
+      return i;
     }
-    return pIndex;
+   }
+    return -1;
   }
-}
+  }
