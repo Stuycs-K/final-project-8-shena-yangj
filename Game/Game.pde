@@ -257,6 +257,7 @@ void draw() {
       }
       if (totalHealth<=0 || round <= 0) {
         gameOver = true;
+        menu();
         break;
       }
       mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size());
