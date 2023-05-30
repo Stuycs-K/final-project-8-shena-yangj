@@ -240,39 +240,37 @@ void draw() {
       //reward should depend on future difficulty modes
     }
   }
-  if ((time % 30)== 2) {
-    generateMap();
-    for (int i = 0;i<mobs.size();i++) {
-      if (mobs.get(i).getLocation().getX()>= endZone.getX()) {
-        
-        totalHealth-=mobs.get(i).getAttackPower();
-        mobs.remove(i);
-        if (i < mobs.size()) {
-          mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size());
-          mobs.get(i).display();
-        }
-        //+ mobs.get(i).getRadius()
-        println("totalHealth: "+totalHealth);
-        continue; //continue w/ next mob since otherwise will run rest of method too
+  generateMap();
+  for (int i = 0;i<mobs.size();i++) {
+    if (mobs.get(i).getLocation().getX()>= endZone.getX()) {
+      
+      totalHealth-=mobs.get(i).getAttackPower();
+      mobs.remove(i);
+      if (i < mobs.size()) {
+        mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size());
+        mobs.get(i).display();
       }
-      if (totalHealth<=0 || round <= 0) {
-        gameOver = true;
-        break;
-      }
-      mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size());
-      mobs.get(i).display();
+      //+ mobs.get(i).getRadius()
+      println("totalHealth: "+totalHealth);
+      continue; //continue w/ next mob since otherwise will run rest of method too
     }
-    if (gameOver) {
-      if (totalHealth <= 0) {
-        print("YOU LOSE");
-        delay(2000);
-        exit();
-      }
-      if (round <= 0) {
-        print("YOU WIN");
-        delay(2000);
-        exit();
-      }
+    if (totalHealth<=0 || round <= 0) {
+      gameOver = true;
+      break;
+    }
+    mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size());
+    mobs.get(i).display();
+  }
+  if (gameOver) {
+    if (totalHealth <= 0) {
+      print("YOU LOSE");
+      delay(2000);
+      exit();
+    }
+    if (round <= 0) {
+      print("YOU WIN");
+      delay(2000);
+      exit();
     }
   }
   for (Tower a : towers) {

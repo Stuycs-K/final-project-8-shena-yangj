@@ -1,5 +1,5 @@
 public class Mob{
-  private int moveSpeed;
+  private float  moveSpeed;
   private int radius;
   private Location position;
   private int health;
@@ -7,7 +7,7 @@ public class Mob{
   private color c;
   private int attackPower;
   public Mob() {
-    moveSpeed = 10;//temp, original 10
+    moveSpeed = .5;//temp, original 10
     position = new Location(50,250,true);
     health = 100;
     moveHorizontally = false;
@@ -16,7 +16,7 @@ public class Mob{
     attackPower = 10;
   }
   public Mob(int x, int y) {
-    moveSpeed = 10;
+    moveSpeed = 1;
     radius = 20;
     health = 100;
     position = new Location(x,y,true);
@@ -24,7 +24,7 @@ public class Mob{
     c = color(random(255), random(255), random(255));
     attackPower = 10;
   }
-  public Mob(int speed, int health, int x, int y) {
+  public Mob(float speed, int health, int x, int y) {
     moveSpeed = speed;
     this.health = health;
     radius = 20;
@@ -34,7 +34,7 @@ public class Mob{
     attackPower = 10;
   }
     
-  public int getSpeed() {
+  public float  getSpeed() {
     return moveSpeed;
   }
   public int getRadius() {
