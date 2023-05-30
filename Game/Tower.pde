@@ -19,7 +19,7 @@ public class Tower {
     return position;
   }
   private void attack(Mob m, int time) {
-    if (time / attackSpeed == 0) {
+    if (time % (60 / attackSpeed) == 0) {
       if (inRange(m.getLocation())) {
         m.doDamage(power);
       }
