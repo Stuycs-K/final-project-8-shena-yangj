@@ -1,16 +1,16 @@
 public class Tower {
-  private int attackDelay;
+  private int attackSpeed;
   private int power;
   private int range;
   private Location position;
   public Tower(int x, int y) {
-    attackDelay = 10;
+    attackSpeed = 10;
     power = 10;
     range = tileSize + (2 * tileSize);
     position = new Location(x,y);
   }
-  public Tower(int x, int y, int attackDelay, int power, int range) {
-    this.attackDelay = attackDelay;
+  public Tower(int x, int y, int attackSpeed, int power, int range) {
+    this.attackSpeed = attackSpeed;
     this.power = power;
     this.range = (range * tileSize) + tileSize;
     position = new Location(x,y);
@@ -19,7 +19,7 @@ public class Tower {
     return position;
   }
   private void attack(Mob m, int time) {
-    if (time % attackDelay == 0) {
+    if (time / attackSpeed == 0) {
       if (inRange(m.getLocation())) {
         m.doDamage(power);
       }
@@ -37,12 +37,12 @@ public class Tower {
     position = new Location(x, y);
   }
   public int getAttack() {
-    return attackDelay;
+    return attackSpeed;
   }
   public int getPower() {
     return power;
   }
   public String toString() {
-    return (position + "AD: " + attackDelay + "P: " + power + "R: " + range);
+    return (position + "AD: " + attackSpeed + "P: " + power + "R: " + range);
   }
 }
