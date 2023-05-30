@@ -118,6 +118,7 @@ void mouseClicked() {
 void generateMap() {
   fill(148,114,70); //background color
   rect(0,0,mapWidth,mapHeight);
+  menu();
   //paths = new ArrayList<Location>();
   stroke(0);
   for (int i = 0;i<mapWidth;i+=tileSize) {
@@ -137,13 +138,13 @@ void generateMap() {
       } else if (i>=tileSize * 4 && j==0) {
         square(i,j,tileSize);
       }
-      //} else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
-      //  square(i,j,tileSize);
-      //} else if (i>=tileSize*4 && j==tileSize*5) {
-      //  square(i,j,tileSize);
-      //}
     }
   }
+  fill(255,0,0);
+  for (int i = 0;i<towers.size();i++) {
+    square(towers.get(i).getLocation().getX(),towers.get(i).getLocation().getY(),tileSize);
+  }
+  fill(60,201,70);
 }
 void initialGenerateMap() {
   paths = new ArrayList<Location>();
@@ -201,14 +202,8 @@ boolean placeTower(int x, int y) {
       String display = "Not Enough Money";
       textSize(20);
       fill(255,255,255);
-      //menu();
-      //if (millis()-time > interval) {
-      //  text(display, mouseX, mouseY);//mapWidth+23,mapHeight-100
-      //}
-      
-      //generateMap();
+      text(display, mouseX, mouseY);
       menu();
-      //figure out a way to make text not stay forever
       selectNum = -1;
     }
   }
