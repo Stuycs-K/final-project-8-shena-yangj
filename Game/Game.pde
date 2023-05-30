@@ -166,13 +166,6 @@ void initialGenerateMap() {
         square(i,j,tileSize);
         paths.add(new Location(i,j));
       }
-      //} else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
-      //  square(i,j,tileSize);
-      //  paths.add(new Location(i,j));
-      //} else if (i>=tileSize*4 && j==tileSize*5) {
-      //  square(i,j,tileSize);
-      //  paths.add(new Location(i,j));
-      //}
     }
   }
   paths.add(4, new Location(tileSize * 3, 100));
@@ -247,7 +240,7 @@ void draw() {
       totalHealth-=mobs.get(i).getAttackPower();
       mobs.remove(i);
       if (i < mobs.size()) {
-        mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size());
+        mobs.get(i).move(paths,mapWidth,mapHeight,tileSize);
         mobs.get(i).display();
       }
       //+ mobs.get(i).getRadius()
@@ -258,7 +251,7 @@ void draw() {
       gameOver = true;
       break;
     }
-    mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size());
+    mobs.get(i).move(paths,mapWidth,mapHeight,tileSize);
     mobs.get(i).display();
   }
   if (gameOver) {

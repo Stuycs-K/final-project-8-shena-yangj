@@ -52,33 +52,15 @@ public class Mob{
     }
   }
   //path following and mob movement
-  public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int tileSize, int pathListLength) {
+  public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int tileSize) {
     boolean endOfPath = false;
     //println(position);
-    int place = pIndex(path, pathListLength); //which tile in the path its on
+    int place = pIndex(path); //which tile in the path its on
     //println("place: "+place);
-    if (place>=pathListLength-1) {
+    if (place>=path.size()-1) {
       endOfPath = true;
-      //print("End of path is true | place: "+place);
     }
     if (!endOfPath && (position.getX()<mapWidth || position.getY()<mapHeight)) { //in map & not last path tile
-      //if (path.get(place).getY()==path.get(place+1).getY()) {
-      //  if (position.getY()==path.get(place).getY()+tileSize/2) {
-      //    position.changeLocation(moveSpeed,0);
-      //    moveHorizontally = true;
-      //  } else {
-      //    position.changeLocation(0,moveSpeed);
-      //    moveHorizontally = false;
-      //  }
-      //} else if (path.get(place+1).getX()==path.get(place).getX()) { //same vertically
-      //  if (position.getX()==path.get(place).getX()+tileSize/2) {
-      //    position.changeLocation(0,moveSpeed);
-      //    moveHorizontally = false;
-      //  } else {
-      //    position.changeLocation(moveSpeed,0);
-      //    moveHorizontally = true;
-      //  }
-      //}
       Location temp = new Location(position.getX() + (tileSize /2), position.getY());
       Location temp2 = new Location(position.getX(), position.getY() + (tileSize / 2) + 1);
       Location temp3 = new Location(position.getX(), position.getY() - (tileSize /2 ) - 1);
@@ -110,25 +92,7 @@ public class Mob{
     textSize(10);
     text(health,position.getX()-8,position.getY()+2);
   }
-  public int pIndex(ArrayList<Location> paths, int pathLength) { //find where mob is in the path
-  //  int pIndex = 0;
-  //  for (int i = 0;i<pathLength;i++) {
-  //    //print("I: "+i);
-  //    //moving to the right originally
-  //    if (paths.get(i).getX()+tileSize>=position.getX() && position.getX()>paths.get(i).getX()) {
-  //      //x's are the same
-  //      if (moveHorizontally) { //moving vertically
-  //        return i;
-  //      }
-  //    } else if (paths.get(i).getY()+tileSize>=position.getY() && position.getY()>paths.get(i).getY()) {
-  //      if (!moveHorizontally) {
-  //        return i;
-  //      } else pIndex++;
-  //    }
-  //  }
-  //  return pIndex;
-  //}
-  
+  public int pIndex(ArrayList<Location> paths) { //find where mob is in the path
   Location test = new Location(position.getX(), position.getY());
   for (int i = 0; i < paths.size(); i++) {
     if (paths.get(i).isEqual(test)) {
@@ -137,4 +101,4 @@ public class Mob{
    }
     return -1;
   }
-  }
+}
