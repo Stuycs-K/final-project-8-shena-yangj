@@ -10,6 +10,8 @@ int mapHeight;
 int selectNum;
 int reward;
 int score;
+boolean gameOver;
+Location endZone;
 ArrayList<Integer> prices;
 Tower selectedTower;
 boolean selected;
@@ -25,9 +27,10 @@ void setup() {
   background(148, 114, 70);
   time=0;
   round = 100;
+  gameOver = false;
   mobs = new ArrayList<Mob>();
   towers = new ArrayList<Tower>();
-  generateMap();
+  paths = new ArrayList<Location>();
   balance = 50;
   selected = false;
   totalHealth = 100;
@@ -42,10 +45,10 @@ void setup() {
   for (int i = 0; i < 4; i++) {
     int r = (int)(Math.random() * (prices.get(i) / 2))+1;
     selects.add(new Tower(0,0,r, (prices.get(i) / r), 1));
-    println(selects.get(i));
+    //println(selects.get(i));
   }
   score = 0;
-  menu();
+  initialGenerateMap();menu();
 }
 void menu() {
   textSize(15);
@@ -75,8 +78,15 @@ void menu() {
   text("Mob count: " + mobs.size(), mapWidth + 21, mapHeight - 50);
   text("Balance: " + balance, mapWidth + 21, mapHeight - 80);
   text("Round Timer: " + round, mapWidth + 10, mapHeight - 140);
+  text("Total Health: "+totalHealth, mapWidth+10,mapHeight-160);
   text("Score: " + score, mapWidth + 21, mapHeight - 110);
   textSize(15);
+  strokeWeight(5);
+  stroke(255,87,51);
+  endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
+  line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
+  strokeWeight(3);
+  stroke(0);
 }
 void mouseClicked() {
   fill(144,10,255);
@@ -104,6 +114,34 @@ void mouseClicked() {
     
 }
 void generateMap() {
+  //paths = new ArrayList<Location>();
+  stroke(0);
+  for (int i = 0;i<mapWidth;i+=tileSize) {
+    strokeWeight(3);
+    line(i,0,i,mapHeight);
+  }
+  for (int i = 0;i<mapHeight;i+=tileSize) {
+    line(0,i,mapWidth,i);
+  }
+  fill(60, 201, 70);
+  for (int i = 0;i<mapWidth;i+=tileSize) {
+    for (int j = 0;j<mapHeight;j+=tileSize) {
+      if (j==tileSize*2 && i<mapHeight/2) {
+        square(i,j,tileSize);
+      } else if (i==tileSize * 3 && (j >= 0 && j <= tileSize * 2)) {
+        square(i,j,tileSize);
+      } else if (i>=tileSize * 4 && j==0) {
+        square(i,j,tileSize);
+      }
+      //} else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
+      //  square(i,j,tileSize);
+      //} else if (i>=tileSize*4 && j==tileSize*5) {
+      //  square(i,j,tileSize);
+      //}
+    }
+  }
+}
+void initialGenerateMap() {
   paths = new ArrayList<Location>();
   stroke(0);
   for (int i = 0;i<mapWidth;i+=tileSize) {
@@ -119,15 +157,19 @@ void generateMap() {
       if (j==tileSize*2 && i<mapHeight/2) {
         square(i,j,tileSize);
         paths.add(new Location(i,j));
-      } else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
-        square(i,j,tileSize);
-        paths.add(new Location(i,j));
-      } else if (i>=tileSize*4 && j==tileSize*5) {
+      } else if (i==tileSize * 3 && paths.size() <= 4) {
+        for (int w = 100; w >= 0;w -= tileSize) {
+          square(i,w,tileSize);
+        }
+        
+      } else if (i>=tileSize * 4 && j==0) {
         square(i,j,tileSize);
         paths.add(new Location(i,j));
       }
     }
   }
+  paths.add(4, new Location(tileSize * 3, 100));
+  paths.add(5, new Location(tileSize * 3, 0));
 }
 
 
@@ -177,8 +219,10 @@ void tick() {
 void draw() {
   menu();
   if (time % 240==0) {//make a mob every few seconds
+  //if (time==0) {
     mobs.add(new Mob(50,250));
   }
+  
   for (int i = 0; i < mobs.size(); i++) {
     if (mobs.get(i).getHealth() <= 0) {
       mobs.remove(mobs.get(i));
@@ -189,16 +233,37 @@ void draw() {
       //reward should depend on future difficulty modes
     }
   }
-  if ((time % 30)== 2) {
-    generateMap();
-    for (int i = 0;i<mobs.size();i++) {
-      if (mobs.get(i).getLocation().getX() >= mapWidth || mobs.get(i).getLocation().getY()>=mapHeight) {
-        //print("YOU LOSE");
-        delay(2000);
-        exit(); //change this to give option to restart
+  generateMap();
+  for (int i = 0;i<mobs.size();i++) {
+    if (mobs.get(i).getLocation().getX()>= endZone.getX()) {
+      
+      totalHealth-=mobs.get(i).getAttackPower();
+      mobs.remove(i);
+      if (i < mobs.size()) {
+        mobs.get(i).move(paths,mapWidth,mapHeight,tileSize);
+        mobs.get(i).display();
       }
-      mobs.get(i).move(paths,mapWidth,mapHeight,tileSize, paths.size()-1);
-      mobs.get(i).display();
+      //+ mobs.get(i).getRadius()
+      println("totalHealth: "+totalHealth);
+      continue; //continue w/ next mob since otherwise will run rest of method too
+    }
+    if (totalHealth<=0 || round <= 0) {
+      gameOver = true;
+      break;
+    }
+    mobs.get(i).move(paths,mapWidth,mapHeight,tileSize);
+    mobs.get(i).display();
+  }
+  if (gameOver) {
+    if (totalHealth <= 0) {
+      print("YOU LOSE");
+      delay(2000);
+      exit();
+    }
+    if (round <= 0) {
+      print("YOU WIN");
+      delay(2000);
+      exit();
     }
   }
   for (Tower a : towers) {
