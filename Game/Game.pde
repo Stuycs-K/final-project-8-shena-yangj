@@ -10,6 +10,7 @@ int mapHeight;
 int selectNum;
 int reward;
 int score;
+int interval;
 boolean gameOver;
 Location endZone;
 ArrayList<Integer> prices;
@@ -28,6 +29,7 @@ void setup() {
   time=0;
   round = 100;
   gameOver = false;
+  interval = 30;
   mobs = new ArrayList<Mob>();
   towers = new ArrayList<Tower>();
   paths = new ArrayList<Location>();
@@ -114,6 +116,8 @@ void mouseClicked() {
     
 }
 void generateMap() {
+  fill(148,114,70); //background color
+  rect(0,0,mapWidth,mapHeight);
   //paths = new ArrayList<Location>();
   stroke(0);
   for (int i = 0;i<mapWidth;i+=tileSize) {
@@ -195,8 +199,14 @@ boolean placeTower(int x, int y) {
     }
     else {
       String display = "Not Enough Money";
-      fill(255,0,0);
-      text(display, mapWidth + 23, mapHeight - 100);
+      textSize(20);
+      fill(255,255,255);
+      //menu();
+      //if (millis()-time > interval) {
+      //  text(display, mouseX, mouseY);//mapWidth+23,mapHeight-100
+      //}
+      
+      //generateMap();
       menu();
       //figure out a way to make text not stay forever
       selectNum = -1;
