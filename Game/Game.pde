@@ -181,9 +181,28 @@ void initialGenerateMap() {
 void changeBalance(int amount) {
   balance += amount;
 }
+boolean towerOnPath(int x, int y) {
+  boolean ans = false;
+  for(int i = 0;i<paths.size();i++) {
+    float pathx = paths.get(i).getX();
+    float pathy = paths.get(i).getY();
+    if (x>=pathx && x<=pathx+tileSize && y>=pathy && pathy<=pathy+tileSize){
+      ans = true;
+      print("HERE");
+    }
+  }
+  return ans;
+}
 
 boolean placeTower(int x, int y) {
   if (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight) {
+    textSize(20);
+    fill(255,255,255);
+    //check if on path here
+    if (towerOnPath(x,y)) {
+      text("Cannot place tower on path",mouseX,mouseY);
+      return false;
+    }
     if (balance >= prices.get(selectNum)) {
       x = (x / tileSize) * tileSize;
       y = (y / tileSize) * tileSize;
@@ -194,7 +213,6 @@ boolean placeTower(int x, int y) {
       towers.add(selectedTower);
       menu();
       //check for path somehow
-      //draw somewhere a error msg like "not enough money"
       selectNum = -1;
       return true;
     }
