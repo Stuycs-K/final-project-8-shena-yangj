@@ -24,12 +24,14 @@ public class Tower {
   public Location getLocation() {
     return position;
   }
-  private void attack(Mob m, int time) {
+  private boolean attack(Mob m, int time) {
     if (time % (60 / attackSpeed) == 0) {
       if (inRange(m.getLocation())) {
         m.doDamage(power);
+        return true;
       }
     }
+    return false;
   }
   private boolean inRange(Location p) {
     Location temp = new Location((position.getX() + (tileSize /2 )), (position.getY() + (tileSize /2 )), true);

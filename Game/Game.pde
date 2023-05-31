@@ -302,7 +302,9 @@ void draw() {
   }
   for (Tower a : towers) {
     for (Mob b : mobs) {
-      a.attack(b, time);
+      if (a.attack(b, time)) {
+        break;
+      }
     }
   }
   time++;
