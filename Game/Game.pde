@@ -186,9 +186,8 @@ boolean towerOnPath(int x, int y) {
   for(int i = 0;i<paths.size();i++) {
     float pathx = paths.get(i).getX();
     float pathy = paths.get(i).getY();
-    if (x>=pathx && x<=pathx+tileSize && y>=pathy && pathy<=pathy+tileSize){
+    if (x>=pathx && x<=pathx+tileSize && y>=pathy && y<=pathy+tileSize) {
       ans = true;
-      print("HERE");
     }
   }
   return ans;
@@ -221,14 +220,11 @@ boolean placeTower(int x, int y) {
       textSize(20);
       fill(255,255,255);
       text(display, mouseX, mouseY);
-      menu();
       selectNum = -1;
+      return false;
     }
   }
   return false;
-  //return true if (x,y) are valid and tower is placed
-  //also check if have enough money
-  //else false
 }
 
 void tick() {
