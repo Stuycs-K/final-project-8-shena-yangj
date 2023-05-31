@@ -1,4 +1,5 @@
 public class Mob{
+  PImage img;
   private float  moveSpeed;
   private int radius;
   private Location position;
@@ -7,6 +8,7 @@ public class Mob{
   private color c;
   private int attackPower;
   public Mob() {
+    img = loadImage("mob.png");
     moveSpeed = .5;//temp, original 10
     position = new Location(50,250,true);
     health = 100;
@@ -16,6 +18,7 @@ public class Mob{
     attackPower = 10;
   }
   public Mob(int x, int y) {
+    img = loadImage("mob.png");
     moveSpeed = 1;
     radius = 20;
     health = 100;
@@ -25,6 +28,7 @@ public class Mob{
     attackPower = 10;
   }
   public Mob(float speed, int health, int x, int y) {
+    img = loadImage("mob.png");
     moveSpeed = speed;
     this.health = health;
     radius = 20;
@@ -87,7 +91,8 @@ public class Mob{
   }
   public void display() {
     fill(c);
-    circle(position.getX(),position.getY(),radius);
+    //circle(position.getX(),position.getY(),radius);
+    image(img,position.getX()-20,position.getY()-20,50,50);
     fill(255-red(c),255-green(c),255-blue(c));
     textSize(10);
     text(health,position.getX()-8,position.getY()+2);
