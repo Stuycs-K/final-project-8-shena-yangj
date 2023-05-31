@@ -5,7 +5,6 @@ public class Mob{
   private Location position;
   private int health;
   private boolean moveHorizontally;
-  private color c;
   private int attackPower;
   public Mob() {
     img = loadImage("mob.png");
@@ -14,7 +13,6 @@ public class Mob{
     health = 100;
     moveHorizontally = false;
     radius = 20;
-    c = color(random(255), random(255), random(255));
     attackPower = 10;
   }
   public Mob(int x, int y) {
@@ -24,7 +22,6 @@ public class Mob{
     health = 100;
     position = new Location(x,y,true);
     moveHorizontally = false;
-    c = color(random(255), random(255), random(255));
     attackPower = 10;
   }
   public Mob(float speed, int health, int x, int y) {
@@ -34,7 +31,6 @@ public class Mob{
     radius = 20;
     position = new Location(x, y,true);
     moveHorizontally = false;
-    c = color(random(255), random(255), random(255));
     attackPower = 10;
   }
     
@@ -58,9 +54,7 @@ public class Mob{
   //path following and mob movement
   public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int tileSize) {
     boolean endOfPath = false;
-    //println(position);
     int place = pIndex(path); //which tile in the path its on
-    //println("place: "+place);
     if (place>=path.size()-1) {
       endOfPath = true;
     }
@@ -90,12 +84,10 @@ public class Mob{
     return position;
   }
   public void display() {
-    fill(c);
-    //circle(position.getX(),position.getY(),radius);
     image(img,position.getX()-20,position.getY()-20,50,50);
-    fill(255-red(c),255-green(c),255-blue(c));
-    textSize(10);
-    text(health,position.getX()-8,position.getY()+2);
+    fill(255,255,255);
+    textSize(20);
+    text(health,position.getX()+10,position.getY()+10);
   }
   public int pIndex(ArrayList<Location> paths) { //find where mob is in the path
   Location test = new Location(position.getX(), position.getY());
