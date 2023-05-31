@@ -14,6 +14,7 @@ int interval;
 int powerChosen;
 PImage towerimg;
 boolean gameOver;
+int timer;
 Location endZone;
 ArrayList<Integer> prices;
 Tower selectedTower;
@@ -23,6 +24,7 @@ ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
 ArrayList<Location> paths;
 void setup() {
+  timer = 0;
   size(1000, 800);
   towerimg = loadImage("tower.png");
   tileSize=100;
@@ -100,13 +102,36 @@ void menu() {
   strokeWeight(3);
   stroke(0);
 }
+//for all powerups, should make some type of indicator that they are usable, put them each on a "cooldown" timer of sorts.
+//display timer for all powerups
 void money() {
+  //money gain
+  reward = reward * 2;
+  //make another variable to track the amount added by default as time passes
+  //somehow change back to original
 }
 void fireball() {
+  int blast = 10;
+  int dmg = 15;
+  Location temp = new Location(mouseX, mouseY);
+  for (int i = 0; i < mobs.size(); i++ ) {
+    if (temp.distTo(mobs.get(i).getLocation()) <= blast) {
+      mobs.get(i).doDamage(dmg);
+    }
+  }
+  //make animation somehow
 }
 void speedTower() {
+  for (int i = 0; i < towers.size(); i++) {
+    towers.get(i).setAttack(towers.get(i).getAttack() * 2);
+  }
+  //somehow change back?
 }
 void slowMob() {
+  for (int i = 0; i < mobs.size(); i++) {
+    mobs.get(i).setSpeed(mobs.get(i).getSpeed() / 2);
+  }
+  
 }
 void mouseClicked() {
   fill(144,10,255);
@@ -125,10 +150,21 @@ void mouseClicked() {
         selectNum = i;
       }
     }
-    if (mouseX <= mapWidth + 21 + 80 && mouseY >= 450 && mouseY <= 525) {
+    if (timer <= 0) {
+      if (mouseX <= mapWidth + 21 + 80 && mouseY >= 450 && mouseY <= 525) {
+        money();
+      }
+      if (mouseX <= mapWidth + 21 + 80 && mouseY >= 526 && mouseY <= 590) {
+        fireball();
+      }
+      if (mouseX >= mapWidth + 21 + 81 && mouseX <= mapWidth + 21 + 180 && mouseY >= 450 && mouseY <= 525) {
+        speedTower();
+      }
+      if (mouseX >= mapWidth + 21 + 81 && mouseX <= mapWidth + 21 + 180 && mouseY >= 526 && mouseY <= 590) {
+        slowMob();
+      }
     }
-    if (mouseX <= mapWidth + 21 + 80 && mouseY >= 526) {
-    }
+    
     //finish later
     
   }
@@ -266,6 +302,9 @@ boolean placeTower(int x, int y) {
 void tick() {
   if (time % 60 == 0) {
     round--;
+    if (timer != 0) {
+      timer--;
+    }
   }
   if (time % 120 == 0) {
     changeBalance(10);

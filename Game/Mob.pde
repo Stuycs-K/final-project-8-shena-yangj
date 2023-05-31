@@ -1,6 +1,6 @@
 public class Mob{
   PImage img;
-  private float  moveSpeed;
+  private float moveSpeed;
   private int radius;
   private Location position;
   private int health;
@@ -33,15 +33,32 @@ public class Mob{
     moveHorizontally = false;
     attackPower = 10;
   }
-    
+  public void changeSpeed(int x) {
+    moveSpeed += x;
+  }
+  public void setSpeed(float x) {
+    moveSpeed = x;
+  }
   public float  getSpeed() {
     return moveSpeed;
+  }
+  public void changeRadius(int x) {
+    radius += x;
+  }
+  public void setRadius(int x) {
+    radius = x;
   }
   public int getRadius() {
     return radius;
   }
   public int getHealth() {
     return health;
+  }
+  public void changePower(int x) {
+    attackPower += x;
+  }
+  public void setPower(int x) {
+    attackPower = x;
   }
   public int getAttackPower() {
     return attackPower;
