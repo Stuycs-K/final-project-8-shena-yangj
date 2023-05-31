@@ -10,6 +10,8 @@ int mapHeight;
 int selectNum;
 int reward;
 int score;
+int interval;
+PImage towerimg;
 boolean gameOver;
 Location endZone;
 ArrayList<Integer> prices;
@@ -21,6 +23,7 @@ ArrayList<Mob> mobs;
 ArrayList<Location> paths;
 void setup() {
   size(1000, 800);
+  towerimg = loadImage("tower.png");
   tileSize=100;
   mapWidth = width-200;
   mapHeight = height;
@@ -28,6 +31,7 @@ void setup() {
   time=0;
   round = 100;
   gameOver = false;
+  interval = 30;
   mobs = new ArrayList<Mob>();
   towers = new ArrayList<Tower>();
   paths = new ArrayList<Location>();
@@ -114,6 +118,9 @@ void mouseClicked() {
     
 }
 void generateMap() {
+  fill(148,114,70); //background color
+  rect(0,0,mapWidth,mapHeight);
+  menu();
   //paths = new ArrayList<Location>();
   stroke(0);
   for (int i = 0;i<mapWidth;i+=tileSize) {
@@ -133,13 +140,18 @@ void generateMap() {
       } else if (i>=tileSize * 4 && j==0) {
         square(i,j,tileSize);
       }
-      //} else if (i==tileSize*3 && (j>=tileSize*3 && j<=tileSize*5)) {
-      //  square(i,j,tileSize);
-      //} else if (i>=tileSize*4 && j==tileSize*5) {
-      //  square(i,j,tileSize);
-      //}
     }
   }
+  fill(255,0,0);
+  //for (int i = 0;i<towers.size();i++) {
+  //  square(towers.get(i).getLocation().getX(),towers.get(i).getLocation().getY(),tileSize);
+  //  towers.get(i).display();
+    print("tower size: "+towers.size());
+    println(towers.toString());
+  //  //displayTowers();
+  //}
+  fill(60,201,70);
+  displayTowers();
 }
 void initialGenerateMap() {
   paths = new ArrayList<Location>();
@@ -172,40 +184,61 @@ void initialGenerateMap() {
   paths.add(5, new Location(tileSize * 3, 0));
 }
 
-
+void displayTowers() {
+  for (Tower tower : towers) {
+    //float x = towers.get(i).getLocation().getX();
+    //float y = towers.get(i).getLocation().getY();
+    //image(towerimg,x+15,y,75,100);
+    tower.display();
+  }
+}
 void changeBalance(int amount) {
   balance += amount;
+}
+boolean towerOnPath(int x, int y) {
+  boolean ans = false;
+  for(int i = 0;i<paths.size();i++) {
+    float pathx = paths.get(i).getX();
+    float pathy = paths.get(i).getY();
+    if (x>=pathx && x<=pathx+tileSize && y>=pathy && y<=pathy+tileSize) {
+      ans = true;
+    }
+  }
+  return ans;
 }
 
 boolean placeTower(int x, int y) {
   if (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight) {
+    textSize(20);
+    fill(255,255,255);
+    //check if on path here
+    if (towerOnPath(x,y)) {
+      text("Cannot place tower on path",mouseX,mouseY);
+      return false;
+    }
     if (balance >= prices.get(selectNum)) {
       x = (x / tileSize) * tileSize;
       y = (y / tileSize) * tileSize;
-      fill(255,0,0);
+      //fill(255,0,0);
       square(x, y, tileSize);
+      //image(towerimg,x,y);
       balance -= prices.get(selectNum);
-      selectedTower.setPosition(x, y);
-      towers.add(selectedTower);
+      towers.add(new Tower(x, y, selectedTower.getAttack(), selectedTower.getPower(), selectedTower.getRange()));
       menu();
       //check for path somehow
-      //draw somewhere a error msg like "not enough money"
       selectNum = -1;
       return true;
     }
     else {
       String display = "Not Enough Money";
-      fill(255,0,0);
-      text(display, mapWidth + 23, mapHeight - 100);
-      menu();
-      //figure out a way to make text not stay forever
+      textSize(20);
+      fill(255,255,255);
+      text(display, mouseX, mouseY);
       selectNum = -1;
+      return false;
     }
   }
   return false;
-  //return true if (x,y) are valid and tower is placed
-  //also check if have enough money
-  //else false
 }
 
 void tick() {
