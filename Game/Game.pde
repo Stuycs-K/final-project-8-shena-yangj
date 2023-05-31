@@ -11,6 +11,7 @@ int selectNum;
 int reward;
 int score;
 int interval;
+PImage towerimg;
 boolean gameOver;
 Location endZone;
 ArrayList<Integer> prices;
@@ -22,6 +23,7 @@ ArrayList<Mob> mobs;
 ArrayList<Location> paths;
 void setup() {
   size(1000, 800);
+  towerimg = loadImage("tower.png");
   tileSize=100;
   mapWidth = width-200;
   mapHeight = height;
@@ -141,10 +143,15 @@ void generateMap() {
     }
   }
   fill(255,0,0);
-  for (int i = 0;i<towers.size();i++) {
-    square(towers.get(i).getLocation().getX(),towers.get(i).getLocation().getY(),tileSize);
-  }
+  //for (int i = 0;i<towers.size();i++) {
+  //  square(towers.get(i).getLocation().getX(),towers.get(i).getLocation().getY(),tileSize);
+  //  towers.get(i).display();
+    print("tower size: "+towers.size());
+    println(towers.toString());
+  //  //displayTowers();
+  //}
   fill(60,201,70);
+  displayTowers();
 }
 void initialGenerateMap() {
   paths = new ArrayList<Location>();
@@ -177,7 +184,14 @@ void initialGenerateMap() {
   paths.add(5, new Location(tileSize * 3, 0));
 }
 
-
+void displayTowers() {
+  for (Tower tower : towers) {
+    //float x = towers.get(i).getLocation().getX();
+    //float y = towers.get(i).getLocation().getY();
+    //image(towerimg,x+15,y,75,100);
+    tower.display();
+  }
+}
 void changeBalance(int amount) {
   balance += amount;
 }
@@ -205,11 +219,11 @@ boolean placeTower(int x, int y) {
     if (balance >= prices.get(selectNum)) {
       x = (x / tileSize) * tileSize;
       y = (y / tileSize) * tileSize;
-      fill(255,0,0);
+      //fill(255,0,0);
       square(x, y, tileSize);
+      //image(towerimg,x,y);
       balance -= prices.get(selectNum);
-      selectedTower.setPosition(x, y);
-      towers.add(selectedTower);
+      towers.add(new Tower(x, y, selectedTower.getAttack(), selectedTower.getPower(), selectedTower.getRange()));
       menu();
       //check for path somehow
       selectNum = -1;
