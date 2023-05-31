@@ -100,6 +100,14 @@ void menu() {
   strokeWeight(3);
   stroke(0);
 }
+void money() {
+}
+void fireball() {
+}
+void speedTower() {
+}
+void slowMob() {
+}
 void mouseClicked() {
   fill(144,10,255);
   if (mouseX >= mapWidth + 20 && mouseX <= (mapWidth + 100 + 80)) {
@@ -117,6 +125,12 @@ void mouseClicked() {
         selectNum = i;
       }
     }
+    if (mouseX <= mapWidth + 21 + 80 && mouseY >= 450 && mouseY <= 525) {
+    }
+    if (mouseX <= mapWidth + 21 + 80 && mouseY >= 526) {
+    }
+    //finish later
+    
   }
   if (mouseX <= mapWidth && selected && towers.size() < maxTowers) {
     placeTower(mouseX, mouseY);
