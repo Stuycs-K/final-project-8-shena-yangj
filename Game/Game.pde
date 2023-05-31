@@ -25,8 +25,10 @@ ArrayList<Location> paths;
 void setup() {
   size(1000, 800);
   towerimg = loadImage("tower.png");
-  grass = loadImage("grass.PNG");
+  towerimg.resize(75,100);
   tileSize=100;
+  grass = loadImage("grass.PNG");
+  grass.resize(tileSize,tileSize);
   mapWidth = width-200;
   mapHeight = height;
   background(148, 114, 70);
@@ -58,7 +60,8 @@ void setup() {
 }
 void displayPath() {
   for (int i = 0;i<paths.size();i++) {
-    image(grass,paths.get(i).getX(),paths.get(i).getY(),tileSize,tileSize);
+    //image(grass,paths.get(i).getX(),paths.get(i).getY(),tileSize,tileSize);
+    image(grass,paths.get(i).getX(),paths.get(i).getY());
   }
 }
 void menu() {
@@ -149,15 +152,6 @@ void generateMap() {
       }
     }
   }
-  fill(255,0,0);
-  //for (int i = 0;i<towers.size();i++) {
-  //  square(towers.get(i).getLocation().getX(),towers.get(i).getLocation().getY(),tileSize);
-  //  towers.get(i).display();
-    print("tower size: "+towers.size());
-    println(towers.toString());
-  //  //displayTowers();
-  //}
-  fill(60,201,70);
   displayPath();
   displayTowers();
 }
@@ -195,9 +189,6 @@ void initialGenerateMap() {
 
 void displayTowers() {
   for (Tower tower : towers) {
-    //float x = towers.get(i).getLocation().getX();
-    //float y = towers.get(i).getLocation().getY();
-    //image(towerimg,x+15,y,75,100);
     tower.display();
   }
 }
@@ -228,9 +219,7 @@ boolean placeTower(int x, int y) {
     if (balance >= prices.get(selectNum)) {
       x = (x / tileSize) * tileSize;
       y = (y / tileSize) * tileSize;
-      //fill(255,0,0);
       square(x, y, tileSize);
-      //image(towerimg,x,y);
       balance -= prices.get(selectNum);
       towers.add(new Tower(x, y, selectedTower.getAttack(), selectedTower.getPower(), selectedTower.getRange()));
       menu();
@@ -285,7 +274,6 @@ void draw() {
         mobs.get(i).move(paths,mapWidth,mapHeight,tileSize);
         mobs.get(i).display();
       }
-      //+ mobs.get(i).getRadius()
       println("totalHealth: "+totalHealth);
       continue; //continue w/ next mob since otherwise will run rest of method too
     }
