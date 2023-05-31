@@ -16,6 +16,7 @@ boolean gameOver;
 Location endZone;
 ArrayList<Integer> prices;
 Tower selectedTower;
+PImage grass;
 boolean selected;
 ArrayList<Tower> selects;
 ArrayList<Tower> towers;
@@ -24,6 +25,7 @@ ArrayList<Location> paths;
 void setup() {
   size(1000, 800);
   towerimg = loadImage("tower.png");
+  grass = loadImage("grass.PNG");
   tileSize=100;
   mapWidth = width-200;
   mapHeight = height;
@@ -53,6 +55,11 @@ void setup() {
   }
   score = 0;
   initialGenerateMap();menu();
+}
+void displayPath() {
+  for (int i = 0;i<paths.size();i++) {
+    image(grass,paths.get(i).getX(),paths.get(i).getY(),tileSize,tileSize);
+  }
 }
 void menu() {
   textSize(15);
@@ -151,6 +158,7 @@ void generateMap() {
   //  //displayTowers();
   //}
   fill(60,201,70);
+  displayPath();
   displayTowers();
 }
 void initialGenerateMap() {
@@ -182,6 +190,7 @@ void initialGenerateMap() {
   }
   paths.add(4, new Location(tileSize * 3, 100));
   paths.add(5, new Location(tileSize * 3, 0));
+  displayPath();
 }
 
 void displayTowers() {
