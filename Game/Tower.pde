@@ -3,13 +3,16 @@ public class Tower {
   private int power;
   private int range;
   private Location position;
+  PImage img;
   public Tower(int x, int y) {
+    img = loadImage("tower.png");
     attackSpeed = 10;
     power = 10;
     range = tileSize + (2 * tileSize);
     position = new Location(x,y);
   }
   public Tower(int x, int y, int attackSpeed, int power, int range) {
+    img = loadImage("tower.png");
     this.attackSpeed = attackSpeed;
     this.power = power;
     this.range = (range * tileSize) + tileSize;
@@ -44,5 +47,10 @@ public class Tower {
   }
   public String toString() {
     return (position + "AD: " + attackSpeed + "P: " + power + "R: " + range);
+  }
+  public void display() {
+    float x = position.getX();
+    float y = position.getY();
+    image(towerimg,x+15,y,75,100);
   }
 }
