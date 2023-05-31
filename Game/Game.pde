@@ -11,6 +11,7 @@ int selectNum;
 int reward;
 int score;
 int interval;
+int powerChosen;
 PImage towerimg;
 boolean gameOver;
 Location endZone;
@@ -39,6 +40,7 @@ void setup() {
   selected = false;
   totalHealth = 100;
   maxTowers = 10;
+  powerChosen = -1;
   prices = new ArrayList<Integer> ();
   for (int i = 0; i < 4; i++) {
     prices.add((i * 25) + 50);
@@ -66,6 +68,12 @@ void menu() {
     text("Price: " + prices.get(i), mapWidth + 23, 30 + (100 * i));
     text("AttackDelay: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
     text("Power: " + selects.get(i).getPower(), mapWidth + 23, 70 + (100 * i));
+  }
+  for (int i = 0; i < 2; i++) {
+    fill(255,255,0);
+    rect(mapWidth + 21, 450 + (75 * i), 80, 75);
+    rect(mapWidth + 101, 450 + (75 * i), 80, 75);
+    fill(255,0,0);
   }
   if (selectNum >= 0) {
     stroke(200);
