@@ -85,9 +85,11 @@ public class Mob{
   }
   public void display() {
     image(img,position.getX()-20,position.getY()-20,50,50);
+    tint(255);
     fill(255,255,255);
     textSize(20);
     text(health,position.getX()+10,position.getY()+10);
+    //tint(255,126);
   }
   public int pIndex(ArrayList<Location> paths) { //find where mob is in the path
   Location test = new Location(position.getX(), position.getY());

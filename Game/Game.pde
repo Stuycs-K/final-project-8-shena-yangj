@@ -33,7 +33,6 @@ void setup() {
   background(dirt);
   grass = loadImage("grass.PNG");
   grass.resize(tileSize,tileSize);
-  tint(255,126);
   mapWidth = width-200;
   mapHeight = height;
   time=0;
@@ -63,10 +62,12 @@ void setup() {
   initialGenerateMap();menu();
 }
 void displayPath() {
+  tint(255,126);
   for (int i = 0;i<paths.size();i++) {
     //image(grass,paths.get(i).getX(),paths.get(i).getY(),tileSize,tileSize);
     image(grass,paths.get(i).getX(),paths.get(i).getY());
   }
+  tint(255);
 }
 void menu() {
   textSize(15);
@@ -78,7 +79,7 @@ void menu() {
     rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
     fill(255,0,0);
     text("Price: " + prices.get(i), mapWidth + 23, 30 + (100 * i));
-    text("AttackDelay: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
+    text("AttackSpeed: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
     text("Power: " + selects.get(i).getPower(), mapWidth + 23, 70 + (100 * i));
   }
   if (selectNum >= 0) {
@@ -87,7 +88,7 @@ void menu() {
     rect(mapWidth + 21, 10 + (100 * selectNum), 100 + 60, 100);
     fill(255,0,0);
     text("Price: " + prices.get(selectNum), mapWidth + 23, 30 + (100 * selectNum));
-    text("AttackDelay: " + selects.get(selectNum).getAttack(), mapWidth + 23, 50 + (100 * selectNum));
+    text("AttackSpeed: " + selects.get(selectNum).getAttack(), mapWidth + 23, 50 + (100 * selectNum));
     text("Power: " + selects.get(selectNum).getPower(), mapWidth + 23, 70 + (100 * selectNum));
     stroke(0);
   }
@@ -116,7 +117,7 @@ void mouseClicked() {
         rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
         fill(255,0,0);
         text("Price: " + prices.get(i), mapWidth + 23, 30 + (100 * i));
-        text("AttackDelay: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
+        text("AttackSpeed: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
         text("Power: " + selects.get(i).getPower(), mapWidth + 23, 70 + (100 * i));
         selectedTower = selects.get(i);
         selected = true;
@@ -182,6 +183,7 @@ void initialGenerateMap() {
 }
 
 void displayTowers() {
+  tint(255); //opaque
   for (Tower tower : towers) {
     tower.display();
   }
