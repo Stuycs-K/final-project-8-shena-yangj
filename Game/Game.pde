@@ -147,6 +147,7 @@ void generateMap() {
   //  square(towers.get(i).getLocation().getX(),towers.get(i).getLocation().getY(),tileSize);
   //  towers.get(i).display();
     print("tower size: "+towers.size());
+    println(towers.toString());
   //  //displayTowers();
   //}
   fill(60,201,70);
@@ -222,8 +223,7 @@ boolean placeTower(int x, int y) {
       square(x, y, tileSize);
       //image(towerimg,x,y);
       balance -= prices.get(selectNum);
-      selectedTower.setPosition(x, y);
-      towers.add(selectedTower);
+      towers.add(new Tower(x, y, selectedTower.getAttack(), selectedTower.getPower(), selectedTower.getRange()));
       menu();
       //check for path somehow
       selectNum = -1;
