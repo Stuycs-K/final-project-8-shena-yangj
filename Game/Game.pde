@@ -13,6 +13,7 @@ int score;
 int interval;
 PImage towerimg;
 boolean gameOver;
+PImage dirt;
 Location endZone;
 ArrayList<Integer> prices;
 Tower selectedTower;
@@ -29,9 +30,13 @@ void setup() {
   tileSize=100;
   grass = loadImage("grass.PNG");
   grass.resize(tileSize,tileSize);
+  dirt = loadImage("grass2.PNG");
   mapWidth = width-200;
   mapHeight = height;
-  background(148, 114, 70);
+  //dirt.resize(mapWidth,mapHeight);
+  //background(148, 114, 70);
+  dirt.resize(width,height);
+  background(dirt);
   time=0;
   round = 100;
   gameOver = false;
@@ -128,8 +133,9 @@ void mouseClicked() {
     
 }
 void generateMap() {
-  fill(148,114,70); //background color
-  rect(0,0,mapWidth,mapHeight);
+  //fill(148,114,70); //background color
+  //rect(0,0,mapWidth,mapHeight);
+  background(dirt);
   menu();
   //paths = new ArrayList<Location>();
   stroke(0);
@@ -139,18 +145,6 @@ void generateMap() {
   }
   for (int i = 0;i<mapHeight;i+=tileSize) {
     line(0,i,mapWidth,i);
-  }
-  fill(60, 201, 70);
-  for (int i = 0;i<mapWidth;i+=tileSize) {
-    for (int j = 0;j<mapHeight;j+=tileSize) {
-      if (j==tileSize*2 && i<mapHeight/2) {
-        square(i,j,tileSize);
-      } else if (i==tileSize * 3 && (j >= 0 && j <= tileSize * 2)) {
-        square(i,j,tileSize);
-      } else if (i>=tileSize * 4 && j==0) {
-        square(i,j,tileSize);
-      }
-    }
   }
   displayPath();
   displayTowers();
@@ -169,21 +163,22 @@ void initialGenerateMap() {
   for (int i = 0;i<mapWidth;i+=tileSize) {
     for (int j = 0;j<mapHeight;j+=tileSize) {
       if (j==tileSize*2 && i<mapHeight/2) {
-        square(i,j,tileSize);
+        //square(i,j,tileSize);
         paths.add(new Location(i,j));
-      } else if (i==tileSize * 3 && paths.size() <= 4) {
-        for (int w = 100; w >= 0;w -= tileSize) {
-          square(i,w,tileSize);
-        }
+      //} else if (i==tileSize * 3 && paths.size() <= 4) {
+      //  for (int w = 100; w >= 0;w -= tileSize) {
+      //    square(i,w,tileSize);
+      //  }
         
       } else if (i>=tileSize * 4 && j==0) {
-        square(i,j,tileSize);
+        //square(i,j,tileSize);
         paths.add(new Location(i,j));
       }
     }
   }
   paths.add(4, new Location(tileSize * 3, 100));
   paths.add(5, new Location(tileSize * 3, 0));
+  background(dirt);
   displayPath();
 }
 
