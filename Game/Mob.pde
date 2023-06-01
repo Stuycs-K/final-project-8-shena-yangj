@@ -4,6 +4,7 @@ public class Mob{
   private int radius;
   private Location position;
   private int health;
+  private int totalHealth;
   private boolean moveHorizontally;
   private int attackPower;
   public Mob() {
@@ -11,6 +12,7 @@ public class Mob{
     moveSpeed = .5;//temp, original 10
     position = new Location(50,250,true);
     health = 100;
+    totalHealth = 100;
     moveHorizontally = false;
     radius = 20;
     attackPower = 10;
@@ -20,6 +22,7 @@ public class Mob{
     moveSpeed = 1;
     radius = 20;
     health = 100;
+    totalHealth = 100;
     position = new Location(x,y,true);
     moveHorizontally = false;
     attackPower = 10;
@@ -28,6 +31,7 @@ public class Mob{
     img = loadImage("mob.png");
     moveSpeed = speed;
     this.health = health;
+    totalHealth = health;
     radius = 20;
     position = new Location(x, y,true);
     moveHorizontally = false;
@@ -86,10 +90,25 @@ public class Mob{
   public void display() {
     image(img,position.getX()-20,position.getY()-20,50,50);
     tint(255);
-    fill(255,255,255);
-    textSize(20);
-    text(health,position.getX()+10,position.getY()+10);
+    //fill(255,255,255);
+    //textSize(20);
+    //text(health,position.getX()+10,position.getY()+10);
+    healthBar();
     //tint(255,126);
+  }
+  public void healthBar() {
+    //total
+    fill(255,0,0);
+    //stroke(0);
+    noStroke();
+    rect(position.getX()-10,position.getY()-30,40,10,30);
+    fill(0,255,0);
+    noStroke();
+    float percent = health/(float)totalHealth;
+    rect(position.getX()-10,position.getY()-30,percent*40,10,30);
+    fill(0,0,0);
+    textSize(14);
+    text(health,position.getX()-9,position.getY()-21);
   }
   public int pIndex(ArrayList<Location> paths) { //find where mob is in the path
   Location test = new Location(position.getX(), position.getY());
