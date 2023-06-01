@@ -13,9 +13,11 @@ int score;
 int interval;
 PImage towerimg;
 boolean gameOver;
+PImage dirt;
 Location endZone;
 ArrayList<Integer> prices;
 Tower selectedTower;
+PImage grass;
 boolean selected;
 ArrayList<Tower> selects;
 ArrayList<Tower> towers;
@@ -24,10 +26,15 @@ ArrayList<Location> paths;
 void setup() {
   size(1000, 800);
   towerimg = loadImage("tower.png");
+  towerimg.resize(75,100);
   tileSize=100;
+  dirt = loadImage("grass2.PNG");
+  dirt.resize(width,height);
+  background(dirt);
+  grass = loadImage("grass.PNG");
+  grass.resize(tileSize,tileSize);
   mapWidth = width-200;
   mapHeight = height;
-  background(148, 114, 70);
   time=0;
   round = 100;
   gameOver = false;
@@ -54,6 +61,14 @@ void setup() {
   score = 0;
   initialGenerateMap();menu();
 }
+void displayPath() {
+  tint(255,126);
+  for (int i = 0;i<paths.size();i++) {
+    //image(grass,paths.get(i).getX(),paths.get(i).getY(),tileSize,tileSize);
+    image(grass,paths.get(i).getX(),paths.get(i).getY());
+  }
+  tint(255);
+}
 void menu() {
   textSize(15);
   stroke(0);
@@ -64,7 +79,7 @@ void menu() {
     rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
     fill(255,0,0);
     text("Price: " + prices.get(i), mapWidth + 23, 30 + (100 * i));
-    text("AttackDelay: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
+    text("AttackSpeed: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
     text("Power: " + selects.get(i).getPower(), mapWidth + 23, 70 + (100 * i));
   }
   if (selectNum >= 0) {
@@ -73,7 +88,7 @@ void menu() {
     rect(mapWidth + 21, 10 + (100 * selectNum), 100 + 60, 100);
     fill(255,0,0);
     text("Price: " + prices.get(selectNum), mapWidth + 23, 30 + (100 * selectNum));
-    text("AttackDelay: " + selects.get(selectNum).getAttack(), mapWidth + 23, 50 + (100 * selectNum));
+    text("AttackSpeed: " + selects.get(selectNum).getAttack(), mapWidth + 23, 50 + (100 * selectNum));
     text("Power: " + selects.get(selectNum).getPower(), mapWidth + 23, 70 + (100 * selectNum));
     stroke(0);
   }
@@ -102,7 +117,7 @@ void mouseClicked() {
         rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
         fill(255,0,0);
         text("Price: " + prices.get(i), mapWidth + 23, 30 + (100 * i));
-        text("AttackDelay: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
+        text("AttackSpeed: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
         text("Power: " + selects.get(i).getPower(), mapWidth + 23, 70 + (100 * i));
         selectedTower = selects.get(i);
         selected = true;
@@ -118,8 +133,9 @@ void mouseClicked() {
     
 }
 void generateMap() {
-  fill(148,114,70); //background color
-  rect(0,0,mapWidth,mapHeight);
+  //fill(148,114,70); //background color
+  //rect(0,0,mapWidth,mapHeight);
+  background(dirt);
   menu();
   //paths = new ArrayList<Location>();
   stroke(0);
@@ -130,27 +146,7 @@ void generateMap() {
   for (int i = 0;i<mapHeight;i+=tileSize) {
     line(0,i,mapWidth,i);
   }
-  fill(60, 201, 70);
-  for (int i = 0;i<mapWidth;i+=tileSize) {
-    for (int j = 0;j<mapHeight;j+=tileSize) {
-      if (j==tileSize*2 && i<mapHeight/2) {
-        square(i,j,tileSize);
-      } else if (i==tileSize * 3 && (j >= 0 && j <= tileSize * 2)) {
-        square(i,j,tileSize);
-      } else if (i>=tileSize * 4 && j==0) {
-        square(i,j,tileSize);
-      }
-    }
-  }
-  fill(255,0,0);
-  //for (int i = 0;i<towers.size();i++) {
-  //  square(towers.get(i).getLocation().getX(),towers.get(i).getLocation().getY(),tileSize);
-  //  towers.get(i).display();
-    print("tower size: "+towers.size());
-    println(towers.toString());
-  //  //displayTowers();
-  //}
-  fill(60,201,70);
+  displayPath();
   displayTowers();
 }
 void initialGenerateMap() {
@@ -167,28 +163,28 @@ void initialGenerateMap() {
   for (int i = 0;i<mapWidth;i+=tileSize) {
     for (int j = 0;j<mapHeight;j+=tileSize) {
       if (j==tileSize*2 && i<mapHeight/2) {
-        square(i,j,tileSize);
+        //square(i,j,tileSize);
         paths.add(new Location(i,j));
-      } else if (i==tileSize * 3 && paths.size() <= 4) {
-        for (int w = 100; w >= 0;w -= tileSize) {
-          square(i,w,tileSize);
-        }
+      //} else if (i==tileSize * 3 && paths.size() <= 4) {
+      //  for (int w = 100; w >= 0;w -= tileSize) {
+      //    square(i,w,tileSize);
+      //  }
         
       } else if (i>=tileSize * 4 && j==0) {
-        square(i,j,tileSize);
+        //square(i,j,tileSize);
         paths.add(new Location(i,j));
       }
     }
   }
   paths.add(4, new Location(tileSize * 3, 100));
   paths.add(5, new Location(tileSize * 3, 0));
+  background(dirt);
+  displayPath();
 }
 
 void displayTowers() {
+  tint(255); //opaque
   for (Tower tower : towers) {
-    //float x = towers.get(i).getLocation().getX();
-    //float y = towers.get(i).getLocation().getY();
-    //image(towerimg,x+15,y,75,100);
     tower.display();
   }
 }
@@ -219,9 +215,7 @@ boolean placeTower(int x, int y) {
     if (balance >= prices.get(selectNum)) {
       x = (x / tileSize) * tileSize;
       y = (y / tileSize) * tileSize;
-      //fill(255,0,0);
       square(x, y, tileSize);
-      //image(towerimg,x,y);
       balance -= prices.get(selectNum);
       towers.add(new Tower(x, y, selectedTower.getAttack(), selectedTower.getPower(), selectedTower.getRange()));
       menu();
@@ -276,7 +270,6 @@ void draw() {
         mobs.get(i).move(paths,mapWidth,mapHeight,tileSize);
         mobs.get(i).display();
       }
-      //+ mobs.get(i).getRadius()
       println("totalHealth: "+totalHealth);
       continue; //continue w/ next mob since otherwise will run rest of method too
     }
