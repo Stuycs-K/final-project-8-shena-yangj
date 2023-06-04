@@ -12,6 +12,7 @@ int reward;
 int score;
 int interval;
 int powerChosen;
+int powerTime;
 PImage towerimg;
 boolean gameOver;
 int timer;
@@ -24,6 +25,7 @@ ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
 ArrayList<Location> paths;
 void setup() {
+  powerTime = 0;
   timer = 0;
   size(1000, 800);
   towerimg = loadImage("tower.png");
@@ -104,32 +106,51 @@ void menu() {
 }
 //for all powerups, should make some type of indicator that they are usable, put them each on a "cooldown" timer of sorts.
 //display timer for all powerups
-void money() {
+void money() { //0
   //money gain
-  reward = reward * 2;
+  if (powerTime == 0) {
+    reward = reward * 2;  
+    powerTime = 5;
+    powerChosen = 0;
+  }
   //make another variable to track the amount added by default as time passes
   //somehow change back to original
 }
-void fireball() {
-  int blast = 10;
-  int dmg = 15;
-  Location temp = new Location(mouseX, mouseY);
-  for (int i = 0; i < mobs.size(); i++ ) {
-    if (temp.distTo(mobs.get(i).getLocation()) <= blast) {
-      mobs.get(i).doDamage(dmg);
+void fireball() { //1
+//make so that in tick, for each tick of powerTime, it will change the color of the "crater"
+  if (powerTime == 0) {
+    int blast = 10;
+    int dmg = 15;
+    Location temp = new Location(mouseX, mouseY);
+    for (int i = 0; i < mobs.size(); i++ ) {
+      if (temp.distTo(mobs.get(i).getLocation()) <= blast) {
+        mobs.get(i).doDamage(dmg);
+      }
     }
+    powerTime = 5;
+    powerChosen = 1;
   }
   //make animation somehow
 }
-void speedTower() {
-  for (int i = 0; i < towers.size(); i++) {
-    towers.get(i).setAttack(towers.get(i).getAttack() * 2);
+void speedTower() { //2
+  if (powerTime == 0) {
+    for (int i = 0; i < towers.size(); i++) {
+      towers.get(i).setAttack(towers.get(i).getAttack() * 2);
+    }
+    powerTime = 5;
+    powerChosen = 2;
   }
+  
   //somehow change back?
 }
-void slowMob() {
-  for (int i = 0; i < mobs.size(); i++) {
-    mobs.get(i).setSpeed(mobs.get(i).getSpeed() / 2);
+void slowMob() { //3
+  if (powerTime == 0) {
+    
+    for (int i = 0; i < mobs.size(); i++) {
+      mobs.get(i).setSpeed(mobs.get(i).getSpeed() / 2);
+    }
+    powerTime = 5;
+    powerChosen = 3;
   }
   
 }
@@ -305,10 +326,26 @@ void tick() {
     if (timer != 0) {
       timer--;
     }
+    if (powerChosen >= 0) {
+      powerTime--;
+    }
   }
   if (time % 120 == 0) {
     changeBalance(10);
   }
+  if (powerTime == 0) {
+    if (powerChosen == 1) {//fire
+    }
+    if (powerChosen == 2) {//speedtower
+      for (int i = 0; i < towers.size(); i++) {
+        towers.get(i).setAttack(towers.get(i).getAttack() / 2);
+      }
+    }
+    if (powerChosen == 3) {//slowMob
+      for (int i = 0; i < mobs.size(); i++) {
+        mobs.get(i).setSpeed(mobs.get(i).getSpeed() * 2);
+      }
+    }
 }
 void draw() {
   menu();
