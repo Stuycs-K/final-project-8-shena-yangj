@@ -328,24 +328,26 @@ void tick() {
     }
     if (powerChosen >= 0) {
       powerTime--;
+      //make drawing of fire here or in draw, mby try to make smooth by putting into draw somehow
     }
   }
   if (time % 120 == 0) {
     changeBalance(10);
   }
   if (powerTime == 0) {
-    if (powerChosen == 1) {//fire
-    }
-    if (powerChosen == 2) {//speedtower
+    else if (powerChosen == 2) {//speedtower
       for (int i = 0; i < towers.size(); i++) {
         towers.get(i).setAttack(towers.get(i).getAttack() / 2);
+        //have to make sure that they acc revert back to the same thing
       }
     }
-    if (powerChosen == 3) {//slowMob
+    else if (powerChosen == 3) {//slowMob
       for (int i = 0; i < mobs.size(); i++) {
         mobs.get(i).setSpeed(mobs.get(i).getSpeed() * 2);
+        //have to make sure that they acc revert back to the same thing
       }
     }
+    powerChosen == -1;
 }
 void draw() {
   menu();
