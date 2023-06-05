@@ -23,8 +23,7 @@ ArrayList<Tower> selects;
 ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
 ArrayList<Location> paths;
-void setup() {
-  size(1000, 800);
+void init() {
   towerimg = loadImage("tower.png");
   towerimg.resize(75,100);
   tileSize=100;
@@ -36,7 +35,7 @@ void setup() {
   mapWidth = width-200;
   mapHeight = height;
   time=0;
-  round = 100;
+  round = 100; 
   gameOver = false;
   interval = 30;
   mobs = new ArrayList<Mob>();
@@ -44,7 +43,7 @@ void setup() {
   paths = new ArrayList<Location>();
   balance = 50;
   selected = false;
-  totalHealth = 100;
+  totalHealth = 100; 
   maxTowers = 10;
   prices = new ArrayList<Integer> ();
   for (int i = 0; i < 4; i++) {
@@ -60,6 +59,10 @@ void setup() {
   }
   score = 0;
   initialGenerateMap();menu();
+}
+void setup() {
+  size(1000, 800);
+  init();
 }
 void displayPath() {
   tint(255,126);
@@ -133,11 +136,8 @@ void mouseClicked() {
     
 }
 void generateMap() {
-  //fill(148,114,70); //background color
-  //rect(0,0,mapWidth,mapHeight);
   background(dirt);
   menu();
-  //paths = new ArrayList<Location>();
   stroke(0);
   for (int i = 0;i<mapWidth;i+=tileSize) {
     strokeWeight(3);
@@ -163,15 +163,8 @@ void initialGenerateMap() {
   for (int i = 0;i<mapWidth;i+=tileSize) {
     for (int j = 0;j<mapHeight;j+=tileSize) {
       if (j==tileSize*2 && i<mapHeight/2) {
-        //square(i,j,tileSize);
         paths.add(new Location(i,j));
-      //} else if (i==tileSize * 3 && paths.size() <= 4) {
-      //  for (int w = 100; w >= 0;w -= tileSize) {
-      //    square(i,w,tileSize);
-      //  }
-        
       } else if (i>=tileSize * 4 && j==0) {
-        //square(i,j,tileSize);
         paths.add(new Location(i,j));
       }
     }
@@ -283,14 +276,10 @@ void draw() {
   }
   if (gameOver) {
     if (totalHealth <= 0) {
-      print("YOU LOSE");
-      delay(2000);
-      exit();
+      lose();
     }
     if (round <= 0) {
-      print("YOU WIN");
-      delay(2000);
-      exit();
+      win();
     }
   }
   for (Tower a : towers) {
@@ -300,4 +289,20 @@ void draw() {
   }
   time++;
   tick();
+}
+void win() {
+  textSize(50);
+  text("YOU WIN",300,300);
+  text("Press any key to restart",250,500);
+  if (keyPressed) restart();
+}
+void lose() {
+  textSize(50);
+  text("YOU LOSE",300,300);
+  text("Press any key to restart",250,500);
+  if (keyPressed) restart();
+}
+void restart() {
+  init();
+  mobs.add(new Mob(50,250)); //first mob at time==0
 }
