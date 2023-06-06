@@ -11,6 +11,7 @@ int selectNum;
 int reward;
 int score;
 int interval;
+boolean titleScreen;
 PImage towerimg;
 boolean gameOver;
 PImage dirt;
@@ -24,6 +25,7 @@ ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
 ArrayList<Location> paths;
 void init() {
+  titleScreen = true;
   towerimg = loadImage("tower.png");
   towerimg.resize(75,100);
   tileSize=100;
@@ -66,15 +68,24 @@ void setup() {
   init();
 }
 void titleScreen() {
-  pushStyle();
-  background(0);
-  textSize(50);
-  PFont font = createFont("Cherry Bomb One",30);
+  //pushStyle();
+  background(255);
+  PFont font = createFont("Tahoma Bold",75);
   textFont(font);
-  textAlign(CENTER,CENTER);
+  //textAlign(CENTER,CENTER);
   fill(255,0,0);
-  text("TOWER DEFENSE",300,400);
-  popStyle();
+  text("TOWER DEFENSE",175,200);
+  image(towerimg,100,110);
+  image(towerimg,825,110);
+  strokeWeight(5);
+  stroke(0);
+  fill(134, 250, 252);
+  //fill(0,0,0);
+  rect(250,300,500,200);
+  fill(0);
+  textSize(50);
+  text("Click here to start",275,400);
+  //popStyle();
 }
 void displayPath() {
   tint(255,126);
@@ -123,6 +134,14 @@ void menu() {
   stroke(0);
 }
 void mouseClicked() {
+  if (titleScreen) { //  rect(250,300,500,200);
+    if (mouseX>250 && mouseX<750 && mouseY>300 && mouseY<700) {
+      fill(104, 195, 196);
+      rect(250,300,500,200);
+      titleScreen = false;
+      initialGenerateMap();
+    }
+  } else {
   fill(144,10,255);
   if (mouseX >= mapWidth + 20 && mouseX <= (mapWidth + 100 + 80)) {
     for (int i = 0; i < 4; i++) {
@@ -145,9 +164,10 @@ void mouseClicked() {
     selected = false;
     menu();
   }
-    
+ }
 }
 void generateMap() {
+  titleScreen = false;
   background(dirt);
   menu();
   stroke(0);
@@ -263,58 +283,58 @@ void tick() {
   }
 }
 void draw() {
-  menu();
-  if (time % 240==0) {//make a mob every few seconds
-  //if (time==0) {
-    mobs.add(new Mob(50,250));
-  }
+  //menu();
+  //if (time % 240==0) {//make a mob every few seconds
+  ////if (time==0) {
+  //  mobs.add(new Mob(50,250));
+  //}
   
-  for (int i = 0; i < mobs.size(); i++) {
-    if (mobs.get(i).getHealth() <= 0) {
-      mobs.remove(mobs.get(i));
-      i--;
-      balance += reward;
-      score++;
-      //eventually make diff score depending on mob killed
-      //reward should depend on future difficulty modes
-    }
-  }
-  generateMap();
-  for (int i = 0;i<mobs.size();i++) {
-    if (mobs.get(i).getLocation().getX()>= endZone.getX()) {
+  //for (int i = 0; i < mobs.size(); i++) {
+  //  if (mobs.get(i).getHealth() <= 0) {
+  //    mobs.remove(mobs.get(i));
+  //    i--;
+  //    balance += reward;
+  //    score++;
+  //    //eventually make diff score depending on mob killed
+  //    //reward should depend on future difficulty modes
+  //  }
+  //}
+  //generateMap();
+  //for (int i = 0;i<mobs.size();i++) {
+  //  if (mobs.get(i).getLocation().getX()>= endZone.getX()) {
       
-      totalHealth-=mobs.get(i).getAttackPower();
-      mobs.remove(i);
-      if (i < mobs.size()) {
-        mobs.get(i).move(paths,mapWidth,mapHeight,tileSize);
-        mobs.get(i).display();
-      }
-      println("totalHealth: "+totalHealth);
-      continue; //continue w/ next mob since otherwise will run rest of method too
-    }
-    if (totalHealth<=0 || round <= 0) {
-      gameOver = true;
-      menu();
-      break;
-    }
-    mobs.get(i).move(paths,mapWidth,mapHeight,tileSize);
-    mobs.get(i).display();
-  }
-  if (gameOver) {
-    if (totalHealth <= 0) {
-      lose();
-    }
-    if (round <= 0) {
-      win();
-    }
-  }
-  for (Tower a : towers) {
-    for (Mob b : mobs) {
-      a.attack(b, time);
-    }
-  }
-  time++;
-  tick();
+  //    totalHealth-=mobs.get(i).getAttackPower();
+  //    mobs.remove(i);
+  //    if (i < mobs.size()) {
+  //      mobs.get(i).move(paths,mapWidth,mapHeight,tileSize);
+  //      mobs.get(i).display();
+  //    }
+  //    println("totalHealth: "+totalHealth);
+  //    continue; //continue w/ next mob since otherwise will run rest of method too
+  //  }
+  //  if (totalHealth<=0 || round <= 0) {
+  //    gameOver = true;
+  //    menu();
+  //    break;
+  //  }
+  //  mobs.get(i).move(paths,mapWidth,mapHeight,tileSize);
+  //  mobs.get(i).display();
+  //}
+  //if (gameOver) {
+  //  if (totalHealth <= 0) {
+  //    lose();
+  //  }
+  //  if (round <= 0) {
+  //    win();
+  //  }
+  //}
+  //for (Tower a : towers) {
+  //  for (Mob b : mobs) {
+  //    a.attack(b, time);
+  //  }
+  //}
+  //time++;
+  //tick();
 }
 void win() {
   textSize(50);
