@@ -197,6 +197,20 @@ boolean towerOnPath(int x, int y) {
 }
 
 boolean placeTower(int x, int y) {
+  Location loc = new Location(x,y);
+  boolean alreadyTower = false;
+  for (Tower tower : towers) {
+    if (tower.getLocation().isEqual(loc)) alreadyTower = true;
+  }
+  //print("Tower size: "+towers.size());
+  if (alreadyTower) {
+    pushStyle();
+    textSize(20);
+    fill(255,255,255);
+    text("Already a tower there",x,y);
+    popStyle();
+    return false;
+  }
   if (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight) {
     textSize(20);
     fill(255,255,255);
