@@ -21,18 +21,23 @@ public class Laser{
     //  line(tower.getLocation().getX()+tileSize/2,tower.getLocation().getY()+tileSize/2,mob.getLocation().getX(),mob.getLocation().getY());
     //}
     blendMode(ADD);
-    strokeWeight(20);
-    stroke(0,100,50);
-    line(tower.getLocation().getX()+tileSize/2,tower.getLocation().getY()+tileSize/2,mob.getLocation().getX(),mob.getLocation().getY());
+    //strokeWeight(20);
+    //stroke(0,0,100);
+    //line(tower.getLocation().getX()+tileSize/2,tower.getLocation().getY()+tileSize/2,mob.getLocation().getX(),mob.getLocation().getY());
+    
+    //strokeWeight(17);
+    //stroke(0,100,50);
+    //line(tower.getLocation().getX()+tileSize/2,tower.getLocation().getY()+tileSize/2,mob.getLocation().getX(),mob.getLocation().getY());
     
     //blendMode(ADD);
     //strokeWeight(20);
     //stroke(0,0,50);
     //line(tower.getLocation().getX()+tileSize/2,tower.getLocation().getY()+tileSize/2,mob.getLocation().getX(),mob.getLocation().getY());
-    for (float i = 0.0;i<.5;i+=.01) {
+    for (float i = 0.0;i<100;i++) {
+      stroke(0,90+i,100);
       //stroke(0,100,100-100*i);
-      stroke(0,100,100);
-      strokeWeight(7+i*15);
+      //stroke(0,100,0+i*1000);
+      strokeWeight(15-i*.1);
       line(tower.getLocation().getX()+tileSize/2,tower.getLocation().getY()+tileSize/2,mob.getLocation().getX(),mob.getLocation().getY());
     }
     blendMode(BLEND);
