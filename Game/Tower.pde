@@ -4,7 +4,7 @@ public class Tower {
   private int numRange;
   private int range;
   private Location position;
-  ArrayList<Bullet> bullets;
+  Laser laser;
   PImage img;
   public Tower(int x, int y) {
     img = loadImage("tower.png");
@@ -13,7 +13,7 @@ public class Tower {
     numRange = 2;
     range = tileSize + (2 * tileSize);
     position = new Location(x,y);
-    bullets = new ArrayList<Bullet>();
+    laser = new Laser(this);
   }
   public Tower(int x, int y, int attackSpeed, int power, int range) {
     img = loadImage("tower.png");
@@ -22,7 +22,7 @@ public class Tower {
     numRange = range;
     this.range = (range * tileSize) + tileSize;
     position = new Location(x,y);
-    bullets = new ArrayList<Bullet>();
+    laser = new Laser(this);
   }
   public Location getLocation() {
     return position;
@@ -31,14 +31,11 @@ public class Tower {
     if (time % (60 / attackSpeed) == 0) {
       if (inRange(m.getLocation())) {
         m.doDamage(power);
-        bullets.add(new Bullet(this,m));
       }
     }
-    for (Bullet bullet : bullets) {
-      bullet.move();
-      bullet.display();
+    if (inRange(m.getLocation())) {
+      if (!m.dead()) laser.display(m);
     }
-    print("Bullets size: "+bullets.size());
   }
   private boolean inRange(Location p) {
     Location temp = new Location((position.getX() + (tileSize /2 )), (position.getY() + (tileSize /2 )), true);
