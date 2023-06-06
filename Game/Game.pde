@@ -35,9 +35,9 @@ void setup() {
   mobs = new ArrayList<Mob>();
   towers = new ArrayList<Tower>();
   paths = new ArrayList<Location>();
-  balance = 50;
+  balance = 500;
   selected = false;
-  totalHealth = 100;
+  totalHealth = 20;
   maxTowers = 10;
   prices = new ArrayList<Integer> ();
   for (int i = 0; i < 4; i++) {
