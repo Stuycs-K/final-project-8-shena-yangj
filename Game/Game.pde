@@ -16,6 +16,7 @@ int powerTime;
 PImage towerimg;
 boolean gameOver;
 int timer;
+boolean towerMenu;
 Location endZone;
 ArrayList<Integer> prices;
 Tower selectedTower;
@@ -25,6 +26,7 @@ ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
 ArrayList<Location> paths;
 void setup() {
+  towerMenu = false;
   powerTime = 0;
   timer = 0;
   size(1000, 800);
@@ -60,49 +62,58 @@ void setup() {
   score = 0;
   initialGenerateMap();menu();
 }
-void menu() {
-  textSize(15);
-  stroke(0);
-  fill(146,152,255);
-  rect(mapWidth + 1,0,mapWidth,mapHeight);
-  for (int i = 0; i < 4; i++) {
-    fill(144,10,255);
-    rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
-    fill(255,0,0);
-    text("Price: " + prices.get(i), mapWidth + 23, 30 + (100 * i));
-    text("AttackDelay: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
-    text("Power: " + selects.get(i).getPower(), mapWidth + 23, 70 + (100 * i));
-  }
-  for (int i = 0; i < 2; i++) {
-    fill(255,255,0);
-    rect(mapWidth + 21, 450 + (75 * i), 80, 75);
-    rect(mapWidth + 101, 450 + (75 * i), 80, 75);
-    fill(255,0,0);
-  }
-  if (selectNum >= 0) {
-    stroke(200);
-    fill(144,10,255);
-    rect(mapWidth + 21, 10 + (100 * selectNum), 100 + 60, 100);
-    fill(255,0,0);
-    text("Price: " + prices.get(selectNum), mapWidth + 23, 30 + (100 * selectNum));
-    text("AttackDelay: " + selects.get(selectNum).getAttack(), mapWidth + 23, 50 + (100 * selectNum));
-    text("Power: " + selects.get(selectNum).getPower(), mapWidth + 23, 70 + (100 * selectNum));
+void menu() {  
+  if (!towerMenu) {
+    textSize(15);
+    stroke(0);
+    fill(146,152,255);
+    rect(mapWidth + 1,0,mapWidth,mapHeight);
+    for (int i = 0; i < 4; i++) {
+      fill(144,10,255);
+      rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
+      fill(255,0,0);
+      text("Price: " + prices.get(i), mapWidth + 23, 30 + (100 * i));
+      text("AttackDelay: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
+      text("Power: " + selects.get(i).getPower(), mapWidth + 23, 70 + (100 * i));
+    }
+    for (int i = 0; i < 2; i++) {
+      fill(255,255,0);
+      rect(mapWidth + 21, 450 + (75 * i), 80, 75);
+      rect(mapWidth + 101, 450 + (75 * i), 80, 75);
+      fill(255,0,0);
+    }
+    if (selectNum >= 0) {
+      stroke(200);
+      fill(144,10,255);
+      rect(mapWidth + 21, 10 + (100 * selectNum), 100 + 60, 100);
+      fill(255,0,0);
+      text("Price: " + prices.get(selectNum), mapWidth + 23, 30 + (100 * selectNum));
+      text("AttackDelay: " + selects.get(selectNum).getAttack(), mapWidth + 23, 50 + (100 * selectNum));
+      text("Power: " + selects.get(selectNum).getPower(), mapWidth + 23, 70 + (100 * selectNum));
+      stroke(0);
+    }
+    textSize(25);
+    text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
+    text("Mob count: " + mobs.size(), mapWidth + 21, mapHeight - 50);
+    text("Balance: " + balance, mapWidth + 21, mapHeight - 80);
+    text("Round Timer: " + round, mapWidth + 10, mapHeight - 140);
+    text("Total Health: "+totalHealth, mapWidth+10,mapHeight-160);
+    text("Score: " + score, mapWidth + 21, mapHeight - 110);
+    textSize(15);
+    strokeWeight(5);
+    stroke(255,87,51);
+    endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
+    line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
+    strokeWeight(3);
     stroke(0);
   }
-  textSize(25);
-  text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
-  text("Mob count: " + mobs.size(), mapWidth + 21, mapHeight - 50);
-  text("Balance: " + balance, mapWidth + 21, mapHeight - 80);
-  text("Round Timer: " + round, mapWidth + 10, mapHeight - 140);
-  text("Total Health: "+totalHealth, mapWidth+10,mapHeight-160);
-  text("Score: " + score, mapWidth + 21, mapHeight - 110);
-  textSize(15);
-  strokeWeight(5);
-  stroke(255,87,51);
-  endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
-  line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
-  strokeWeight(3);
-  stroke(0);
+  else {
+  //if click on tower
+  //somehow see which tower in the arraylist is selected
+  //tower.get(selected).upgrade();
+  }
+  
+  
 }
 //for all powerups, should make some type of indicator that they are usable, put them each on a "cooldown" timer of sorts.
 //display timer for all powerups
@@ -335,7 +346,7 @@ void tick() {
     changeBalance(10);
   }
   if (powerTime == 0) {
-    else if (powerChosen == 2) {//speedtower
+    if (powerChosen == 2) {//speedtower
       for (int i = 0; i < towers.size(); i++) {
         towers.get(i).setAttack(towers.get(i).getAttack() / 2);
         //have to make sure that they acc revert back to the same thing
@@ -347,7 +358,8 @@ void tick() {
         //have to make sure that they acc revert back to the same thing
       }
     }
-    powerChosen == -1;
+    powerChosen = -1;
+  }
 }
 void draw() {
   menu();
