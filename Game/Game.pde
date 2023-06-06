@@ -82,7 +82,7 @@ void menu() {
       rect(mapWidth + 101, 450 + (75 * i), 80, 75);
       fill(255,0,0);
     }
-    if (selectNum >= 0) {
+    if (selectNum >= 0 && selectNum <= 3) {
       stroke(200);
       fill(144,10,255);
       rect(mapWidth + 21, 10 + (100 * selectNum), 100 + 60, 100);
@@ -91,6 +91,13 @@ void menu() {
       text("AttackDelay: " + selects.get(selectNum).getAttack(), mapWidth + 23, 50 + (100 * selectNum));
       text("Power: " + selects.get(selectNum).getPower(), mapWidth + 23, 70 + (100 * selectNum));
       stroke(0);
+    }
+    if (selectNum >= 4 && selectNum <= 7) {
+      stroke(200);
+      fill(255,255,0);
+      //fix math for this part, might have to redo the selectNum order in powerup selections
+      //rect(mapWidth + 21 + (80 * (selectNum )), 450 + (75 * (selectNum )), 80, 75);
+      fill(255,0,0);
     }
     textSize(25);
     text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
@@ -183,17 +190,26 @@ void mouseClicked() {
       }
     }
     if (timer <= 0) {
+      stroke(200);
       if (mouseX <= mapWidth + 21 + 80 && mouseY >= 450 && mouseY <= 525) {
         money();
+        rect(mapWidth + 21, 450,80,75);
+        selectNum = 4;
       }
       if (mouseX <= mapWidth + 21 + 80 && mouseY >= 526 && mouseY <= 590) {
         fireball();
+        rect(mapWidth + 21, 525, 80, 75);
+        selectNum = 5;
       }
       if (mouseX >= mapWidth + 21 + 81 && mouseX <= mapWidth + 21 + 180 && mouseY >= 450 && mouseY <= 525) {
         speedTower();
+        rect(mapWidth + 101, 450, 80, 75);
+        selectNum = 6;
       }
       if (mouseX >= mapWidth + 21 + 81 && mouseX <= mapWidth + 21 + 180 && mouseY >= 526 && mouseY <= 590) {
         slowMob();
+        rect(mapWidth + 101, 525, 80, 75);
+        selectNum = 7;
       }
     }
     
