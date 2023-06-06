@@ -58,11 +58,23 @@ void init() {
     //println(selects.get(i));
   }
   score = 0;
-  initialGenerateMap();menu();
+  titleScreen();
+  //initialGenerateMap();menu();
 }
 void setup() {
   size(1000, 800);
   init();
+}
+void titleScreen() {
+  pushStyle();
+  background(0);
+  textSize(50);
+  PFont font = createFont("Cherry Bomb One",30);
+  textFont(font);
+  textAlign(CENTER,CENTER);
+  fill(255,0,0);
+  text("TOWER DEFENSE",300,400);
+  popStyle();
 }
 void displayPath() {
   tint(255,126);
