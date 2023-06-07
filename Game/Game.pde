@@ -243,6 +243,69 @@ void initialGenerateMap() {
   line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
   menu();
 }
+boolean nextInBounds(int direction, int r, int c) {
+  return !(direction==1 && r==0) || !(direction==2&&c==7) || !(direction==3&&r==7);
+}
+void randomMap() {
+  stroke(0);
+  //always start on 0th column and end on last column
+  //random start row
+  int startrow = (int)(Math.random()*mapWidth/tileSize);
+  int prevrow = startrow;
+  int prevcol = 0;
+  //random pathlength, at least 8 (one straight line path), at most 20
+  int pathLength = (int)(Math.random()*12)+8; //64 tiles in screen
+  for (int i = 0;i<mapWidth;i+=tileSize) {
+    for (int j = 0;j<mapHeight;j+=tileSize) {
+      int direction = (int)(Math.random()*4); //1 up,2 right,3 down, can't go left
+      //check for in bounds
+      while (!nextInBounds(direction,i,j)) direction=(int)(Math.random()*4);
+      //if in bounds then extend map there
+      if (direction==1) {
+        paths.add(new Location(prevrow-1,prevcol)); //left
+        prevrow--1;
+      }
+      if (direction==2) {
+        paths.add(new Location(prevrow,prevcol+1)); //right
+        prevcol++;
+      }
+      else {
+        paths.add(new Location(prevrow+1,prevcol)); //down
+        prevrow++;
+      }
+    }
+  }
+  //for (int i = 0;i<pathLength;i++) {
+  //  int direction = (int)(Math.random()*4); //1 up,2 right,3 down, can't go left
+    
+  //}
+  for (int i = 0;i<mapWidth;i+=tileSize) {
+    strokeWeight(3);
+    line(i,0,i,mapHeight);
+  }
+  for (int i = 0;i<mapHeight;i+=tileSize) {
+    line(0,i,mapWidth,i);
+  }
+  fill(60, 201, 70);
+  for (int i = 0;i<mapWidth;i+=tileSize) {
+    for (int j = 0;j<mapHeight;j+=tileSize) {
+      if (j==tileSize*2 && i<mapHeight/2) {
+        paths.add(new Location(i,j));
+      } else if (i>=tileSize * 4 && j==0) {
+        paths.add(new Location(i,j));
+      }
+    }
+  }
+  paths.add(4, new Location(tileSize * 3, 100));
+  paths.add(5, new Location(tileSize * 3, 0));
+  background(dirt);
+  displayPath();
+  strokeWeight(5);
+  stroke(255,87,51);
+  endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
+  line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
+  menu();
+}
 
 void displayTowers() {
   tint(255); //opaque
