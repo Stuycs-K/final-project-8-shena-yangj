@@ -12,6 +12,7 @@ int reward;
 int score;
 int interval;
 boolean titleScreen;
+boolean levelScreen;
 PImage towerimg;
 boolean gameOver;
 PImage dirt;
@@ -26,6 +27,7 @@ ArrayList<Mob> mobs;
 ArrayList<Location> paths;
 void init() {
   titleScreen = true;
+  levelScreen=false;
   towerimg = loadImage("tower.png");
   towerimg.resize(75,100);
   tileSize=100;
@@ -131,16 +133,33 @@ void menu() {
   strokeWeight(3);
   stroke(0);
 }
+void levelScreen() {
+  background(0);
+  fill(255);
+  textSize(75);
+  text("Choose a difficulty",200,300);
+  fill(99, 131, 219);
+  rect(100,500,200,100);
+  rect(400,500,200,100);
+  rect(700,500,200,100);
+  fill(255);
+  textSize(50);
+  text("Easy",150,560);
+  text("Medium",410,560);
+  text("Hard",750,560);
+}
 void mouseClicked() {
-  if (titleScreen) { //  rect(250,300,500,200);
+  if (titleScreen) { 
+  //button in title screen to go to levelScreen is clicked
     if (mouseX>250 && mouseX<750 && mouseY>300 && mouseY<700) {
-      fill(104, 195, 196);
-      rect(250,300,500,200);
-      print("HERE");
       titleScreen = false;
-      initialGenerateMap();
+      levelScreen=true;
+      levelScreen();
     }
-  } else {
+  } else if (levelScreen) {
+    //levelScreen=false;
+    //initialGenerateMap();
+  }else {
   fill(144,10,255);
   if (mouseX >= mapWidth + 20 && mouseX <= (mapWidth + 100 + 80)) {
     for (int i = 0; i < 4; i++) {
@@ -181,7 +200,6 @@ void generateMap() {
   menu();
 }
 void initialGenerateMap() {
-  print("HERE INIAL");
   stroke(0);
   for (int i = 0;i<mapWidth;i+=tileSize) {
     strokeWeight(3);
@@ -286,7 +304,7 @@ void tick() {
   }
 }
 void draw() {
-  if (!titleScreen) {
+  if (!titleScreen && !levelScreen) {
   //menu();
   if (time % 240==0) {//make a mob every few seconds
   //if (time==0) {
