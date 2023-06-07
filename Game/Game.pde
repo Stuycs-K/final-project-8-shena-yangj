@@ -25,7 +25,9 @@ ArrayList<Tower> selects;
 ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
 ArrayList<Location> paths;
+int effected;
 void setup() {
+  effected = 0;
   towerMenu = false;
   powerTime = 0;
   timer = 0;
@@ -96,7 +98,12 @@ void menu() {
       stroke(200);
       fill(255,255,0);
       //fix math for this part, might have to redo the selectNum order in powerup selections
-      //rect(mapWidth + 21 + (80 * (selectNum )), 450 + (75 * (selectNum )), 80, 75);
+      if (selectNum >= 6) {
+        rect(mapWidth + 21 + (80 * (selectNum % 2)), 450 +75, 80, 75);
+      }
+      else {
+        rect(mapWidth + 21 + (80 * (selectNum % 2)), 450 , 80, 75);
+      }
       fill(255,0,0);
     }
     textSize(25);
@@ -151,6 +158,7 @@ void fireball() { //1
   //make animation somehow
 }
 void speedTower() { //2
+  effected = towers.size();
   if (powerTime == 0) {
     for (int i = 0; i < towers.size(); i++) {
       towers.get(i).setAttack(towers.get(i).getAttack() * 2);
@@ -162,9 +170,11 @@ void speedTower() { //2
   //somehow change back?
 }
 void slowMob() { //3
+  effected = mobs.size();
   if (powerTime == 0) {
     
     for (int i = 0; i < mobs.size(); i++) {
+      println(mobs.get(i).getSpeed());
       mobs.get(i).setSpeed(mobs.get(i).getSpeed() / 2);
     }
     powerTime = 5;
@@ -191,20 +201,20 @@ void mouseClicked() {
     }
     if (timer <= 0) {
       stroke(200);
-      if (mouseX <= mapWidth + 21 + 80 && mouseY >= 450 && mouseY <= 525) {
+      if (mouseX >= mapWidth + 21 && mouseX <= mapWidth + 21 + 80 && mouseY >= 450 && mouseY <= 525) {
         money();
         rect(mapWidth + 21, 450,80,75);
         selectNum = 4;
       }
-      if (mouseX <= mapWidth + 21 + 80 && mouseY >= 526 && mouseY <= 590) {
+      if (mouseX >= mapWidth + 21 && mouseX <= mapWidth + 21 + 80 && mouseY >= 526 && mouseY <= 590) {
         fireball();
         rect(mapWidth + 21, 525, 80, 75);
-        selectNum = 5;
+        selectNum = 6;
       }
       if (mouseX >= mapWidth + 21 + 81 && mouseX <= mapWidth + 21 + 180 && mouseY >= 450 && mouseY <= 525) {
         speedTower();
         rect(mapWidth + 101, 450, 80, 75);
-        selectNum = 6;
+        selectNum = 5;
       }
       if (mouseX >= mapWidth + 21 + 81 && mouseX <= mapWidth + 21 + 180 && mouseY >= 526 && mouseY <= 590) {
         slowMob();
@@ -252,8 +262,8 @@ void generateMap() {
   //for (int i = 0;i<towers.size();i++) {
   //  square(towers.get(i).getLocation().getX(),towers.get(i).getLocation().getY(),tileSize);
   //  towers.get(i).display();
-    print("tower size: "+towers.size());
-    println(towers.toString());
+    //print("tower size: "+towers.size());
+    //println(towers.toString());
   //  //displayTowers();
   //}
   fill(60,201,70);
@@ -362,15 +372,18 @@ void tick() {
     changeBalance(10);
   }
   if (powerTime == 0) {
+    //println("yes");
     if (powerChosen == 2) {//speedtower
-      for (int i = 0; i < towers.size(); i++) {
+      for (int i = 0; i < effected; i++) {
         towers.get(i).setAttack(towers.get(i).getAttack() / 2);
         //have to make sure that they acc revert back to the same thing
       }
     }
     else if (powerChosen == 3) {//slowMob
-      for (int i = 0; i < mobs.size(); i++) {
+    //print(effected);
+      for (int i = 0; i < effected; i++) {
         mobs.get(i).setSpeed(mobs.get(i).getSpeed() * 2);
+        println(mobs.get(i).getSpeed());
         //have to make sure that they acc revert back to the same thing
       }
     }
@@ -435,6 +448,11 @@ void draw() {
       }
     }
   }
+  if (powerChosen == 1) {
+    fill(255,125,0);
+    circle(mouseX, mouseY, 100);
+  }
   time++;
   tick();
+  //println("time:" + powerTime);
 }
