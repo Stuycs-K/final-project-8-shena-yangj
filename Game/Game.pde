@@ -170,9 +170,8 @@ void speedTower() { //2
   //somehow change back?
 }
 void slowMob() { //3
-  effected = mobs.size();
   if (powerTime == 0) {
-    
+    effected = mobs.size();
     for (int i = 0; i < mobs.size(); i++) {
       println(mobs.get(i).getSpeed());
       mobs.get(i).setSpeed(mobs.get(i).getSpeed() / 2);
