@@ -11,6 +11,7 @@ int selectNum;
 int reward;
 int score;
 int interval;
+String difficulty;
 boolean titleScreen;
 boolean levelScreen;
 PImage towerimg;
@@ -157,8 +158,22 @@ void mouseClicked() {
       levelScreen();
     }
   } else if (levelScreen) {
-    //levelScreen=false;
-    //initialGenerateMap();
+    //easy is clicked
+    if (mouseX>100&&mouseX<300&&mouseY>500&&mouseY<600) {
+      difficulty = "EASY";
+      levelScreen = false;
+      initialGenerateMap();
+    } else if (mouseX>400&&mouseX<600&&mouseY>500&&mouseY<600){ //medium is clicked
+      difficulty = "MEDIUM";
+      levelScreen = false;
+      initialGenerateMap();
+    } else if (mouseX>700&&mouseX<900&&mouseY>500&&mouseY<600) {
+    //hard is clicked
+      difficulty = "HARD";
+      levelScreen = false;
+      initialGenerateMap();
+    }
+    print("difficulty: "+difficulty);
   }else {
   fill(144,10,255);
   if (mouseX >= mapWidth + 20 && mouseX <= (mapWidth + 100 + 80)) {
