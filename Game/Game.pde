@@ -141,19 +141,20 @@ void money() { //0
   //make another variable to track the amount added by default as time passes
   //somehow change back to original
 }
-void fireball() { //1
+void fireball(Location temp) { //1
 //make so that in tick, for each tick of powerTime, it will change the color of the "crater"
+  println(powerTime);
   if (powerTime == 0) {
-    int blast = 10;
+    int blast = 100;
     int dmg = 15;
-    Location temp = new Location(mouseX, mouseY);
     for (int i = 0; i < mobs.size(); i++ ) {
       if (temp.distTo(mobs.get(i).getLocation()) <= blast) {
+        println(temp.distTo(mobs.get(i).getLocation()));
         mobs.get(i).doDamage(dmg);
+        mobs.get(i).display();
       }
     }
     powerTime = 5;
-    powerChosen = 1;
   }
   //make animation somehow
 }
@@ -182,6 +183,12 @@ void slowMob() { //3
   
 }
 void mouseClicked() {
+  if (powerChosen == 1) {
+      circle(mouseX, mouseY, 100);
+      fireball(new Location(mouseX, mouseY));
+      powerChosen = -1;
+      println("here");
+    }
   fill(144,10,255);
   if (mouseX >= mapWidth + 20 && mouseX <= (mapWidth + 100 + 80)) {
     for (int i = 0; i < 4; i++) {
@@ -206,7 +213,7 @@ void mouseClicked() {
         selectNum = 4;
       }
       if (mouseX >= mapWidth + 21 && mouseX <= mapWidth + 21 + 80 && mouseY >= 526 && mouseY <= 590) {
-        fireball();
+        powerChosen = 1;
         rect(mapWidth + 21, 525, 80, 75);
         selectNum = 6;
       }
@@ -362,7 +369,7 @@ void tick() {
     if (timer != 0) {
       timer--;
     }
-    if (powerChosen >= 0) {
+    if (powerChosen > 0) {
       powerTime--;
       //make drawing of fire here or in draw, mby try to make smooth by putting into draw somehow
     }
@@ -370,7 +377,7 @@ void tick() {
   if (time % 120 == 0) {
     changeBalance(10);
   }
-  if (powerTime == 0) {
+  if (powerTime == 0 && powerChosen != 1) {
     //println("yes");
     if (powerChosen == 2) {//speedtower
       for (int i = 0; i < effected; i++) {
@@ -453,5 +460,6 @@ void draw() {
   }
   time++;
   tick();
+  //println(powerChosen);
   //println("time:" + powerTime);
 }
