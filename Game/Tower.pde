@@ -44,9 +44,6 @@ public class Tower {
     if (attackSpeed > 60) {
       attackSpeed = 60;
     }
-    if (inRange(m.getLocation())) {
-      if (!m.dead()) laser.display(m);
-    }
     if (time % (60 / attackSpeed) == 0) {
       if (inRange(m.getLocation())) {
         dmgDealt += m.doDamage(power);
@@ -54,6 +51,9 @@ public class Tower {
       }
     }
     return false;
+  }
+  public void laser(Mob m) {
+    laser.display(m);
   }
   private boolean inRange(Location p) {
     Location temp = new Location((position.getX() + (tileSize /2 )), (position.getY() + (tileSize /2 )), true);

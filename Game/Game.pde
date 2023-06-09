@@ -688,7 +688,9 @@ void draw() {
   }
   for (Tower a : towers) {
     for (Mob b : mobs) {
-      if (a.attack(b, time)) {
+      if (a.inRange(b.getLocation())) {
+        a.laser(b);
+        a.attack(b, time);
         break;
       }
     }
