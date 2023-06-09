@@ -7,16 +7,6 @@ public class Mob{
   private int totalHealth;
   private boolean moveHorizontally;
   private int attackPower;
-  //public Mob() {
-  //  img = loadImage("mob.png");
-  //  moveSpeed = .5;//temp, original 10
-  //  position = new Location(50,250,true);
-  //  health = 100;
-  //  totalHealth = 100;
-  //  moveHorizontally = false;
-  //  radius = 20;
-  //  attackPower = 10;
-  //}
   public Mob(float x, float y) {
     img = loadImage("mob.png");
     moveSpeed = 1;

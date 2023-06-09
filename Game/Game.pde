@@ -60,11 +60,8 @@ void init() {
   for (int i = 0; i < 4; i++) {
     int r = (int)(Math.random() * (prices.get(i) / 2))+1;
     selects.add(new Tower(0,0,r, (prices.get(i) / r), 1));
-    //println(selects.get(i));
   }
   score = 0;
-  //initialGenerateMap();
-  //initialRandomMap();
   titleScreen();
 }
 void setup() {
@@ -76,7 +73,6 @@ void titleScreen() {
   background(255);
   PFont font = createFont("Tahoma Bold",75);
   textFont(font);
-  //textAlign(CENTER,CENTER);
   fill(255,0,0);
   text("TOWER DEFENSE",175,200);
   image(towerimg,100,110);
@@ -84,7 +80,6 @@ void titleScreen() {
   strokeWeight(5);
   stroke(0);
   fill(134, 250, 252);
-  //fill(0,0,0);
   rect(250,300,500,200);
   fill(0);
   textSize(50);
@@ -168,18 +163,15 @@ void mouseClicked() {
     if (mouseX>100&&mouseX<300&&mouseY>500&&mouseY<600) {
       difficulty = "EASY";
       levelScreen = false;
-      //initialGenerateMap();
       initialRandomMap();
     } else if (mouseX>400&&mouseX<600&&mouseY>500&&mouseY<600){ //medium is clicked
       difficulty = "MEDIUM";
       levelScreen = false;
-      //initialGenerateMap();
       initialRandomMap();
     } else if (mouseX>700&&mouseX<900&&mouseY>500&&mouseY<600) {
     //hard is clicked
       difficulty = "HARD";
       levelScreen = false;
-      //initialGenerateMap();
       initialRandomMap();
     }
     print("difficulty: "+difficulty);
@@ -223,8 +215,6 @@ void generateMap() {
   displayTowers();
   strokeWeight(5);
   stroke(255,87,51);
-  //endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
-  //line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
   menu();
 }
 void initialGenerateMap() {
@@ -279,51 +269,36 @@ void initialRandomMap() {
   //always start on 0th column and end on last column
   //random start row
   int startj = (int)(Math.random()*mapWidth/tileSize);
-  //int prevrow = 0;
-  //int prevcol = startrow;
   //add in first
-  println("startj: "+startj);
   paths.add(new Location(0,startj*tileSize));
-  //random pathlength, at least 8 (one straight line path), at most 20
-  int pathLength = (int)(Math.random()*12)+8; //64 tiles in screen
   int i = 0; 
   int j = startj;
   while (i!=7) { //while hasnt reached last col
-    println("i: "+i+" j: "+j);
-    if (i==7) print("HII");
     int direction = randDir(4); //1 up,2 right,3 down, can't go left
     //check for in bounds
-    //if (i==7) direction=randDir(3); //can't go down anymore
     while (outOfBounds(direction,i,j)) {
-      //println("HERE | prevdirection: "+direction);
       direction=randDir(direction);
     }
-    println("direction: "+direction);
     //if in bounds then extend map there
     if (direction==1) { //up
       if (!alreadyOnPath(i*tileSize,tileSize*(j-1))) {
         paths.add(new Location(i*tileSize,tileSize*(j-1))); //left
-        //prevcol--;
         j--;
       } else continue; //if already on path refind direction
     }
     else if (direction==2) { //right
       if (!alreadyOnPath((i+1)*tileSize,tileSize*j)) {
         paths.add(new Location((i+1)*tileSize,tileSize*j)); //right
-        //prevrow++;
         i++;
       } else continue;
     }
     else { //down
       if (!alreadyOnPath(tileSize*i,tileSize*(j+1))) {
         paths.add(new Location(tileSize*i,tileSize*(j+1))); //down
-        //prevcol++;
         j++;
       } else continue;
     }
-    println("paths: "+paths);
   }
-  println("ENDD i: "+i+" j: "+j);
   
   for (int k = 0;k<mapWidth;k+=tileSize) {
     strokeWeight(3);
@@ -369,7 +344,6 @@ boolean placeTower(int x, int y) {
   for (Tower tower : towers) {
     if (tower.getLocation().isEqual(loc)) alreadyTower = true;
   }
-  //print("Tower size: "+towers.size());
   if (alreadyTower) {
     pushStyle();
     textSize(20);
@@ -418,9 +392,7 @@ void tick() {
 }
 void draw() {
   if (!titleScreen && !levelScreen) {
-  //menu();
   if (time % 240==0) {//make a mob every few seconds
-  //if (time==0) {
     mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2));
   }
   
