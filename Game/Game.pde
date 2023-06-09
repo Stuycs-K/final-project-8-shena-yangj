@@ -14,6 +14,9 @@ int interval;
 int powerChosen;
 int powerTime;
 PImage towerimg;
+PImage powerIcon;
+PImage speedIcon;
+PImage rangeIcon;
 boolean gameOver;
 int timer;
 boolean towerMenu;
@@ -35,7 +38,10 @@ void setup() {
   powerTime = 0;
   timer = 0;
   size(1000, 800);
+  powerIcon = loadImage("Power (2).png");
   towerimg = loadImage("tower.png");
+  rangeIcon = loadImage("Range.png");
+  speedIcon = loadImage("Speed.png");
   mapWidth = width-200;
   mapHeight = height;
   background(148, 114, 70);
@@ -135,9 +141,41 @@ void menu() {
     fill(146,152,255);
     rect(mapWidth + 1,0,mapWidth,mapHeight);
     square(mapWidth + 21, 20, 160);
+    fill(255);
+    textSize(19);
+    text("Total Damage Dealt: " + upTower.damage(), mapWidth + 4, 210);
+    fill(146,152,255);
     rect(821, 680, 160, 100);
     rect(821, 560, 160, 100);
     rect(821, 440, 160, 100);
+    for (int i = 1; i < 5; i++) {
+      if (i <= upTower.speedLevel()) {
+        fill(255,155,0);
+      }
+      else {
+        fill(145,152,255);
+      }
+       circle(840, 527 - (24 * (i - 1)), 18);
+      if (i <= upTower.powerLevel()) {
+        fill(255,155,0);
+      }
+      else {
+        fill(145,152,255);
+      }
+       circle(840, 647 - (24 * (i - 1)), 18);
+      if (i <= upTower.rangeLevel()) {
+        fill(255,155,0);
+      }
+      else {
+        fill(145,152,255);
+      }
+       circle(840, 767 - (24 * (i - 1)), 18);
+    }
+    image(towerimg, mapWidth + 21, 20, 160, 160);
+    image(powerIcon, 900,570, 80, 80);
+    image(speedIcon, 900, 450, 80, 80);
+    image(rangeIcon, 900, 690, 80, 80);
+    
   }
   //if click on tower
   //somehow see which tower in the arraylist is selected
@@ -278,6 +316,7 @@ void mouseClicked() {
         if (mouseY >= 440 && mouseY <= 540) {
           upTower.upgradeSpeed();
           print("speed");
+
         }
         if (mouseY >= 560 && mouseY <= 660) {
           upTower.upgradePower();

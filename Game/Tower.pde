@@ -7,8 +7,13 @@ public class Tower {
   private int slevel;
   private int plevel;
   private int rlevel;
+  private int dmgDealt;
   PImage img;
   public Tower(int x, int y) {
+    dmgDealt = 0;
+    slevel = 0;
+    plevel = 0;
+    rlevel = 0;
     img = loadImage("tower.png");
     attackSpeed = 10;
     power = 10;
@@ -17,6 +22,10 @@ public class Tower {
     position = new Location(x,y);
   }
   public Tower(int x, int y, int attackSpeed, int power, int range) {
+    dmgDealt = 0;
+    slevel = 0;
+    plevel = 0;
+    rlevel = 0;
     img = loadImage("tower.png");
     this.attackSpeed = attackSpeed;
     this.power = power;
@@ -30,7 +39,7 @@ public class Tower {
   private boolean attack(Mob m, int time) {
     if (time % (60 / attackSpeed) == 0) {
       if (inRange(m.getLocation())) {
-        m.doDamage(power);
+        dmgDealt += m.doDamage(power);
         return true;
       }
     }
@@ -91,5 +100,14 @@ public class Tower {
   public void upgradePower() {
     plevel++;
     power = power + 5;
+  }
+  public String damage() {
+    if (dmgDealt > 999) {
+      int ret = ((dmgDealt * 10) / 1000);
+      return (ret / 10.0) + "k";
+    }
+    else {
+      return dmgDealt + "";
+    }
   }
 }

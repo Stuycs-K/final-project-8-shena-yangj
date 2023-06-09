@@ -63,10 +63,19 @@ public class Mob{
   public int getAttackPower() {
     return attackPower;
   }
-  public void doDamage(int change) { //return false if health < 0
+  public int doDamage(int change) { //return false if health < 0
     if (health>0) {
-      health-=change;
+      if (change > health) {
+        int ret = health;
+        health = 0;
+        return ret;
+      }
+      else {
+        health-=change;
+        return change;
+      }
     }
+    return 0;
   }
   //path following and mob movement
   public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int tileSize) {
