@@ -96,7 +96,9 @@ void titleScreen() {
 void displayPath() {
   tint(255,126);
   for (int i = 0;i<paths.size();i++) {
-    //image(grass,paths.get(i).getX(),paths.get(i).getY(),tileSize,tileSize);
+    noFill();
+    stroke(0);
+    rect(paths.get(i).getX(),paths.get(i).getY(),tileSize,tileSize);
     image(grass,paths.get(i).getX(),paths.get(i).getY());
   }
   tint(255);
@@ -281,8 +283,6 @@ void initialRandomMap() {
   while (i!=7) { //while hasnt reached last col
     println("prevrow: "+prevrow+" prevcol: "+prevcol+" | i: "+i+" j: "+j);
     int direction = randDir(4); //1 up,2 right,3 down, can't go left
-    //check if path next to it
-    
     //check for in bounds
     if (j==7) direction=randDir(3); //can't go down anymore
     while (outOfBounds(direction,i,j)) {
