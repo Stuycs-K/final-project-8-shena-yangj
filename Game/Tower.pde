@@ -4,7 +4,9 @@ public class Tower {
   private int numRange;
   private int range;
   private Location position;
-  private int level;
+  private int slevel;
+  private int plevel;
+  private int rlevel;
   PImage img;
   public Tower(int x, int y) {
     img = loadImage("tower.png");
@@ -68,14 +70,26 @@ public class Tower {
     float y = position.getY();
     image(towerimg,x+15,y,75,100);
   }
-  public int getLevel() {
-    return level;
+  public int speedLevel() {
+    return slevel;
   }
-  public void upgrade () {
-    level++;
-    attackSpeed = attackSpeed + 5;
-    power = power + 5;
+  public int powerLevel() {
+    return plevel;
+  }
+  public int rangeLevel() {
+    return rlevel;
+  }
+  public void upgradeRange() {
+    rlevel++;
     numRange++;
     range = (numRange * tileSize) + tileSize;
+  }
+  public void upgradeSpeed() {
+    slevel++;
+    attackSpeed = attackSpeed + 5;
+  }
+  public void upgradePower() {
+    plevel++;
+    power = power + 5;
   }
 }

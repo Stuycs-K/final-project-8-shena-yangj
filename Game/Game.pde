@@ -145,7 +145,7 @@ void menu() {
   }
   
   
-}
+
 //for all powerups, should make some type of indicator that they are usable, put them each on a "cooldown" timer of sorts.
 //display timer for all powerups
 void money() { //0
@@ -247,14 +247,24 @@ void mouseClicked() {
           selectNum = 7;
         }
       }
-      for (int i = 0; i < towers.size(); i++) {
+      
+      
+    
+  }
+  for (int i = 0; i < towers.size(); i++) {
         if (towers.get(i).getLocation().isEqual(new Location(mouseX, mouseY))) {
           towerMenu = true;
           upTower = towers.get(i);
         }
       }
+  if (mouseX <= mapWidth && selected && towers.size() < maxTowers) {
+      placeTower(mouseX, mouseY);
+      selected = false;
+      menu();
+    }
   }
   else {
+    if (mouseX <= mapWidth) {
     towerMenu = false;
     for (int i = 0; i < towers.size(); i++) {
         if (towers.get(i).getLocation().isEqual(new Location(mouseX, mouseY))) {
@@ -262,17 +272,30 @@ void mouseClicked() {
           upTower = towers.get(i);
         }
       }
+    }
+    else {
+      if (mouseX >= 821 && mouseX <= 981) {
+        if (mouseY >= 440 && mouseY <= 540) {
+          upTower.upgradeSpeed();
+          print("speed");
+        }
+        if (mouseY >= 560 && mouseY <= 660) {
+          upTower.upgradePower();
+          print("power");
+        }
+        if (mouseY >= 680 && mouseY <= 780) {
+          upTower.upgradeRange();
+          print("range");
+        }
   }
     //finish later
     
   }
-  if (mouseX <= mapWidth && selected && towers.size() < maxTowers) {
-    placeTower(mouseX, mouseY);
-    selected = false;
-    menu();
   }
-    
 }
+    
+
+
 void generateMap() {
   fill(148,114,70); //background color
   rect(0,0,mapWidth,mapHeight);
@@ -439,6 +462,7 @@ void tick() {
   }
 }
 void draw() {
+  print(towers.size());
   menu();
   if (time % 240==0) {//make a mob every few seconds
   //if (time==0) {
