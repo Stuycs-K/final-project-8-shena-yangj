@@ -40,6 +40,7 @@ public class Tower {
     return position;
   }
   private boolean attack(Mob m, int time) {
+    boolean ans = false;
     //have to find a fix for this
     if (attackSpeed > 60) {
       attackSpeed = 60;
