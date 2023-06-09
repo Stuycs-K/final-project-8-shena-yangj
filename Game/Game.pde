@@ -26,14 +26,16 @@ ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
 ArrayList<Location> paths;
 int effected;
+Tower upTower;
 void setup() {
+  tileSize=100;
+  upTower = new Tower(0,0);
   effected = 0;
   towerMenu = false;
   powerTime = 0;
   timer = 0;
   size(1000, 800);
   towerimg = loadImage("tower.png");
-  tileSize=100;
   mapWidth = width-200;
   mapHeight = height;
   background(148, 114, 70);
@@ -62,7 +64,8 @@ void setup() {
     //println(selects.get(i));
   }
   score = 0;
-  initialGenerateMap();menu();
+  initialGenerateMap();
+  menu();
 }
 void menu() {  
   if (!towerMenu) {
@@ -128,6 +131,14 @@ void menu() {
     stroke(0);
   }
   else {
+    stroke(0);
+    fill(146,152,255);
+    rect(mapWidth + 1,0,mapWidth,mapHeight);
+    square(mapWidth + 21, 20, 160);
+    rect(821, 680, 160, 100);
+    rect(821, 560, 160, 100);
+    rect(821, 440, 160, 100);
+  }
   //if click on tower
   //somehow see which tower in the arraylist is selected
   //tower.get(selected).upgrade();
@@ -190,52 +201,68 @@ void slowMob() { //3
   
 }
 void mouseClicked() {
-  if (powerChosen == 1) {
-      circle(mouseX, mouseY, 100);
-      fireball(new Location(mouseX, mouseY));
-      powerChosen = -1;
-      println("here");
-    }
-  fill(144,10,255);
-  if (mouseX >= mapWidth + 20 && mouseX <= (mapWidth + 100 + 80)) {
-    for (int i = 0; i < 4; i++) {
-      if (mouseY >= 10 + (100 * i) && mouseY <= 110 + (100 * i)) {
+  if (!towerMenu) {
+    if (powerChosen == 1) {
+        circle(mouseX, mouseY, 100);
+        fireball(new Location(mouseX, mouseY));
+        powerChosen = -1;
+        println("here");
+      }
+    fill(144,10,255);
+    if (mouseX >= mapWidth + 20 && mouseX <= (mapWidth + 100 + 80)) {
+      for (int i = 0; i < 4; i++) {
+        if (mouseY >= 10 + (100 * i) && mouseY <= 110 + (100 * i)) {
+          stroke(200);
+          fill(144,10,255);
+          rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
+          fill(255,0,0);
+          text("Price: " + prices.get(i), mapWidth + 23, 30 + (100 * i));
+          text("AttackDelay: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
+          text("Power: " + selects.get(i).getPower(), mapWidth + 23, 70 + (100 * i));
+          selectedTower = selects.get(i);
+          selected = true;
+          selectNum = i;
+        }
+      }
+      if (powerTime == 0) {
         stroke(200);
-        fill(144,10,255);
-        rect(mapWidth + 21, 10 + (100 * i), 100 + 60, 100);
-        fill(255,0,0);
-        text("Price: " + prices.get(i), mapWidth + 23, 30 + (100 * i));
-        text("AttackDelay: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
-        text("Power: " + selects.get(i).getPower(), mapWidth + 23, 70 + (100 * i));
-        selectedTower = selects.get(i);
-        selected = true;
-        selectNum = i;
+        if (mouseX >= mapWidth + 21 && mouseX <= mapWidth + 21 + 80 && mouseY >= 450 && mouseY <= 525) {
+          money();
+          rect(mapWidth + 21, 450,80,75);
+          selectNum = 4;
+        }
+        if (mouseX >= mapWidth + 21 && mouseX <= mapWidth + 21 + 80 && mouseY >= 526 && mouseY <= 590) {
+          powerChosen = 1;
+          rect(mapWidth + 21, 525, 80, 75);
+          selectNum = 6;
+        }
+        if (mouseX >= mapWidth + 21 + 81 && mouseX <= mapWidth + 21 + 180 && mouseY >= 450 && mouseY <= 525) {
+          speedTower();
+          rect(mapWidth + 101, 450, 80, 75);
+          selectNum = 5;
+        }
+        if (mouseX >= mapWidth + 21 + 81 && mouseX <= mapWidth + 21 + 180 && mouseY >= 526 && mouseY <= 590) {
+          slowMob();
+          rect(mapWidth + 101, 525, 80, 75);
+          selectNum = 7;
+        }
       }
-    }
-    if (powerTime == 0) {
-      stroke(200);
-      if (mouseX >= mapWidth + 21 && mouseX <= mapWidth + 21 + 80 && mouseY >= 450 && mouseY <= 525) {
-        money();
-        rect(mapWidth + 21, 450,80,75);
-        selectNum = 4;
+      for (int i = 0; i < towers.size(); i++) {
+        if (towers.get(i).getLocation().isEqual(new Location(mouseX, mouseY))) {
+          towerMenu = true;
+          upTower = towers.get(i);
+        }
       }
-      if (mouseX >= mapWidth + 21 && mouseX <= mapWidth + 21 + 80 && mouseY >= 526 && mouseY <= 590) {
-        powerChosen = 1;
-        rect(mapWidth + 21, 525, 80, 75);
-        selectNum = 6;
+  }
+  else {
+    towerMenu = false;
+    for (int i = 0; i < towers.size(); i++) {
+        if (towers.get(i).getLocation().isEqual(new Location(mouseX, mouseY))) {
+          towerMenu = true;
+          upTower = towers.get(i);
+        }
       }
-      if (mouseX >= mapWidth + 21 + 81 && mouseX <= mapWidth + 21 + 180 && mouseY >= 450 && mouseY <= 525) {
-        speedTower();
-        rect(mapWidth + 101, 450, 80, 75);
-        selectNum = 5;
-      }
-      if (mouseX >= mapWidth + 21 + 81 && mouseX <= mapWidth + 21 + 180 && mouseY >= 526 && mouseY <= 590) {
-        slowMob();
-        rect(mapWidth + 101, 525, 80, 75);
-        selectNum = 7;
-      }
-    }
-    
+  }
     //finish later
     
   }
