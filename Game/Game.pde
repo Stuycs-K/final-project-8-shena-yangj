@@ -94,17 +94,23 @@ void menu() {
       text("Power: " + selects.get(selectNum).getPower(), mapWidth + 23, 70 + (100 * selectNum));
       stroke(0);
     }
-    if (selectNum >= 4 && selectNum <= 7) {
-      stroke(200);
-      fill(255,255,0);
-      //fix math for this part, might have to redo the selectNum order in powerup selections
-      if (selectNum >= 6) {
-        rect(mapWidth + 21 + (80 * (selectNum % 2)), 450 +75, 80, 75);
+    if (powerChosen > -1) {
+      if (selectNum >= 4 && selectNum <= 7) {
+        stroke(200);
+        fill(255,255,0);
+        //fix math for this part, might have to redo the selectNum order in powerup selections
+        if (selectNum >= 6) {
+          rect(mapWidth + 21 + (80 * (selectNum % 2)), 450 +75, 80, 75);
+        }
+        else {
+          rect(mapWidth + 21 + (80 * (selectNum % 2)), 450 , 80, 75);
+        }
+        fill(255,0,0);
       }
-      else {
-        rect(mapWidth + 21 + (80 * (selectNum % 2)), 450 , 80, 75);
-      }
-      fill(255,0,0);
+    }
+    if (powerTime > 0) {
+      textSize(100);
+      text(powerTime, mapWidth + 77, 550);
     }
     textSize(25);
     text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
@@ -143,12 +149,13 @@ void money() { //0
 }
 void fireball(Location temp) { //1
 //make so that in tick, for each tick of powerTime, it will change the color of the "crater"
-  println(powerTime);
+  println("time:"+powerTime);
   if (powerTime == 0) {
     int blast = 100;
     int dmg = 15;
     for (int i = 0; i < mobs.size(); i++ ) {
       if (temp.distTo(mobs.get(i).getLocation()) <= blast) {
+        println(dmg);
         println(temp.distTo(mobs.get(i).getLocation()));
         mobs.get(i).doDamage(dmg);
         mobs.get(i).display();
@@ -205,7 +212,7 @@ void mouseClicked() {
         selectNum = i;
       }
     }
-    if (timer <= 0) {
+    if (powerTime == 0) {
       stroke(200);
       if (mouseX >= mapWidth + 21 && mouseX <= mapWidth + 21 + 80 && mouseY >= 450 && mouseY <= 525) {
         money();
@@ -369,13 +376,18 @@ void tick() {
     if (timer != 0) {
       timer--;
     }
-    if (powerChosen > 0) {
+    if (powerTime > 0) {
       powerTime--;
       //make drawing of fire here or in draw, mby try to make smooth by putting into draw somehow
     }
   }
   if (time % 120 == 0) {
-    changeBalance(10);
+    if (powerChosen == 0) {
+       changeBalance(20);
+    }
+    else {
+      changeBalance(10);
+    }
   }
   if (powerTime == 0 && powerChosen != 1) {
     //println("yes");
@@ -392,6 +404,9 @@ void tick() {
         println(mobs.get(i).getSpeed());
         //have to make sure that they acc revert back to the same thing
       }
+    }
+    else if (powerChosen == 0) {
+      reward = reward / 2;
     }
     powerChosen = -1;
   }
@@ -457,6 +472,9 @@ void draw() {
   if (powerChosen == 1) {
     fill(255,125,0);
     circle(mouseX, mouseY, 100);
+    for (int i = 0; i < mobs.size(); i++) {
+      mobs.get(i).display();
+    }
   }
   time++;
   tick();
