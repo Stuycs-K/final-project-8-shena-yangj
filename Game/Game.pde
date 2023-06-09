@@ -248,7 +248,7 @@ void initialGenerateMap() {
   menu();
 }
 boolean outOfBounds(int direction, int r, int c) {
-  return (direction==1 && r<=0) || (direction==2&&c>=7) || (direction==3&&r>=7);
+  return (direction==1 && c==0) || (direction==2&&r==7) || (direction==3&&c==7);
 }
 boolean alreadyOnPath(int x, int y) {
   boolean ans = false;
@@ -269,16 +269,16 @@ void initialRandomMap() {
   //always start on 0th column and end on last column
   //random start row
   int startrow = (int)(Math.random()*mapWidth/tileSize);
-  int prevrow = startrow;
-  int prevcol = 0;
+  int prevrow = 0;
+  int prevcol = startrow;
   //add in first
-  print("startrow: "+startrow);
+  println("startrow: "+startrow);
   paths.add(new Location(0,startrow*tileSize));
   //random pathlength, at least 8 (one straight line path), at most 20
   int pathLength = (int)(Math.random()*12)+8; //64 tiles in screen
   int i = 0; 
   int j = startrow;
-  while (j!=7&&!(i>7)) { //while hasnt reached last col
+  while (j!=7) { //while hasnt reached last col
     println("paths: "+paths);
     println("prevrow: "+prevrow+" prevcol: "+prevcol+" | i: "+i+" j: "+j);
     int direction = randDir(4); //1 up,2 right,3 down, can't go left
@@ -289,6 +289,7 @@ void initialRandomMap() {
       print("HERE | prevdirection: "+direction);
       direction=randDir(direction);
     }
+    if (i==7) direction=randDir(3); //can't go down anymore
     println("direction: "+direction);
     //if in bounds then extend map there
     if (direction==1) { //up
