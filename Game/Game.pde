@@ -135,7 +135,10 @@ void menu() {
   text("Score: " + score, mapWidth + 21, mapHeight - 110);
   textSize(15);
   strokeWeight(3);
-  stroke(0);
+  stroke(255,0,0);
+  endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
+  line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
+  
 }
 void levelScreen() {
   background(0);
@@ -220,8 +223,8 @@ void generateMap() {
   displayTowers();
   strokeWeight(5);
   stroke(255,87,51);
-  endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
-  line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
+  //endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
+  //line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
   menu();
 }
 void initialGenerateMap() {
