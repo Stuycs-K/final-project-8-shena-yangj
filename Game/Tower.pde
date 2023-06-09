@@ -37,6 +37,10 @@ public class Tower {
     return position;
   }
   private boolean attack(Mob m, int time) {
+    //have to find a fix for this
+    if (attackSpeed > 60) {
+      attackSpeed = 60;
+    }
     if (time % (60 / attackSpeed) == 0) {
       if (inRange(m.getLocation())) {
         dmgDealt += m.doDamage(power);

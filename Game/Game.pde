@@ -144,6 +144,9 @@ void menu() {
     fill(255);
     textSize(19);
     text("Total Damage Dealt: " + upTower.damage(), mapWidth + 4, 210);
+    text("Attack Speed: " + upTower.getAttack(), mapWidth + 20, 235);
+    text("Power: " + upTower.getPower(), mapWidth + 20, 260);
+    text("Range: " + upTower.getRange(), mapWidth + 20, 285);
     fill(146,152,255);
     rect(821, 680, 160, 100);
     rect(821, 560, 160, 100);
@@ -175,6 +178,11 @@ void menu() {
     image(powerIcon, 900,570, 80, 80);
     image(speedIcon, 900, 450, 80, 80);
     image(rangeIcon, 900, 690, 80, 80);
+    if (upTower.speedLevel() == 4) {
+      fill(100,15,15);
+      textSize(95);
+      text("MAX", 817, 520);
+    }
     
   }
   //if click on tower
@@ -244,7 +252,7 @@ void mouseClicked() {
         circle(mouseX, mouseY, 100);
         fireball(new Location(mouseX, mouseY));
         powerChosen = -1;
-        println("here");
+        
       }
     fill(144,10,255);
     if (mouseX >= mapWidth + 20 && mouseX <= (mapWidth + 100 + 80)) {
@@ -315,16 +323,12 @@ void mouseClicked() {
       if (mouseX >= 821 && mouseX <= 981) {
         if (mouseY >= 440 && mouseY <= 540) {
           upTower.upgradeSpeed();
-          print("speed");
-
         }
         if (mouseY >= 560 && mouseY <= 660) {
           upTower.upgradePower();
-          print("power");
         }
         if (mouseY >= 680 && mouseY <= 780) {
           upTower.upgradeRange();
-          print("range");
         }
   }
     //finish later
@@ -490,7 +494,6 @@ void tick() {
     //print(effected);
       for (int i = 0; i < effected; i++) {
         mobs.get(i).setSpeed(mobs.get(i).getSpeed() * 2);
-        println(mobs.get(i).getSpeed());
         //have to make sure that they acc revert back to the same thing
       }
     }
@@ -501,7 +504,6 @@ void tick() {
   }
 }
 void draw() {
-  print(towers.size());
   menu();
   if (time % 240==0) {//make a mob every few seconds
   //if (time==0) {
@@ -529,7 +531,6 @@ void draw() {
         mobs.get(i).display();
       }
       //+ mobs.get(i).getRadius()
-      println("totalHealth: "+totalHealth);
       continue; //continue w/ next mob since otherwise will run rest of method too
     }
     if (totalHealth<=0 || round <= 0) {
@@ -568,6 +569,4 @@ void draw() {
   }
   time++;
   tick();
-  //println(powerChosen);
-  //println("time:" + powerTime);
 }
