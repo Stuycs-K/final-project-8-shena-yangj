@@ -278,18 +278,17 @@ void initialRandomMap() {
   int pathLength = (int)(Math.random()*12)+8; //64 tiles in screen
   int i = 0; 
   int j = startrow;
-  while (j!=7) { //while hasnt reached last col
-    println("paths: "+paths);
+  while (i!=7) { //while hasnt reached last col
     println("prevrow: "+prevrow+" prevcol: "+prevcol+" | i: "+i+" j: "+j);
     int direction = randDir(4); //1 up,2 right,3 down, can't go left
     //check if path next to it
     
     //check for in bounds
+    if (j==7) direction=randDir(3); //can't go down anymore
     while (outOfBounds(direction,i,j)) {
       print("HERE | prevdirection: "+direction);
       direction=randDir(direction);
     }
-    if (i==7) direction=randDir(3); //can't go down anymore
     println("direction: "+direction);
     //if in bounds then extend map there
     if (direction==1) { //up
@@ -297,7 +296,7 @@ void initialRandomMap() {
         paths.add(new Location(prevrow*tileSize,tileSize*(prevcol-1))); //left
         prevcol--;
         j--;
-      } else continue; //start loop again
+      } else continue; //if already on path refind direction
     }
     else if (direction==2) { //right
       if (!alreadyOnPath((prevrow+1)*tileSize,tileSize*prevcol)) {
@@ -313,6 +312,7 @@ void initialRandomMap() {
         j++;
       } else continue;
     }
+    println("paths: "+paths);
   }
   
   for (int k = 0;k<mapWidth;k+=tileSize) {
