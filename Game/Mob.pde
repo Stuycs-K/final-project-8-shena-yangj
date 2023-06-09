@@ -27,9 +27,20 @@ public class Mob{
     moveHorizontally = false;
     attackPower = 10;
   }
-    
+  public void changeSpeed(int x) {
+    moveSpeed += x;
+  }
+  public void setSpeed(float x) {
+    moveSpeed = x;
+  }
   public float  getSpeed() {
     return moveSpeed;
+  }
+  public void changeRadius(int x) {
+    radius += x;
+  }
+  public void setRadius(int x) {
+    radius = x;
   }
   public int getRadius() {
     return radius;
@@ -37,13 +48,28 @@ public class Mob{
   public int getHealth() {
     return health;
   }
+  public void changePower(int x) {
+    attackPower += x;
+  }
+  public void setPower(int x) {
+    attackPower = x;
+  }
   public int getAttackPower() {
     return attackPower;
   }
-  public void doDamage(int change) { //return false if health < 0
+  public int doDamage(int change) { //return false if health < 0
     if (health>0) {
-      health-=change;
+      if (change > health) {
+        int ret = health;
+        health = 0;
+        return ret;
+      }
+      else {
+        health-=change;
+        return change;
+      }
     }
+    return 0;
   }
   //path following and mob movement
   public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int tileSize) {
