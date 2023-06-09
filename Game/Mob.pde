@@ -11,8 +11,8 @@ public class Mob{
     img = loadImage("mob.png");
     moveSpeed = 1;
     radius = 20;
-    health = 100;
-    totalHealth = 100;
+    health = 500;
+    totalHealth = 500;
     position = new Location(x,y,true);
     moveHorizontally = false;
     attackPower = 10;
