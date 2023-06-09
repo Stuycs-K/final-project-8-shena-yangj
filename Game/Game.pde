@@ -130,7 +130,7 @@ void menu() {
       text("AttackSpeed: " + selects.get(i).getAttack(), mapWidth + 23, 50 + (100 * i));
       text("Power: " + selects.get(i).getPower(), mapWidth + 23, 70 + (100 * i));
     }
-    if (selectNum >= 0) {
+    if (selectNum >= 0 && selectNum < 4) {
       stroke(200);
       fill(144,10,255);
       rect(mapWidth + 21, 10 + (100 * selectNum), 100 + 60, 100);
@@ -139,6 +139,30 @@ void menu() {
       text("AttackSpeed: " + selects.get(selectNum).getAttack(), mapWidth + 23, 50 + (100 * selectNum));
       text("Power: " + selects.get(selectNum).getPower(), mapWidth + 23, 70 + (100 * selectNum));
       stroke(0);
+    }
+    for (int i = 0; i < 2; i++) {
+      fill(255,255,0);
+      rect(mapWidth + 21, 450 + (75 * i), 80, 75);
+      rect(mapWidth + 101, 450 + (75 * i), 80, 75);
+      fill(255,0,0);
+    }
+    if (powerChosen > -1) {
+      if (selectNum >= 4 && selectNum <= 7) {
+        stroke(200);
+        fill(255,255,0);
+        //fix math for this part, might have to redo the selectNum order in powerup selections
+        if (selectNum >= 6) {
+          rect(mapWidth + 21 + (80 * (selectNum % 2)), 450 +75, 80, 75);
+        }
+        else {
+          rect(mapWidth + 21 + (80 * (selectNum % 2)), 450 , 80, 75);
+        }
+        fill(255,0,0);
+      }
+    }
+    if (powerTime > 0) {
+      textSize(100);
+      text(powerTime, mapWidth + 77, 550);
     }
     textSize(25);
     text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
