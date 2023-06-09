@@ -4,6 +4,7 @@ public class Tower {
   private int numRange;
   private int range;
   private Location position;
+  Laser laser;
   PImage img;
   public Tower(int x, int y) {
     img = loadImage("tower.png");
@@ -12,6 +13,7 @@ public class Tower {
     numRange = 2;
     range = tileSize + (2 * tileSize);
     position = new Location(x,y);
+    laser = new Laser(this);
   }
   public Tower(int x, int y, int attackSpeed, int power, int range) {
     img = loadImage("tower.png");
@@ -20,6 +22,7 @@ public class Tower {
     numRange = range;
     this.range = (range * tileSize) + tileSize;
     position = new Location(x,y);
+    laser = new Laser(this);
   }
   public Location getLocation() {
     return position;
@@ -29,6 +32,9 @@ public class Tower {
       if (inRange(m.getLocation())) {
         m.doDamage(power);
       }
+    }
+    if (inRange(m.getLocation())) {
+      if (!m.dead()) laser.display(m);
     }
   }
   private boolean inRange(Location p) {

@@ -1,28 +1,18 @@
 public class Mob{
   PImage img;
-  private float  moveSpeed;
+  private float moveSpeed;
   private int radius;
   private Location position;
   private int health;
   private int totalHealth;
   private boolean moveHorizontally;
   private int attackPower;
-  public Mob() {
-    img = loadImage("mob.png");
-    moveSpeed = .5;//temp, original 10
-    position = new Location(50,250,true);
-    health = 100;
-    totalHealth = 100;
-    moveHorizontally = false;
-    radius = 20;
-    attackPower = 10;
-  }
-  public Mob(int x, int y) {
+  public Mob(float x, float y) {
     img = loadImage("mob.png");
     moveSpeed = 1;
     radius = 20;
-    health = 100;
-    totalHealth = 100;
+    health = 500;
+    totalHealth = 500;
     position = new Location(x,y,true);
     moveHorizontally = false;
     attackPower = 10;
@@ -66,11 +56,15 @@ public class Mob{
       Location temp = new Location(position.getX() + (tileSize /2), position.getY());
       Location temp2 = new Location(position.getX(), position.getY() + (tileSize / 2) + 1);
       Location temp3 = new Location(position.getX(), position.getY() - (tileSize /2 ) - 1);
-      if ((position.getY() % (tileSize / 2) == 0 && position.getY() % 100 != 0) && (temp.isEqual(path.get(place + 1)) || position.getX() + (tileSize /2) >= path.get(place).getX() + (tileSize /2) && position.getX() + (tileSize /2 ) < path.get(place).getX() + tileSize)) {
+      if ((position.getY() % (tileSize / 2) == 0 && position.getY() % 100 != 0) 
+      && (temp.isEqual(path.get(place + 1)) || 
+      position.getX() + (tileSize /2) >= path.get(place).getX() + (tileSize /2) && 
+      position.getX() + (tileSize /2 ) < path.get(place).getX() + tileSize)) {
         position.changeLocation(moveSpeed, 0);
         moveHorizontally = true;
       }
-      else if (!(path.get(place).getY() > path.get(place + 1).getY()) && (temp2.isEqual(path.get(place + 1)) || position.getY() + (tileSize /2) < path.get(place).getY() + tileSize && position.getY() + (tileSize /2 ) >= path.get(place).getY() + (tileSize /2))) {
+      else if (!(path.get(place).getY() > path.get(place + 1).getY()) && (temp2.isEqual(path.get(place + 1)) || 
+      position.getY() + (tileSize /2) < path.get(place).getY() + tileSize && position.getY() + (tileSize /2 ) >= path.get(place).getY() + (tileSize /2))) {
         position.changeLocation(0, moveSpeed);
         moveHorizontally = false;
       }
@@ -88,13 +82,14 @@ public class Mob{
     return position;
   }
   public void display() {
-    image(img,position.getX()-20,position.getY()-20,50,50);
-    tint(255);
-    //fill(255,255,255);
-    //textSize(20);
-    //text(health,position.getX()+10,position.getY()+10);
-    healthBar();
-    //tint(255,126);
+    if (!dead()) {
+      image(img,position.getX()-20,position.getY()-20,50,50);
+      tint(255);
+      healthBar();
+    }
+  }
+  public boolean dead() {
+    return health<=0;
   }
   public void healthBar() {
     //total

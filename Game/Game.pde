@@ -11,6 +11,9 @@ int selectNum;
 int reward;
 int score;
 int interval;
+String difficulty;
+boolean titleScreen;
+boolean levelScreen;
 PImage towerimg;
 boolean gameOver;
 PImage dirt;
@@ -23,8 +26,9 @@ ArrayList<Tower> selects;
 ArrayList<Tower> towers;
 ArrayList<Mob> mobs;
 ArrayList<Location> paths;
-void setup() {
-  size(1000, 800);
+void init() {
+  titleScreen = true;
+  levelScreen=false;
   towerimg = loadImage("tower.png");
   towerimg.resize(75,100);
   tileSize=100;
@@ -36,7 +40,7 @@ void setup() {
   mapWidth = width-200;
   mapHeight = height;
   time=0;
-  round = 100;
+  round = 100; 
   gameOver = false;
   interval = 30;
   mobs = new ArrayList<Mob>();
@@ -44,7 +48,7 @@ void setup() {
   paths = new ArrayList<Location>();
   balance = 50;
   selected = false;
-  totalHealth = 100;
+  totalHealth = 100; 
   maxTowers = 10;
   prices = new ArrayList<Integer> ();
   for (int i = 0; i < 4; i++) {
@@ -56,15 +60,40 @@ void setup() {
   for (int i = 0; i < 4; i++) {
     int r = (int)(Math.random() * (prices.get(i) / 2))+1;
     selects.add(new Tower(0,0,r, (prices.get(i) / r), 1));
-    //println(selects.get(i));
   }
   score = 0;
-  initialGenerateMap();menu();
+  titleScreen();
+}
+void setup() {
+  size(1000, 800);
+  init();
+}
+void titleScreen() {
+  pushStyle();
+  background(255);
+  PFont font = createFont("Tahoma Bold",75);
+  textFont(font);
+  fill(255,0,0);
+  text("TOWER DEFENSE",175,200);
+  image(towerimg,100,110);
+  image(towerimg,825,110);
+  strokeWeight(5);
+  stroke(0);
+  fill(134, 250, 252);
+  rect(250,300,500,200);
+  fill(0);
+  textSize(50);
+  text("Click here to start",275,400);
+  strokeWeight(10);
+  textFont(createFont("Candara Bold",20));
+  popStyle();
 }
 void displayPath() {
   tint(255,126);
   for (int i = 0;i<paths.size();i++) {
-    //image(grass,paths.get(i).getX(),paths.get(i).getY(),tileSize,tileSize);
+    noFill();
+    stroke(0);
+    rect(paths.get(i).getX(),paths.get(i).getY(),tileSize,tileSize);
     image(grass,paths.get(i).getX(),paths.get(i).getY());
   }
   tint(255);
@@ -100,14 +129,53 @@ void menu() {
   text("Total Health: "+totalHealth, mapWidth+10,mapHeight-160);
   text("Score: " + score, mapWidth + 21, mapHeight - 110);
   textSize(15);
-  strokeWeight(5);
-  stroke(255,87,51);
+  strokeWeight(3);
+  stroke(255,0,0);
   endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
   line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
-  strokeWeight(3);
-  stroke(0);
+  
+}
+void levelScreen() {
+  background(0);
+  fill(255);
+  textSize(75);
+  text("Choose a difficulty",200,300);
+  fill(99, 131, 219);
+  rect(100,500,200,100);
+  rect(400,500,200,100);
+  rect(700,500,200,100);
+  fill(255);
+  textSize(50);
+  text("Easy",150,560);
+  text("Medium",410,560);
+  text("Hard",750,560);
 }
 void mouseClicked() {
+  if (titleScreen) { 
+  //button in title screen to go to levelScreen is clicked
+    if (mouseX>250 && mouseX<750 && mouseY>300 && mouseY<700) {
+      titleScreen = false;
+      levelScreen=true;
+      levelScreen();
+    }
+  } else if (levelScreen) {
+    //easy is clicked
+    if (mouseX>100&&mouseX<300&&mouseY>500&&mouseY<600) {
+      difficulty = "EASY";
+      levelScreen = false;
+      initialRandomMap();
+    } else if (mouseX>400&&mouseX<600&&mouseY>500&&mouseY<600){ //medium is clicked
+      difficulty = "MEDIUM";
+      levelScreen = false;
+      initialRandomMap();
+    } else if (mouseX>700&&mouseX<900&&mouseY>500&&mouseY<600) {
+    //hard is clicked
+      difficulty = "HARD";
+      levelScreen = false;
+      initialRandomMap();
+    }
+    print("difficulty: "+difficulty);
+  }else {
   fill(144,10,255);
   if (mouseX >= mapWidth + 20 && mouseX <= (mapWidth + 100 + 80)) {
     for (int i = 0; i < 4; i++) {
@@ -130,14 +198,11 @@ void mouseClicked() {
     selected = false;
     menu();
   }
-    
+ }
 }
 void generateMap() {
-  //fill(148,114,70); //background color
-  //rect(0,0,mapWidth,mapHeight);
+  titleScreen = false;
   background(dirt);
-  menu();
-  //paths = new ArrayList<Location>();
   stroke(0);
   for (int i = 0;i<mapWidth;i+=tileSize) {
     strokeWeight(3);
@@ -148,9 +213,11 @@ void generateMap() {
   }
   displayPath();
   displayTowers();
+  strokeWeight(5);
+  stroke(255,87,51);
+  menu();
 }
 void initialGenerateMap() {
-  paths = new ArrayList<Location>();
   stroke(0);
   for (int i = 0;i<mapWidth;i+=tileSize) {
     strokeWeight(3);
@@ -163,15 +230,8 @@ void initialGenerateMap() {
   for (int i = 0;i<mapWidth;i+=tileSize) {
     for (int j = 0;j<mapHeight;j+=tileSize) {
       if (j==tileSize*2 && i<mapHeight/2) {
-        //square(i,j,tileSize);
         paths.add(new Location(i,j));
-      //} else if (i==tileSize * 3 && paths.size() <= 4) {
-      //  for (int w = 100; w >= 0;w -= tileSize) {
-      //    square(i,w,tileSize);
-      //  }
-        
       } else if (i>=tileSize * 4 && j==0) {
-        //square(i,j,tileSize);
         paths.add(new Location(i,j));
       }
     }
@@ -180,6 +240,82 @@ void initialGenerateMap() {
   paths.add(5, new Location(tileSize * 3, 0));
   background(dirt);
   displayPath();
+  strokeWeight(5);
+  stroke(255,87,51);
+  endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
+  line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
+  menu();
+}
+boolean outOfBounds(int direction, int r, int c) {
+  return (direction==1 && c==0) || (direction==2&&r==7) || (direction==3&&c==7);
+}
+boolean alreadyOnPath(int x, int y) {
+  boolean ans = false;
+  for (Location loc : paths) {
+    if (x==loc.getX() && y==loc.getY()) ans = true;
+  }
+  return ans;
+}
+int randDir(int cannot) {
+  int ans = (int)(Math.random()*4)+1;
+  while (ans==cannot) {
+    ans = (int)(Math.random()*4)+1;
+  }
+  return ans;
+}
+void initialRandomMap() {
+  print("CAL:LL");
+  stroke(0);
+  //always start on 0th column and end on last column
+  //random start row
+  int startj = (int)(Math.random()*mapWidth/tileSize);
+  //add in first
+  paths.add(new Location(0,startj*tileSize));
+  int i = 0; 
+  int j = startj;
+  while (i!=7) { //while hasnt reached last col
+    int direction = randDir(4); //1 up,2 right,3 down, can't go left
+    //check for in bounds
+    while (outOfBounds(direction,i,j)) {
+      direction=randDir(direction);
+    }
+    //if in bounds then extend map there
+    if (direction==1) { //up
+      if (!alreadyOnPath(i*tileSize,tileSize*(j-1))) {
+        paths.add(new Location(i*tileSize,tileSize*(j-1))); //left
+        j--;
+      } else continue; //if already on path refind direction
+    }
+    else if (direction==2) { //right
+      if (!alreadyOnPath((i+1)*tileSize,tileSize*j)) {
+        paths.add(new Location((i+1)*tileSize,tileSize*j)); //right
+        i++;
+      } else continue;
+    }
+    else { //down
+      if (!alreadyOnPath(tileSize*i,tileSize*(j+1))) {
+        paths.add(new Location(tileSize*i,tileSize*(j+1))); //down
+        j++;
+      } else continue;
+    }
+  }
+  
+  for (int k = 0;k<mapWidth;k+=tileSize) {
+    strokeWeight(3);
+    line(i,0,i,mapHeight);
+  }
+  for (int k = 0;k<mapHeight;k+=tileSize) {
+    line(0,i,mapWidth,i);
+  }
+  background(dirt);
+  displayPath();
+  strokeWeight(5);
+  stroke(255,87,51);
+  endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
+  print(endZone);
+  line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
+  menu();
+  mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2)); //first mob at time==0
 }
 
 void displayTowers() {
@@ -204,6 +340,19 @@ boolean towerOnPath(int x, int y) {
 }
 
 boolean placeTower(int x, int y) {
+  Location loc = new Location(x,y);
+  boolean alreadyTower = false;
+  for (Tower tower : towers) {
+    if (tower.getLocation().isEqual(loc)) alreadyTower = true;
+  }
+  if (alreadyTower) {
+    pushStyle();
+    textSize(20);
+    fill(255,255,255);
+    text("Already a tower there",x,y);
+    popStyle();
+    return false;
+  }
   if (x >= 0 && x < mapWidth && y >= 0 && y < mapHeight) {
     textSize(20);
     fill(255,255,255);
@@ -219,7 +368,6 @@ boolean placeTower(int x, int y) {
       balance -= prices.get(selectNum);
       towers.add(new Tower(x, y, selectedTower.getAttack(), selectedTower.getPower(), selectedTower.getRange()));
       menu();
-      //check for path somehow
       selectNum = -1;
       return true;
     }
@@ -244,10 +392,9 @@ void tick() {
   }
 }
 void draw() {
-  menu();
-  if (time % 240==0) {//make a mob every few seconds
-  //if (time==0) {
-    mobs.add(new Mob(50,250));
+  if (!titleScreen && !levelScreen) {
+  if (time % 240==0 && time>240) {//make a mob every few seconds
+    mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2));
   }
   
   for (int i = 0; i < mobs.size(); i++) {
@@ -283,14 +430,10 @@ void draw() {
   }
   if (gameOver) {
     if (totalHealth <= 0) {
-      print("YOU LOSE");
-      delay(2000);
-      exit();
+      lose();
     }
     if (round <= 0) {
-      print("YOU WIN");
-      delay(2000);
-      exit();
+      win();
     }
   }
   for (Tower a : towers) {
@@ -300,4 +443,21 @@ void draw() {
   }
   time++;
   tick();
+  }
+}
+void win() {
+  textSize(50);
+  text("YOU WIN",300,300);
+  text("Press any key to restart",250,500);
+  if (keyPressed) restart();
+}
+void lose() {
+  textSize(50);
+  text("YOU LOSE",300,300);
+  text("Press any key to restart",250,500);
+  if (keyPressed) restart();
+}
+void restart() {
+  init();
+  //mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2)); //first mob at time==0
 }
