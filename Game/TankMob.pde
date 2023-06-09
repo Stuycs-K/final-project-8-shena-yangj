@@ -1,7 +1,7 @@
 public class TankMob extends Mob {
   private int armor;
-  public TankMob () {
-    super();
+  public TankMob (float x, float y) {
+    super(x,y);
     armor = 10;
   }
   public TankMob(int speed, int health, int x, int y, int armor) {

@@ -7,17 +7,17 @@ public class Mob{
   private int totalHealth;
   private boolean moveHorizontally;
   private int attackPower;
-  public Mob() {
-    img = loadImage("mob.png");
-    moveSpeed = .5;//temp, original 10
-    position = new Location(50,250,true);
-    health = 100;
-    totalHealth = 100;
-    moveHorizontally = false;
-    radius = 20;
-    attackPower = 10;
-  }
-  public Mob(int x, int y) {
+  //public Mob() {
+  //  img = loadImage("mob.png");
+  //  moveSpeed = .5;//temp, original 10
+  //  position = new Location(50,250,true);
+  //  health = 100;
+  //  totalHealth = 100;
+  //  moveHorizontally = false;
+  //  radius = 20;
+  //  attackPower = 10;
+  //}
+  public Mob(float x, float y) {
     img = loadImage("mob.png");
     moveSpeed = 1;
     radius = 20;
@@ -66,11 +66,15 @@ public class Mob{
       Location temp = new Location(position.getX() + (tileSize /2), position.getY());
       Location temp2 = new Location(position.getX(), position.getY() + (tileSize / 2) + 1);
       Location temp3 = new Location(position.getX(), position.getY() - (tileSize /2 ) - 1);
-      if ((position.getY() % (tileSize / 2) == 0 && position.getY() % 100 != 0) && (temp.isEqual(path.get(place + 1)) || position.getX() + (tileSize /2) >= path.get(place).getX() + (tileSize /2) && position.getX() + (tileSize /2 ) < path.get(place).getX() + tileSize)) {
+      if ((position.getY() % (tileSize / 2) == 0 && position.getY() % 100 != 0) 
+      && (temp.isEqual(path.get(place + 1)) || 
+      position.getX() + (tileSize /2) >= path.get(place).getX() + (tileSize /2) && 
+      position.getX() + (tileSize /2 ) < path.get(place).getX() + tileSize)) {
         position.changeLocation(moveSpeed, 0);
         moveHorizontally = true;
       }
-      else if (!(path.get(place).getY() > path.get(place + 1).getY()) && (temp2.isEqual(path.get(place + 1)) || position.getY() + (tileSize /2) < path.get(place).getY() + tileSize && position.getY() + (tileSize /2 ) >= path.get(place).getY() + (tileSize /2))) {
+      else if (!(path.get(place).getY() > path.get(place + 1).getY()) && (temp2.isEqual(path.get(place + 1)) || 
+      position.getY() + (tileSize /2) < path.get(place).getY() + tileSize && position.getY() + (tileSize /2 ) >= path.get(place).getY() + (tileSize /2))) {
         position.changeLocation(0, moveSpeed);
         moveHorizontally = false;
       }

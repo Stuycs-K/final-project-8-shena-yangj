@@ -64,8 +64,8 @@ void init() {
   }
   score = 0;
   //initialGenerateMap();
-  initialRandomMap();
-  //titleScreen();
+  //initialRandomMap();
+  titleScreen();
 }
 void setup() {
   size(1000, 800);
@@ -218,6 +218,10 @@ void generateMap() {
   }
   displayPath();
   displayTowers();
+  strokeWeight(5);
+  stroke(255,87,51);
+  endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
+  line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
   menu();
 }
 void initialGenerateMap() {
@@ -267,53 +271,56 @@ int randDir(int cannot) {
   return ans;
 }
 void initialRandomMap() {
+  print("CAL:LL");
   stroke(0);
   //always start on 0th column and end on last column
   //random start row
-  int startrow = (int)(Math.random()*mapWidth/tileSize);
-  int prevrow = 0;
-  int prevcol = startrow;
+  int startj = (int)(Math.random()*mapWidth/tileSize);
+  //int prevrow = 0;
+  //int prevcol = startrow;
   //add in first
-  println("startrow: "+startrow);
-  paths.add(new Location(0,startrow*tileSize));
+  println("startj: "+startj);
+  paths.add(new Location(0,startj*tileSize));
   //random pathlength, at least 8 (one straight line path), at most 20
   int pathLength = (int)(Math.random()*12)+8; //64 tiles in screen
   int i = 0; 
-  int j = startrow;
+  int j = startj;
   while (i!=7) { //while hasnt reached last col
-    println("prevrow: "+prevrow+" prevcol: "+prevcol+" | i: "+i+" j: "+j);
+    println("i: "+i+" j: "+j);
+    if (i==7) print("HII");
     int direction = randDir(4); //1 up,2 right,3 down, can't go left
     //check for in bounds
-    if (j==7) direction=randDir(3); //can't go down anymore
+    //if (i==7) direction=randDir(3); //can't go down anymore
     while (outOfBounds(direction,i,j)) {
-      print("HERE | prevdirection: "+direction);
+      //println("HERE | prevdirection: "+direction);
       direction=randDir(direction);
     }
     println("direction: "+direction);
     //if in bounds then extend map there
     if (direction==1) { //up
-      if (!alreadyOnPath(prevrow*tileSize,tileSize*(prevcol-1))) {
-        paths.add(new Location(prevrow*tileSize,tileSize*(prevcol-1))); //left
-        prevcol--;
+      if (!alreadyOnPath(i*tileSize,tileSize*(j-1))) {
+        paths.add(new Location(i*tileSize,tileSize*(j-1))); //left
+        //prevcol--;
         j--;
       } else continue; //if already on path refind direction
     }
     else if (direction==2) { //right
-      if (!alreadyOnPath((prevrow+1)*tileSize,tileSize*prevcol)) {
-        paths.add(new Location((prevrow+1)*tileSize,tileSize*prevcol)); //right
-        prevrow++;
+      if (!alreadyOnPath((i+1)*tileSize,tileSize*j)) {
+        paths.add(new Location((i+1)*tileSize,tileSize*j)); //right
+        //prevrow++;
         i++;
       } else continue;
     }
     else { //down
-      if (!alreadyOnPath(tileSize*prevrow,tileSize*(prevcol+1))) {
-        paths.add(new Location(tileSize*prevrow,tileSize*(prevcol+1))); //down
-        prevcol++;
+      if (!alreadyOnPath(tileSize*i,tileSize*(j+1))) {
+        paths.add(new Location(tileSize*i,tileSize*(j+1))); //down
+        //prevcol++;
         j++;
       } else continue;
     }
     println("paths: "+paths);
   }
+  println("ENDD i: "+i+" j: "+j);
   
   for (int k = 0;k<mapWidth;k+=tileSize) {
     strokeWeight(3);
@@ -327,6 +334,7 @@ void initialRandomMap() {
   strokeWeight(5);
   stroke(255,87,51);
   endZone = new Location(paths.get(paths.size()-1).getX()+tileSize,paths.get(paths.size()-1).getY());
+  print(endZone);
   line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
   menu();
 }
@@ -410,7 +418,7 @@ void draw() {
   //menu();
   if (time % 240==0) {//make a mob every few seconds
   //if (time==0) {
-    mobs.add(new Mob(50,250));
+    mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2));
   }
   
   for (int i = 0; i < mobs.size(); i++) {
