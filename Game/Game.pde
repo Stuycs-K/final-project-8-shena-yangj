@@ -64,7 +64,8 @@ void init() {
   }
   score = 0;
   //initialGenerateMap();
-  titleScreen();
+  initialRandomMap();
+  //titleScreen();
 }
 void setup() {
   size(1000, 800);
@@ -162,16 +163,19 @@ void mouseClicked() {
     if (mouseX>100&&mouseX<300&&mouseY>500&&mouseY<600) {
       difficulty = "EASY";
       levelScreen = false;
-      initialGenerateMap();
+      //initialGenerateMap();
+      initialRandomMap();
     } else if (mouseX>400&&mouseX<600&&mouseY>500&&mouseY<600){ //medium is clicked
       difficulty = "MEDIUM";
       levelScreen = false;
-      initialGenerateMap();
+      //initialGenerateMap();
+      initialRandomMap();
     } else if (mouseX>700&&mouseX<900&&mouseY>500&&mouseY<600) {
     //hard is clicked
       difficulty = "HARD";
       levelScreen = false;
-      initialGenerateMap();
+      //initialGenerateMap();
+      initialRandomMap();
     }
     print("difficulty: "+difficulty);
   }else {
@@ -243,61 +247,80 @@ void initialGenerateMap() {
   line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
   menu();
 }
-boolean nextInBounds(int direction, int r, int c) {
-  return !(direction==1 && r==0) || !(direction==2&&c==7) || !(direction==3&&r==7);
+boolean outOfBounds(int direction, int r, int c) {
+  return (direction==1 && r<=0) || (direction==2&&c>=7) || (direction==3&&r>=7);
 }
-void randomMap() {
+boolean alreadyOnPath(int x, int y) {
+  boolean ans = false;
+  for (Location loc : paths) {
+    if (x==loc.getX() && y==loc.getY()) ans = true;
+  }
+  return ans;
+}
+int randDir(int cannot) {
+  int ans = (int)(Math.random()*4)+1;
+  while (ans==cannot) {
+    ans = (int)(Math.random()*4)+1;
+  }
+  return ans;
+}
+void initialRandomMap() {
   stroke(0);
   //always start on 0th column and end on last column
   //random start row
   int startrow = (int)(Math.random()*mapWidth/tileSize);
   int prevrow = startrow;
   int prevcol = 0;
+  //add in first
+  print("startrow: "+startrow);
+  paths.add(new Location(0,startrow*tileSize));
   //random pathlength, at least 8 (one straight line path), at most 20
   int pathLength = (int)(Math.random()*12)+8; //64 tiles in screen
-  for (int i = 0;i<mapWidth;i+=tileSize) {
-    for (int j = 0;j<mapHeight;j+=tileSize) {
-      int direction = (int)(Math.random()*4); //1 up,2 right,3 down, can't go left
-      //check for in bounds
-      while (!nextInBounds(direction,i,j)) direction=(int)(Math.random()*4);
-      //if in bounds then extend map there
-      if (direction==1) {
-        paths.add(new Location(prevrow-1,prevcol)); //left
-        prevrow--1;
-      }
-      if (direction==2) {
-        paths.add(new Location(prevrow,prevcol+1)); //right
-        prevcol++;
-      }
-      else {
-        paths.add(new Location(prevrow+1,prevcol)); //down
+  int i = 0; 
+  int j = startrow;
+  while (j!=7&&!(i>7)) { //while hasnt reached last col
+    println("paths: "+paths);
+    println("prevrow: "+prevrow+" prevcol: "+prevcol+" | i: "+i+" j: "+j);
+    int direction = randDir(4); //1 up,2 right,3 down, can't go left
+    //check if path next to it
+    
+    //check for in bounds
+    while (outOfBounds(direction,i,j)) {
+      print("HERE | prevdirection: "+direction);
+      direction=randDir(direction);
+    }
+    println("direction: "+direction);
+    //if in bounds then extend map there
+    if (direction==1) { //up
+      if (!alreadyOnPath(prevrow*tileSize,tileSize*(prevcol-1))) {
+        paths.add(new Location(prevrow*tileSize,tileSize*(prevcol-1))); //left
+        prevcol--;
+        j--;
+      } else continue; //start loop again
+    }
+    else if (direction==2) { //right
+      if (!alreadyOnPath((prevrow+1)*tileSize,tileSize*prevcol)) {
+        paths.add(new Location((prevrow+1)*tileSize,tileSize*prevcol)); //right
         prevrow++;
-      }
+        i++;
+      } else continue;
+    }
+    else { //down
+      if (!alreadyOnPath(tileSize*prevrow,tileSize*(prevcol+1))) {
+        paths.add(new Location(tileSize*prevrow,tileSize*(prevcol+1))); //down
+        prevcol++;
+        j++;
+      } else continue;
     }
   }
-  //for (int i = 0;i<pathLength;i++) {
-  //  int direction = (int)(Math.random()*4); //1 up,2 right,3 down, can't go left
-    
-  //}
-  for (int i = 0;i<mapWidth;i+=tileSize) {
+  
+  for (int k = 0;k<mapWidth;k+=tileSize) {
     strokeWeight(3);
     line(i,0,i,mapHeight);
   }
-  for (int i = 0;i<mapHeight;i+=tileSize) {
+  for (int k = 0;k<mapHeight;k+=tileSize) {
     line(0,i,mapWidth,i);
   }
-  fill(60, 201, 70);
-  for (int i = 0;i<mapWidth;i+=tileSize) {
-    for (int j = 0;j<mapHeight;j+=tileSize) {
-      if (j==tileSize*2 && i<mapHeight/2) {
-        paths.add(new Location(i,j));
-      } else if (i>=tileSize * 4 && j==0) {
-        paths.add(new Location(i,j));
-      }
-    }
-  }
-  paths.add(4, new Location(tileSize * 3, 100));
-  paths.add(5, new Location(tileSize * 3, 0));
   background(dirt);
   displayPath();
   strokeWeight(5);
