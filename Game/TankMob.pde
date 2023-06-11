@@ -36,11 +36,13 @@ public class TankMob extends Mob {
   public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int tileSize) {
     boolean endOfPath = false;
     int place = pIndex(path); //which tile in the path its on
+    println(place + "/" + (path.size() -1 ));
     if (place>=path.size()-1) {
       endOfPath = true;
     }
+    println(endOfPath);
     if (!endOfPath && (position.getX()<mapWidth || position.getY()<mapHeight)) { //in map & not last path tile
-      print("place: "+place);
+      //print("place: "+place);
       Location temp = new Location(position.getX() + (tileSize /2), position.getY());
       Location temp2 = new Location(position.getX(), position.getY() + (tileSize / 2) + 1);
       Location temp3 = new Location(position.getX(), position.getY() - (tileSize /2 ) - 1);
@@ -121,13 +123,17 @@ public class TankMob extends Mob {
   }
   public int pIndex(ArrayList<Location> paths) { //find where mob is in the path
     Location test = new Location(position.getX(), position.getY());
-    print(test);
+    //print(test);
     for (int i = 0; i < paths.size(); i++) {
+      //println("p: " + paths.get(i) + "/" + test);
       if (paths.get(i).isEqual(test)) {
         return i;
       }
      }
     return -1;
+  }
+  public Location getLocation() {
+    return position;
   }
   //public int doDamage(int change) {
   //  double percent = armor / 100.0;
