@@ -331,6 +331,10 @@ void mouseClicked() {
       placeTower(mouseX, mouseY);
       selected = false;
       menu();
+    } else if (towers.size()>=maxTowers) {
+      textSize(20);
+      fill(255,255,255);
+      text("Out of Towers",mouseX,mouseY);
     }
   }
   else {
