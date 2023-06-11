@@ -20,6 +20,10 @@ PImage towerimg;
 PImage powerIcon;
 PImage speedIcon;
 PImage rangeIcon;
+PImage down;
+PImage up;
+PImage money;
+PImage fireball;
 boolean gameOver;
 PImage dirt;
 int timer;
@@ -51,6 +55,10 @@ void init() {
   powerIcon = loadImage("Power (2).png");
   rangeIcon = loadImage("Range.png");
   speedIcon = loadImage("Speed.png");
+  down = loadImage("ArrowDown.png");
+  up = loadImage("ArrowUp.png");
+  money = loadImage("Money.png");
+  fireball = loadImage("Fireball.png");
   upTower = new Tower(0,0);
   towerMenu = false;
   timer = 0;
@@ -148,6 +156,7 @@ void menu() {
       rect(mapWidth + 101, 450 + (75 * i), 80, 75);
       fill(255,0,0);
     }
+    image(money, mapWidth + 60, 460, 60,60);
     if (powerChosen > -1) {
       if (selectNum >= 4 && selectNum <= 7) {
         stroke(200);
