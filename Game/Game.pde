@@ -41,7 +41,11 @@ ArrayList<Location> paths;
 int effected;
 Tower upTower;
 int upgradeCost;
+boolean boss;
+int roundCount;
 void init() {
+  boss = false;
+  roundCount = 1;
   upgradeCost = 10;
   titleScreen = true;
   levelScreen=false;
@@ -75,7 +79,7 @@ void init() {
   mobs = new ArrayList<Mob>();
   towers = new ArrayList<Tower>();
   paths = new ArrayList<Location>();
-  balance = 5000;
+  balance = 50;
   selected = false;
   totalHealth = 100; 
   maxTowers = 10;
@@ -188,13 +192,14 @@ void menu() {
       textSize(100);
       text(powerTime, mapWidth + 77, 550);
     }
-    textSize(25);
-    text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
-    text("Mob count: " + mobs.size(), mapWidth + 21, mapHeight - 50);
-    text("Balance: " + balance, mapWidth + 21, mapHeight - 80);
-    text("Round Timer: " + round, mapWidth + 10, mapHeight - 140);
-    text("Total Health: "+totalHealth, mapWidth+10,mapHeight-160);
-    text("Score: " + score, mapWidth + 21, mapHeight - 110);
+    textSize(22);
+    text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 10, mapHeight - 20);
+    text("Mob count: " + mobs.size(), mapWidth + 10, mapHeight - 45);
+    text("Balance: " + balance, mapWidth + 10, mapHeight - 70);
+    text("Round Timer: " + round, mapWidth + 10, mapHeight - 120);
+    text("Total Health: "+totalHealth, mapWidth+10,mapHeight-145);
+    text("Score: " + score, mapWidth + 10, mapHeight - 95);
+    text("Round " + roundCount, mapWidth + 10, mapHeight - 170);
     textSize(15);
     strokeWeight(3);
     stroke(255,0,0);
@@ -642,6 +647,13 @@ boolean placeTower(int x, int y) {
 void tick() {
   if (time % 60 == 0) {
     round--;
+    if (round == 0) {
+      roundCount++;
+      round = 100;
+      mobs = new ArrayList<Mob> ();
+      towers = new ArrayList<Tower> ();
+      balance = 50 + (10 * roundCount);
+    }
     if (timer != 0) {
       timer--;
     }
@@ -680,9 +692,23 @@ void tick() {
   }
 }
 void draw() {
+  if (totalHealth<=0 || roundCount > 3) {
+      gameOver = true;
+      menu();
+    }
+  if (gameOver) {
+    if (totalHealth <= 0) {
+      lose();
+    }
+    else if (roundCount >  3) {
+      win();
+    }
+  }
+  if (!gameOver) {
   if (!titleScreen && !levelScreen) {
   if (time % 240==0 && time>240) {//make a mob every few seconds
     mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2));
+    mobs.get(mobs.size() - 1).changeHealth((roundCount * 100));
   }
   
   for (int i = 0; i < mobs.size(); i++) {
@@ -707,21 +733,13 @@ void draw() {
       }
       continue; //continue w/ next mob since otherwise will run rest of method too
     }
-    if (totalHealth<=0 || round <= 0) {
+    if (totalHealth<=0 || roundCount > 3) {
       gameOver = true;
       menu();
       break;
     }
     mobs.get(i).move(paths,mapWidth,mapHeight,tileSize);
     mobs.get(i).display();
-  }
-  if (gameOver) {
-    if (totalHealth <= 0) {
-      lose();
-    }
-    if (round <= 0) {
-      win();
-    }
   }
   for (Tower a : towers) {
     for (Mob b : mobs) {
@@ -742,6 +760,7 @@ void draw() {
   time++;
   tick();
   }
+}
 }
 void win() {
   textSize(50);
