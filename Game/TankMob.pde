@@ -88,7 +88,7 @@ public class TankMob extends Mob {
   public void display() {
     if (!dead()) {
       //image(img,position.getX()-20,position.getY()-14,50,50);
-      image(tankmob[frameCount%4],position.getX()-20,position.getY()-20,50,50);
+      image(tankmob[frameCount/10%4],position.getX()-20,position.getY()-20,50,50);
       tint(255);
       healthBar();
     }
