@@ -39,8 +39,9 @@ void init() {
   titleScreen = true;
   levelScreen=false;
   towerimg = loadImage("tower.png");
-  towerimg.resize(75,100);
-  tileSize=100;
+  towerimg.resize(38,50);
+  //tileSize=100;
+  tileSize=50;
   dirt = loadImage("grass2.PNG");
   dirt.resize(width,height);
   background(dirt);
@@ -85,7 +86,7 @@ void init() {
 void setup() {
   size(1000, 800);
   init();
-  frameRate(10);
+  //frameRate(10);
 }
 void titleScreen() {
   pushStyle();
@@ -94,8 +95,10 @@ void titleScreen() {
   textFont(font);
   fill(255,0,0);
   text("TOWER DEFENSE",175,200);
+  towerimg.resize(75,100);
   image(towerimg,100,110);
   image(towerimg,825,110);
+  towerimg.resize(38,50);//path size for tower
   strokeWeight(5);
   stroke(0);
   fill(134, 250, 252);
@@ -329,6 +332,10 @@ void mouseClicked() {
       placeTower(mouseX, mouseY);
       selected = false;
       menu();
+    } else if (towers.size()>=maxTowers) {
+      textSize(20);
+      fill(255,255,255);
+      text("Out of Towers",mouseX,mouseY);
     }
   }
   else {
@@ -409,7 +416,7 @@ void speedTower() { //2
 }
 void slowMob() { //3
   if (powerTime == 0) {
-    effected = mobs.size();
+    effected = mobs.size(); 
     for (int i = 0; i < mobs.size(); i++) {
       println(mobs.get(i).getSpeed());
       mobs.get(i).setSpeed(mobs.get(i).getSpeed() / 2);
@@ -467,7 +474,8 @@ void initialGenerateMap() {
   menu();
 }
 boolean outOfBounds(int direction, int r, int c) {
-  return (direction==1 && c==0) || (direction==2&&r==7) || (direction==3&&c==7);
+  int end = mapHeight/tileSize-1; //square so height/width doesnt matter
+  return (direction==1 && c==0) || (direction==2&&r==end) || (direction==3&&c==end);
 }
 boolean alreadyOnPath(int x, int y) {
   boolean ans = false;
@@ -477,14 +485,13 @@ boolean alreadyOnPath(int x, int y) {
   return ans;
 }
 int randDir(int cannot) {
-  int ans = (int)(Math.random()*4)+1;
+  int ans = (int)(Math.random()*3)+1;
   while (ans==cannot) {
-    ans = (int)(Math.random()*4)+1;
+    ans = (int)(Math.random()*3)+1;
   }
   return ans;
 }
 void initialRandomMap() {
-  print("CAL:LL");
   stroke(0);
   //always start on 0th column and end on last column
   //random start row
@@ -493,7 +500,7 @@ void initialRandomMap() {
   paths.add(new Location(0,startj*tileSize));
   int i = 0; 
   int j = startj;
-  while (i!=7) { //while hasnt reached last col
+  while (i!=(mapWidth/tileSize-1)) { //while hasnt reached last col
     int direction = randDir(4); //1 up,2 right,3 down, can't go left
     //check for in bounds
     while (outOfBounds(direction,i,j)) {
@@ -518,6 +525,7 @@ void initialRandomMap() {
         j++;
       } else continue;
     }
+    //println(paths);
   }
   
   for (int k = 0;k<mapWidth;k+=tileSize) {
@@ -535,7 +543,8 @@ void initialRandomMap() {
   print(endZone);
   line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
   menu();
-  mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2)); //first mob at time==0
+  mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty)); //first mob at time==0
+  //mobs.add(new TankMob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty));
 }
 
 void displayTowers() {
@@ -616,10 +625,12 @@ void tick() {
   }
   if (time % 120 == 0) {
     if (powerChosen == 0) {
-       changeBalance(20);
+       if (difficulty.equals("EASY")) changeBalance(30);
+      else changeBalance(20);
     }
     else {
-      changeBalance(10);
+      if (difficulty.equals("EASY")) changeBalance(15);
+      else changeBalance(10);
     }
   }
   if (powerTime == 0 && powerChosen != 1) {
@@ -646,9 +657,11 @@ void tick() {
 void draw() {
   if (!titleScreen && !levelScreen) {
   if (time % 240==0 && time>240) {//make a mob every few seconds
-    mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2));
+    if (time%480==0) {
+      mobs.add(new TankMob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty));
+    }
+    else mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty));
   }
-  
   for (int i = 0; i < mobs.size(); i++) {
     if (mobs.get(i).getHealth() <= 0) {
       mobs.remove(mobs.get(i));
@@ -662,7 +675,7 @@ void draw() {
   generateMap();
   for (int i = 0;i<mobs.size();i++) {
     if (mobs.get(i).getLocation().getX()>= endZone.getX()) {
-      
+      print("HERE");
       totalHealth-=mobs.get(i).getAttackPower();
       mobs.remove(i);
       if (i < mobs.size()) {

@@ -40,6 +40,7 @@ public class Tower {
     return position;
   }
   private boolean attack(Mob m, int time) {
+    boolean ans = false;
     //have to find a fix for this
     if (attackSpeed > 60) {
       attackSpeed = 60;
@@ -87,7 +88,7 @@ public class Tower {
   public void display() {
     float x = position.getX();
     float y = position.getY();
-    image(towerimg,x+15,y);
+    image(towerimg,x+10,y);
   }
   public int speedLevel() {
     return slevel;
