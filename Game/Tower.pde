@@ -120,4 +120,7 @@ public class Tower {
       return dmgDealt + "";
     }
   }
+  public void breakArmor(TankMob a, int damage) {
+     a.changeArmor(damage);
+  }
 }

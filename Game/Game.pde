@@ -35,7 +35,9 @@ ArrayList<Mob> mobs;
 ArrayList<Location> paths;
 int effected;
 Tower upTower;
+int upgradeCost;
 void init() {
+  upgradeCost = 10;
   titleScreen = true;
   levelScreen=false;
   towerimg = loadImage("tower.png");
@@ -63,7 +65,7 @@ void init() {
   mobs = new ArrayList<Mob>();
   towers = new ArrayList<Tower>();
   paths = new ArrayList<Location>();
-  balance = 50;
+  balance = 5000;
   selected = false;
   totalHealth = 100; 
   maxTowers = 10;
@@ -218,8 +220,18 @@ void menu() {
     image(rangeIcon, 900, 690, 80, 80);
     if (upTower.speedLevel() == 4) {
       fill(100,15,15);
-      textSize(95);
+      textSize(82);
       text("MAX", 817, 520);
+    }
+    if (upTower.powerLevel() == 4) {
+      fill(100,15,15);
+      textSize(82);
+      text("MAX", 817, 640);
+    }
+    if (upTower.rangeLevel() == 4) {
+      fill(100,15,15);
+      textSize(82);
+      text("MAX", 817, 760);
     }
     
   }
@@ -342,13 +354,16 @@ void mouseClicked() {
     }
     else {
       if (mouseX >= 821 && mouseX <= 981) {
-        if (mouseY >= 440 && mouseY <= 540) {
+        if (mouseY >= 440 && mouseY <= 540 && balance >= ((upTower.speedLevel() + 1) * upgradeCost) && upTower.speedLevel() < 4) {
+          balance -= ((upTower.speedLevel() + 1) * upgradeCost);
           upTower.upgradeSpeed();
         }
-        if (mouseY >= 560 && mouseY <= 660) {
+        if (mouseY >= 560 && mouseY <= 660 && balance >= ((upTower.powerLevel() + 1)* upgradeCost) && upTower.powerLevel() < 4) {
+          balance -= ((upTower.powerLevel() + 1) * upgradeCost);
           upTower.upgradePower();
         }
-        if (mouseY >= 680 && mouseY <= 780) {
+        if (mouseY >= 680 && mouseY <= 780 && balance >= ((upTower.rangeLevel() + 1) * upgradeCost) && upTower.rangeLevel() < 4) {
+          balance -= ((upTower.rangeLevel() + 1) * upgradeCost);
           upTower.upgradeRange();
         }
   }

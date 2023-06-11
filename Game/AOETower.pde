@@ -9,7 +9,8 @@ public class AOETower extends Tower {
     super(x, y, attackSpeed, power, range);
     this.effectedArea = effectedArea;
   }
-  public void breakArmor(TankMob a, int damage) {
-     a.changeArmor(damage);
+  
+  public int area() {
+    return effectedArea;
   }
 }
