@@ -1,6 +1,6 @@
 public class TankMob extends Mob {
   //private int armor;
-  PImage img;
+  PImage[] tankmob=new PImage[4];
   private Location position;
   private float moveSpeed;
   private boolean moveHorizontally;
@@ -9,7 +9,11 @@ public class TankMob extends Mob {
   private int attackPower;
   public TankMob (float x, float y,String difficulty) {
     super(x,y,difficulty);
-    img = loadImage("tankmob.png");
+    //img = loadImage("tankmob.png");
+    tankmob[0] = loadImage("tankmob0.gif");
+    tankmob[1] = loadImage("tankmob1.gif");
+    tankmob[2] = loadImage("tankmob2.gif");
+    tankmob[3] = loadImage("tankmob3.gif");
     //armor = 10;
     attackPower = 20;
     if (difficulty.equals("EASY")) moveSpeed = 1;
@@ -22,7 +26,11 @@ public class TankMob extends Mob {
   }
   public TankMob(int speed, int health, int x, int y, int armor) {
     super(speed, health, x, y);
-    img = loadImage("tankmob.png");
+    //img = loadImage("tankmob.png");
+    tankmob[0] = loadImage("tankmob0.gif");
+    tankmob[1] = loadImage("tankmob1.gif");
+    tankmob[2] = loadImage("tankmob2.gif");
+    tankmob[3] = loadImage("tankmob3.gif");
     attackPower = 20;
     health = 750;
     totalHealth = 750;
@@ -79,7 +87,8 @@ public class TankMob extends Mob {
   //}
   public void display() {
     if (!dead()) {
-      image(img,position.getX()-20,position.getY()-14,50,50);
+      //image(img,position.getX()-20,position.getY()-14,50,50);
+      image(tankmob[frameCount%4],position.getX()-20,position.getY()-20,50,50);
       tint(255);
       healthBar();
     }
