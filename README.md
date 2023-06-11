@@ -1,5 +1,4 @@
 # APCS Final Project
-THIS DOCUMENT IS REQUIRED
 ## Group Info
 Amber Shen and Jason Yang from APCS class period 8.
 ## Overview
