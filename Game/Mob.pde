@@ -7,9 +7,12 @@ public class Mob{
   private int totalHealth;
   private boolean moveHorizontally;
   private int attackPower;
-  public Mob(float x, float y) {
+  public Mob(float x, float y, String difficulty) {
     img = loadImage("mob.png");
-    moveSpeed = 1;
+    if (difficulty.equals("EASY")) moveSpeed = 1;
+    if (difficulty.equals("MEDIUM")) moveSpeed = 1;
+    if (difficulty.equals("HARD")) moveSpeed = 2;
+    //moveSpeed = 1;
     radius = 20;
     health = 500;
     totalHealth = 500;

@@ -516,7 +516,7 @@ void initialRandomMap() {
         j++;
       } else continue;
     }
-    println(paths);
+    //println(paths);
   }
   
   for (int k = 0;k<mapWidth;k+=tileSize) {
@@ -534,7 +534,7 @@ void initialRandomMap() {
   print(endZone);
   line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
   menu();
-  mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2)); //first mob at time==0
+  mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty)); //first mob at time==0
 }
 
 void displayTowers() {
@@ -645,7 +645,7 @@ void tick() {
 void draw() {
   if (!titleScreen && !levelScreen) {
   if (time % 240==0 && time>240) {//make a mob every few seconds
-    mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2));
+    mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty));
   }
   
   for (int i = 0; i < mobs.size(); i++) {
