@@ -1,5 +1,5 @@
 public class Mob{
-  PImage img;
+  PImage[] mob=new PImage[4];
   private float moveSpeed;
   private int radius;
   private Location position;
@@ -8,7 +8,11 @@ public class Mob{
   private boolean moveHorizontally;
   private int attackPower;
   public Mob(float x, float y) {
-    img = loadImage("mob.png");
+    //img = loadImage("mob.png");
+    mob[0] = loadImage("mob0.gif");
+    mob[1] = loadImage("mob1.gif");
+    mob[2] = loadImage("mob2.gif");
+    mob[3] = loadImage("mob3.gif");
     moveSpeed = 1;
     radius = 20;
     health = 500;
@@ -18,7 +22,10 @@ public class Mob{
     attackPower = 10;
   }
   public Mob(float speed, int health, int x, int y) {
-    img = loadImage("mob.png");
+    mob[0] = loadImage("mob0.gif");
+    mob[1] = loadImage("mob1.gif");
+    mob[2] = loadImage("mob2.gif");
+    mob[3] = loadImage("mob3.gif");
     moveSpeed = speed;
     this.health = health;
     totalHealth = health;
@@ -109,7 +116,8 @@ public class Mob{
   }
   public void display() {
     if (!dead()) {
-      image(img,position.getX()-20,position.getY()-20,50,50);
+      //image(img,position.getX()-20,position.getY()-20,50,50);
+      image(mob[frameCount%4],position.getX()-20,position.getY()-20);
       tint(255);
       healthBar();
     }

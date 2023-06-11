@@ -85,6 +85,7 @@ void init() {
 void setup() {
   size(1000, 800);
   init();
+  frameRate(10);
 }
 void titleScreen() {
   pushStyle();
