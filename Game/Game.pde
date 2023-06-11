@@ -20,6 +20,11 @@ PImage towerimg;
 PImage powerIcon;
 PImage speedIcon;
 PImage rangeIcon;
+PImage down;
+PImage up;
+PImage money;
+PImage fireball;
+PImage mobimg;
 boolean gameOver;
 PImage dirt;
 int timer;
@@ -35,7 +40,13 @@ ArrayList<Mob> mobs;
 ArrayList<Location> paths;
 int effected;
 Tower upTower;
+int upgradeCost;
+boolean boss;
+int roundCount;
 void init() {
+  boss = false;
+  roundCount = 1;
+  upgradeCost = 10;
   titleScreen = true;
   levelScreen=false;
   towerimg = loadImage("tower.png");
@@ -50,6 +61,11 @@ void init() {
   powerIcon = loadImage("Power (2).png");
   rangeIcon = loadImage("Range.png");
   speedIcon = loadImage("Speed.png");
+  down = loadImage("ArrowDown.png");
+  up = loadImage("ArrowUp.png");
+  money = loadImage("Money.png");
+  fireball = loadImage("Fireball.png");
+  mobimg = loadImage("mob.png");
   upTower = new Tower(0,0);
   towerMenu = false;
   timer = 0;
@@ -150,6 +166,12 @@ void menu() {
       rect(mapWidth + 101, 450 + (75 * i), 80, 75);
       fill(255,0,0);
     }
+     image(money, mapWidth + 32, 460, 60,60);
+     image(fireball, mapWidth + 22, 535, 80, 60);
+     image(towerimg, mapWidth + 105,460, 50, 60);
+     image(up, mapWidth + 147, 460, 30, 55);
+     image(mobimg, mapWidth + 100, 535, 60, 60);
+     image(down, mapWidth + 145, 535, 30, 55);
     if (powerChosen > -1) {
       if (selectNum >= 4 && selectNum <= 7) {
         stroke(200);
@@ -161,6 +183,12 @@ void menu() {
         else {
           rect(mapWidth + 21 + (80 * (selectNum % 2)), 450 , 80, 75);
         }
+        image(money, mapWidth + 32, 460, 60,60);
+        image(fireball, mapWidth + 22, 535, 80, 60);
+        image(towerimg, mapWidth + 105,460, 50, 60);
+        image(up, mapWidth + 147, 460, 30, 55);
+        image(mobimg, mapWidth + 100, 535, 60, 60);
+        image(down, mapWidth + 145, 535, 30, 55);
         fill(255,0,0);
       }
     }
@@ -168,13 +196,14 @@ void menu() {
       textSize(100);
       text(powerTime, mapWidth + 77, 550);
     }
-    textSize(25);
-    text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 21, mapHeight - 20);
-    text("Mob count: " + mobs.size(), mapWidth + 21, mapHeight - 50);
-    text("Balance: " + balance, mapWidth + 21, mapHeight - 80);
-    text("Round Timer: " + round, mapWidth + 10, mapHeight - 140);
-    text("Total Health: "+totalHealth, mapWidth+10,mapHeight-160);
-    text("Score: " + score, mapWidth + 21, mapHeight - 110);
+    textSize(22);
+    text("Towers: " + towers.size() + "/" + maxTowers, mapWidth + 10, mapHeight - 20);
+    text("Mob count: " + mobs.size(), mapWidth + 10, mapHeight - 45);
+    text("Balance: " + balance, mapWidth + 10, mapHeight - 70);
+    text("Round Timer: " + round, mapWidth + 10, mapHeight - 120);
+    text("Total Health: "+totalHealth, mapWidth+10,mapHeight-145);
+    text("Score: " + score, mapWidth + 10, mapHeight - 95);
+    text("Round " + roundCount, mapWidth + 10, mapHeight - 170);
     textSize(15);
     strokeWeight(3);
     stroke(255,0,0);
@@ -222,8 +251,18 @@ void menu() {
     image(rangeIcon, 900, 690, 80, 80);
     if (upTower.speedLevel() == 4) {
       fill(100,15,15);
-      textSize(95);
+      textSize(82);
       text("MAX", 817, 520);
+    }
+    if (upTower.powerLevel() == 4) {
+      fill(100,15,15);
+      textSize(82);
+      text("MAX", 817, 640);
+    }
+    if (upTower.rangeLevel() == 4) {
+      fill(100,15,15);
+      textSize(82);
+      text("MAX", 817, 760);
     }
     
   }
@@ -350,13 +389,16 @@ void mouseClicked() {
     }
     else {
       if (mouseX >= 821 && mouseX <= 981) {
-        if (mouseY >= 440 && mouseY <= 540) {
+        if (mouseY >= 440 && mouseY <= 540 && balance >= ((upTower.speedLevel() + 1) * upgradeCost) && upTower.speedLevel() < 4) {
+          balance -= ((upTower.speedLevel() + 1) * upgradeCost);
           upTower.upgradeSpeed();
         }
-        if (mouseY >= 560 && mouseY <= 660) {
+        if (mouseY >= 560 && mouseY <= 660 && balance >= ((upTower.powerLevel() + 1)* upgradeCost) && upTower.powerLevel() < 4) {
+          balance -= ((upTower.powerLevel() + 1) * upgradeCost);
           upTower.upgradePower();
         }
-        if (mouseY >= 680 && mouseY <= 780) {
+        if (mouseY >= 680 && mouseY <= 780 && balance >= ((upTower.rangeLevel() + 1) * upgradeCost) && upTower.rangeLevel() < 4) {
+          balance -= ((upTower.rangeLevel() + 1) * upgradeCost);
           upTower.upgradeRange();
         }
   }
@@ -588,6 +630,8 @@ boolean placeTower(int x, int y) {
     //check if on path here
     if (towerOnPath(x,y)) {
       text("Cannot place tower on path",mouseX,mouseY);
+      selectNum = -1;
+      menu();
       return false;
     }
     if (balance >= prices.get(selectNum)) {
@@ -615,6 +659,13 @@ boolean placeTower(int x, int y) {
 void tick() {
   if (time % 60 == 0) {
     round--;
+    if (round == 0) {
+      roundCount++;
+      round = 100;
+      mobs = new ArrayList<Mob> ();
+      towers = new ArrayList<Tower> ();
+      balance = 50 + (10 * roundCount);
+    }
     if (timer != 0) {
       timer--;
     }
@@ -655,6 +706,19 @@ void tick() {
   }
 }
 void draw() {
+  if (totalHealth<=0 || roundCount > 3) {
+      gameOver = true;
+      menu();
+    }
+  if (gameOver) {
+    if (totalHealth <= 0) {
+      lose();
+    }
+    else if (roundCount >  3) {
+      win();
+    }
+  }
+  if (!gameOver) {
   if (!titleScreen && !levelScreen) {
   if (time % 240==0 && time>240) {//make a mob every few seconds
     if (time%720==0) {
@@ -684,21 +748,13 @@ void draw() {
       }
       continue; //continue w/ next mob since otherwise will run rest of method too
     }
-    if (totalHealth<=0 || round <= 0) {
+    if (totalHealth<=0 || roundCount > 3) {
       gameOver = true;
       menu();
       break;
     }
     mobs.get(i).move(paths,mapWidth,mapHeight,tileSize);
     mobs.get(i).display();
-  }
-  if (gameOver) {
-    if (totalHealth <= 0) {
-      lose();
-    }
-    if (round <= 0) {
-      win();
-    }
   }
   for (Tower a : towers) {
     for (Mob b : mobs) {
@@ -719,6 +775,7 @@ void draw() {
   time++;
   tick();
   }
+}
 }
 void win() {
   textSize(50);

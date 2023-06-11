@@ -57,6 +57,12 @@ public class Mob{
   public int getHealth() {
     return health;
   }
+  public void changeHealth(int x) {
+    health += x;
+  }
+  public void sethealth(int x) {
+    health = x;
+  }
   public void changePower(int x) {
     attackPower += x;
   }

@@ -1,5 +1,5 @@
 public class TankMob extends Mob {
-  //private int armor;
+  private int armor;
   PImage[] tankmob=new PImage[4];
   private Location position;
   private float moveSpeed;
@@ -14,7 +14,7 @@ public class TankMob extends Mob {
     tankmob[1] = loadImage("tankmob1.gif");
     tankmob[2] = loadImage("tankmob2.gif");
     tankmob[3] = loadImage("tankmob3.gif");
-    //armor = 10;
+    armor = 10;
     attackPower = 20;
     if (difficulty.equals("EASY")) moveSpeed = 1;
     if (difficulty.equals("MEDIUM")) moveSpeed = 1;
@@ -39,7 +39,7 @@ public class TankMob extends Mob {
     if (difficulty.equals("MEDIUM")) moveSpeed = 1;
     if (difficulty.equals("HARD")) moveSpeed = 2;
     moveHorizontally=false;
-    //this.armor = armor; 
+    this.armor = armor; 
   }
   public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int tileSize) {
     boolean endOfPath = false;
@@ -75,16 +75,16 @@ public class TankMob extends Mob {
       else position.changeLocation(0,moveSpeed); //was moving vertically before
     }
   }
-  //public int getArmor() {
-  //  return armor;
-  //}
-  //public int changeArmor(int change) {
-  //  armor -= change;
-  //  return armor;
-  //}
-  //public void setArmor(int armor) {
-  //  this.armor = armor;
-  //}
+  public int getArmor() {
+    return armor;
+  }
+  public int changeArmor(int change) {
+    armor -= change;
+    return armor;
+  }
+  public void setArmor(int armor) {
+    this.armor = armor;
+  }
   public void display() {
     if (!dead()) {
       //image(img,position.getX()-20,position.getY()-14,50,50);
@@ -93,20 +93,20 @@ public class TankMob extends Mob {
       healthBar();
     }
   }
-  public int doDamage(int change) { //return false if health < 0
-    if (health>0) {
-      if (change > health) {
-        int ret = health;
-        health = 0;
-        return ret;
-      }
-      else {
-        health-=change;
-        return change;
-      }
-    }
-    return 0;
-  }
+  //public int doDamage(int change) { //return false if health < 0
+  //  if (health>0) {
+  //    if (change > health) {
+  //      int ret = health;
+  //      health = 0;
+  //      return ret;
+  //    }
+  //    else {
+  //      health-=change;
+  //      return change;
+  //    }
+  //  }
+  //  return 0;
+  //}
   public int getHealth() {
     return health;
   }
@@ -144,19 +144,19 @@ public class TankMob extends Mob {
   public Location getLocation() {
     return position;
   }
-  //public int doDamage(int change) {
-  //  double percent = armor / 100.0;
-  //  if (super.health > 0) {
-  //    if (change * percent > super.health) {
-  //      int ret = super.health;
-  //      super.health = 0;
-  //      return ret;
-  //    }
-  //    else {
-  //      super.health -= (change * percent);
-  //      return (int)(change * percent);
-  //    }
-  //  }
-  //  return 0;
-  //}
+  public int doDamage(int change) {
+    double percent = armor / 100.0;
+    if (health > 0) {
+      if (change * percent > health) {
+        int ret = health;
+        health = 0;
+        return ret;
+      }
+      else {
+        health -= (change * percent);
+        return (int)(change * percent);
+      }
+    }
+    return 0;
+  }
 }
