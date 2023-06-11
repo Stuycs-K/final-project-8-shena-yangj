@@ -476,14 +476,13 @@ boolean alreadyOnPath(int x, int y) {
   return ans;
 }
 int randDir(int cannot) {
-  int ans = (int)(Math.random()*4)+1;
+  int ans = (int)(Math.random()*3)+1;
   while (ans==cannot) {
-    ans = (int)(Math.random()*4)+1;
+    ans = (int)(Math.random()*3)+1;
   }
   return ans;
 }
 void initialRandomMap() {
-  print("CAL:LL");
   stroke(0);
   //always start on 0th column and end on last column
   //random start row
@@ -517,6 +516,7 @@ void initialRandomMap() {
         j++;
       } else continue;
     }
+    println(paths);
   }
   
   for (int k = 0;k<mapWidth;k+=tileSize) {
