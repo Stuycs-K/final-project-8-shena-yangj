@@ -24,6 +24,7 @@ PImage down;
 PImage up;
 PImage money;
 PImage fireball;
+PImage mobimg;
 boolean gameOver;
 PImage dirt;
 int timer;
@@ -59,6 +60,7 @@ void init() {
   up = loadImage("ArrowUp.png");
   money = loadImage("Money.png");
   fireball = loadImage("Fireball.png");
+  mobimg = loadImage("mob.png");
   upTower = new Tower(0,0);
   towerMenu = false;
   timer = 0;
@@ -156,7 +158,12 @@ void menu() {
       rect(mapWidth + 101, 450 + (75 * i), 80, 75);
       fill(255,0,0);
     }
-    image(money, mapWidth + 60, 460, 60,60);
+     image(money, mapWidth + 32, 460, 60,60);
+     image(fireball, mapWidth + 22, 535, 80, 60);
+     image(towerimg, mapWidth + 105,460, 50, 60);
+     image(up, mapWidth + 147, 460, 30, 55);
+     image(mobimg, mapWidth + 100, 535, 60, 60);
+     image(down, mapWidth + 145, 535, 30, 55);
     if (powerChosen > -1) {
       if (selectNum >= 4 && selectNum <= 7) {
         stroke(200);
@@ -168,6 +175,12 @@ void menu() {
         else {
           rect(mapWidth + 21 + (80 * (selectNum % 2)), 450 , 80, 75);
         }
+        image(money, mapWidth + 32, 460, 60,60);
+        image(fireball, mapWidth + 22, 535, 80, 60);
+        image(towerimg, mapWidth + 105,460, 50, 60);
+        image(up, mapWidth + 147, 460, 30, 55);
+        image(mobimg, mapWidth + 100, 535, 60, 60);
+        image(down, mapWidth + 145, 535, 30, 55);
         fill(255,0,0);
       }
     }
