@@ -1,5 +1,5 @@
 public class Mob{
-  PImage img;
+  PImage[] mob=new PImage[4];
   private float moveSpeed;
   private int radius;
   private Location position;
@@ -7,8 +7,14 @@ public class Mob{
   private int totalHealth;
   private boolean moveHorizontally;
   private int attackPower;
-  public Mob(float x, float y) {
-    img = loadImage("mob.png");
+  public Mob(float x, float y, String difficulty) {
+    if (difficulty.equals("EASY")) moveSpeed = 1;
+    if (difficulty.equals("MEDIUM")) moveSpeed = 1;
+    if (difficulty.equals("HARD")) moveSpeed = 2;
+    mob[0] = loadImage("mob0.gif");
+    mob[1] = loadImage("mob1.gif");
+    mob[2] = loadImage("mob2.gif");
+    mob[3] = loadImage("mob3.gif");
     moveSpeed = 1;
     radius = 20;
     health = 500;
@@ -18,7 +24,10 @@ public class Mob{
     attackPower = 10;
   }
   public Mob(float speed, int health, int x, int y) {
-    img = loadImage("mob.png");
+    mob[0] = loadImage("mob0.gif");
+    mob[1] = loadImage("mob1.gif");
+    mob[2] = loadImage("mob2.gif");
+    mob[3] = loadImage("mob3.gif");
     moveSpeed = speed;
     this.health = health;
     totalHealth = health;
@@ -114,8 +123,7 @@ public class Mob{
     return position;
   }
   public void display() {
-    if (!dead()) {
-      image(img,position.getX()-20,position.getY()-20,50,50);
+    if (!dead()) {image(mob[frameCount/10%4],position.getX()-20,position.getY()-20);
       tint(255);
       healthBar();
     }
@@ -128,22 +136,22 @@ public class Mob{
     fill(255,0,0);
     //stroke(0);
     noStroke();
-    rect(position.getX()-10,position.getY()-30,40,10,30);
+    rect(position.getX()-10,position.getY()-24,40,10,30);
     fill(0,255,0);
     noStroke();
     float percent = health/(float)totalHealth;
-    rect(position.getX()-10,position.getY()-30,percent*40,10,30);
+    rect(position.getX()-10,position.getY()-24,percent*40,10,30);
     fill(0,0,0);
     textSize(14);
-    text(health,position.getX()-9,position.getY()-21);
+    text(health,position.getX()-9,position.getY()-15);
   }
   public int pIndex(ArrayList<Location> paths) { //find where mob is in the path
-  Location test = new Location(position.getX(), position.getY());
-  for (int i = 0; i < paths.size(); i++) {
-    if (paths.get(i).isEqual(test)) {
-      return i;
-    }
-   }
+    Location test = new Location(position.getX(), position.getY());
+    for (int i = 0; i < paths.size(); i++) {
+      if (paths.get(i).isEqual(test)) {
+        return i;
+      }
+     }
     return -1;
   }
 }
