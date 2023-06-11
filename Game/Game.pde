@@ -622,7 +622,8 @@ void tick() {
        changeBalance(20);
     }
     else {
-      changeBalance(10);
+      if (difficulty.equals("EASY")) changeBalance(15);
+      else changeBalance(10);
     }
   }
   if (powerTime == 0 && powerChosen != 1) {
