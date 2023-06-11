@@ -78,6 +78,7 @@ public class Mob{
   public void move(ArrayList<Location> path,int mapWidth, int mapHeight, int tileSize) {
     boolean endOfPath = false;
     int place = pIndex(path); //which tile in the path its on
+    print("place: "+place);
     if (place>=path.size()-1) {
       endOfPath = true;
     }
@@ -135,12 +136,12 @@ public class Mob{
     text(health,position.getX()-9,position.getY()-15);
   }
   public int pIndex(ArrayList<Location> paths) { //find where mob is in the path
-  Location test = new Location(position.getX(), position.getY());
-  for (int i = 0; i < paths.size(); i++) {
-    if (paths.get(i).isEqual(test)) {
-      return i;
-    }
-   }
+    Location test = new Location(position.getX(), position.getY());
+    for (int i = 0; i < paths.size(); i++) {
+      if (paths.get(i).isEqual(test)) {
+        return i;
+      }
+     }
     return -1;
   }
 }

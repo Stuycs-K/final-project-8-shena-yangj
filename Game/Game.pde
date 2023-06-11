@@ -415,7 +415,7 @@ void speedTower() { //2
 }
 void slowMob() { //3
   if (powerTime == 0) {
-    effected = mobs.size();
+    effected = mobs.size(); 
     for (int i = 0; i < mobs.size(); i++) {
       println(mobs.get(i).getSpeed());
       mobs.get(i).setSpeed(mobs.get(i).getSpeed() / 2);
@@ -542,7 +542,8 @@ void initialRandomMap() {
   print(endZone);
   line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
   menu();
-  mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty)); //first mob at time==0
+  //mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty)); //first mob at time==0
+  mobs.add(new TankMob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty));
 }
 
 void displayTowers() {
@@ -654,10 +655,12 @@ void tick() {
 }
 void draw() {
   if (!titleScreen && !levelScreen) {
-  if (time % 240==0 && time>240) {//make a mob every few seconds
-    mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty));
-  }
-  
+  //if (time % 240==0 && time>240) {//make a mob every few seconds
+  //  if (time%480==0) {
+  //    mobs.add(new TankMob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty));
+  //  }
+  //  else mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty));
+  //}
   for (int i = 0; i < mobs.size(); i++) {
     if (mobs.get(i).getHealth() <= 0) {
       mobs.remove(mobs.get(i));
@@ -671,7 +674,7 @@ void draw() {
   generateMap();
   for (int i = 0;i<mobs.size();i++) {
     if (mobs.get(i).getLocation().getX()>= endZone.getX()) {
-      
+      print("HERE");
       totalHealth-=mobs.get(i).getAttackPower();
       mobs.remove(i);
       if (i < mobs.size()) {
