@@ -657,7 +657,7 @@ void tick() {
 void draw() {
   if (!titleScreen && !levelScreen) {
   if (time % 240==0 && time>240) {//make a mob every few seconds
-    if (time%480==0) {
+    if (time%720==0) {
       mobs.add(new TankMob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty));
     }
     else mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty));
