@@ -88,7 +88,7 @@ public class Tower {
   public void display() {
     float x = position.getX();
     float y = position.getY();
-    image(towerimg,x+15,y);
+    image(towerimg,x+10,y);
   }
   public int speedLevel() {
     return slevel;

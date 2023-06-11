@@ -39,8 +39,9 @@ void init() {
   titleScreen = true;
   levelScreen=false;
   towerimg = loadImage("tower.png");
-  towerimg.resize(75,100);
-  tileSize=100;
+  towerimg.resize(38,50);
+  //tileSize=100;
+  tileSize=50;
   dirt = loadImage("grass2.PNG");
   dirt.resize(width,height);
   background(dirt);
@@ -93,8 +94,10 @@ void titleScreen() {
   textFont(font);
   fill(255,0,0);
   text("TOWER DEFENSE",175,200);
+  towerimg.resize(75,100);
   image(towerimg,100,110);
   image(towerimg,825,110);
+  towerimg.resize(38,50);//path size for tower
   strokeWeight(5);
   stroke(0);
   fill(134, 250, 252);
@@ -466,7 +469,8 @@ void initialGenerateMap() {
   menu();
 }
 boolean outOfBounds(int direction, int r, int c) {
-  return (direction==1 && c==0) || (direction==2&&r==7) || (direction==3&&c==7);
+  int end = mapHeight/tileSize-1; //square so height/width doesnt matter
+  return (direction==1 && c==0) || (direction==2&&r==end) || (direction==3&&c==end);
 }
 boolean alreadyOnPath(int x, int y) {
   boolean ans = false;
@@ -491,7 +495,7 @@ void initialRandomMap() {
   paths.add(new Location(0,startj*tileSize));
   int i = 0; 
   int j = startj;
-  while (i!=7) { //while hasnt reached last col
+  while (i!=(mapWidth/tileSize-1)) { //while hasnt reached last col
     int direction = randDir(4); //1 up,2 right,3 down, can't go left
     //check for in bounds
     while (outOfBounds(direction,i,j)) {

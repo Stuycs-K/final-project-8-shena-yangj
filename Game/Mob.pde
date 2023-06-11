@@ -112,7 +112,7 @@ public class Mob{
   }
   public void display() {
     if (!dead()) {
-      image(img,position.getX()-20,position.getY()-20,50,50);
+      image(img,position.getX()-20,position.getY()-14,50,50);
       tint(255);
       healthBar();
     }
@@ -125,14 +125,14 @@ public class Mob{
     fill(255,0,0);
     //stroke(0);
     noStroke();
-    rect(position.getX()-10,position.getY()-30,40,10,30);
+    rect(position.getX()-10,position.getY()-24,40,10,30);
     fill(0,255,0);
     noStroke();
     float percent = health/(float)totalHealth;
-    rect(position.getX()-10,position.getY()-30,percent*40,10,30);
+    rect(position.getX()-10,position.getY()-24,percent*40,10,30);
     fill(0,0,0);
     textSize(14);
-    text(health,position.getX()-9,position.getY()-21);
+    text(health,position.getX()-9,position.getY()-15);
   }
   public int pIndex(ArrayList<Location> paths) { //find where mob is in the path
   Location test = new Location(position.getX(), position.getY());
