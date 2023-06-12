@@ -51,7 +51,6 @@ void init() {
   levelScreen=false;
   towerimg = loadImage("tower.png");
   towerimg.resize(38,50);
-  //tileSize=100;
   tileSize=50;
   dirt = loadImage("grass2.PNG");
   dirt.resize(width,height);
@@ -102,7 +101,6 @@ void init() {
 void setup() {
   size(1000, 800);
   init();
-  //frameRate(10);
 }
 void titleScreen() {
   pushStyle();
@@ -114,7 +112,7 @@ void titleScreen() {
   towerimg.resize(75,100);
   image(towerimg,100,110);
   image(towerimg,825,110);
-  towerimg.resize(38,50);//path size for tower
+  towerimg.resize(38,50);
   strokeWeight(5);
   stroke(0);
   fill(134, 250, 252);
@@ -176,7 +174,6 @@ void menu() {
       if (selectNum >= 4 && selectNum <= 7) {
         stroke(200);
         fill(255,255,0);
-        //fix math for this part, might have to redo the selectNum order in powerup selections
         if (selectNum >= 6) {
           rect(mapWidth + 21 + (80 * (selectNum % 2)), 450 +75, 80, 75);
         }
@@ -287,7 +284,6 @@ void levelScreen() {
 }
 void mouseClicked() {
   if (titleScreen) { 
-  //button in title screen to go to levelScreen is clicked
     if (mouseX>250 && mouseX<750 && mouseY>300 && mouseY<700) {
       titleScreen = false;
       levelScreen=true;
@@ -402,32 +398,19 @@ void mouseClicked() {
           upTower.upgradeRange();
         }
   }
-    //finish later
     
   }
   }
  }
-  //if click on tower
-  //somehow see which tower in the arraylist is selected
-  //tower.get(selected).upgrade();
   }
-  
-  
-
-//for all powerups, should make some type of indicator that they are usable, put them each on a "cooldown" timer of sorts.
-//display timer for all powerups
 void money() { //0
-  //money gain
   if (powerTime == 0) {
     reward = reward * 2;  
     powerTime = 5;
     powerChosen = 0;
   }
-  //make another variable to track the amount added by default as time passes
-  //somehow change back to original
 }
 void fireball(Location temp) { //1
-//make so that in tick, for each tick of powerTime, it will change the color of the "crater"
   println("time:"+powerTime);
   if (powerTime == 0) {
     int blast = 100;
@@ -442,7 +425,6 @@ void fireball(Location temp) { //1
     }
     powerTime = 5;
   }
-  //make animation somehow
 }
 void speedTower() { //2
   effected = towers.size();
@@ -453,8 +435,6 @@ void speedTower() { //2
     powerTime = 5;
     powerChosen = 2;
   }
-  
-  //somehow change back?
 }
 void slowMob() { //3
   if (powerTime == 0) {
@@ -586,9 +566,7 @@ void initialRandomMap() {
   line(endZone.getX()+5,endZone.getY(),endZone.getX()+5,endZone.getY()+tileSize);
   menu();
   mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty)); //first mob at time==0
-  //mobs.add(new TankMob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty));
 }
-
 void displayTowers() {
   tint(255); //opaque
   for (Tower tower : towers) {
@@ -671,7 +649,6 @@ void tick() {
     }
     if (powerTime > 0) {
       powerTime--;
-      //make drawing of fire here or in draw, mby try to make smooth by putting into draw somehow
     }
   }
   if (time % 120 == 0) {
@@ -685,18 +662,15 @@ void tick() {
     }
   }
   if (powerTime == 0 && powerChosen != 1) {
-    //println("yes");
     if (powerChosen == 2) {//speedtower
       for (int i = 0; i < effected; i++) {
         towers.get(i).setAttack(towers.get(i).getAttack() / 2);
-        //have to make sure that they acc revert back to the same thing
       }
     }
     else if (powerChosen == 3) {//slowMob
     //print(effected);
       for (int i = 0; i < effected; i++) {
         mobs.get(i).setSpeed(mobs.get(i).getSpeed() * 2);
-        //have to make sure that they acc revert back to the same thing
       }
     }
     else if (powerChosen == 0) {
@@ -720,7 +694,7 @@ void draw() {
   }
   if (!gameOver) {
   if (!titleScreen && !levelScreen) {
-  if (time % 240==0 && time>240) {//make a mob every few seconds
+  if (time % 240==0 && time>240) {
     if (time%720==0) {
       mobs.add(new TankMob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2,difficulty));
     }
@@ -732,8 +706,9 @@ void draw() {
       i--;
       balance += reward;
       score++;
-      //eventually make diff score depending on mob killed
-      //reward should depend on future difficulty modes
+      if (i < effected) {
+        effected--;
+      }
     }
   }
   generateMap();
@@ -791,5 +766,4 @@ void lose() {
 }
 void restart() {
   init();
-  //mobs.add(new Mob(paths.get(0).getX()+tileSize/2,paths.get(0).getY()+tileSize/2)); //first mob at time==0
 }
