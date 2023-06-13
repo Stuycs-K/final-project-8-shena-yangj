@@ -12,3 +12,5 @@ Mobs are automatically generated. There are regular mobs and tank mobs. Tank mob
 <br><br>Your balance and the round timer are shown at the bottom of the menu. If you do not have the required balance, you cannot place towers, upgrade towers, or activate power ups. 
 ## Updated Prototype
 https://docs.google.com/document/d/1L1xeRL29OE_B1ENO9BCZmrmFTkTAc8k4mGsMNIamVNE/edit?usp=sharing
+## Dev Log
+https://docs.google.com/document/d/14tbzDA9unb-vmRXv9ykwtktd3lJF7iN4Ko0HhTeTFTs/edit?usp=drivesdk
